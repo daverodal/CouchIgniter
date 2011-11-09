@@ -4,7 +4,7 @@ class Lobby extends CI_Controller
 {
     function index()
     {
-        $user = $this->session->userdata("user");
+        $user = $this->ssession->userdata("user");
         if (!$user) {
             redirect("/lobby/login/");
         }
