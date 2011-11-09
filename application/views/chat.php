@@ -88,6 +88,3 @@ if(city && army){
 	</div>
 </body>
 </html>
-<body class="app">
-	<div id="container">
-		<div id="content">
