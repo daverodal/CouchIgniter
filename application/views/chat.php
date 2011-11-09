@@ -9,6 +9,7 @@
     #city {position:absolute;top:300px;width:100px;height:100px;background:#ccf;}
   </style>
   <script>
+/* a comment */
   $(document).ready(function() {
 	  $("#draggable").draggable({stop:
 	  function(event,ui){
