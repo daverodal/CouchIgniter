@@ -8,7 +8,7 @@ class Lobby extends CI_Controller
         if (!$user) {
             redirect("/lobby/login/");
         }
-        echo "Welcome $user";
+        echo "Wwwelcome $user";
         $this->load->view("lobby/lobbyView");
 
     }
