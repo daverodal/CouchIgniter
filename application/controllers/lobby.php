@@ -1,4 +1,5 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+/* lobby.php */
 
 class Lobby extends CI_Controller
 {
