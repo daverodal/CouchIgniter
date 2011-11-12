@@ -3,14 +3,25 @@
 
 class Lobby extends CI_Controller
 {
-    function index()
+    function index($lobby = "MainLobby")
+    {
+        $user = $this->session->userdata("user");
+        if (!$user) {
+            redirect("/lobby/login/");
+        }
+        redirect("/lobby/chat");
+        $this->load->view("lobby/lobbyView",compact("lobby"));
+
+    }
+
+    function chat($lobby = "MainLobby")
     {
         $user = $this->session->userdata("user");
         if (!$user) {
             redirect("/lobby/login/");
         }
         echo "Welcome $user";
-        $this->load->view("lobby/lobbyView");
+        $this->load->view("lobby/lobbyView",compact("lobby"));
 
     }
 
@@ -34,8 +45,6 @@ class Lobby extends CI_Controller
 
     function login()
     {
-        echo APPPATH . "<br>";
-        echo base_url();
         $user = $this->session->userdata("user");
         $data = $this->input->post();
         if (!$user && $data) {
@@ -55,21 +64,20 @@ class Lobby extends CI_Controller
 
     }
 
-    public function fetch($last_seq = '')
+    public function fetch($lobby = "MainLobby", $last_seq = '')
     {
         header("Content-Type: application/json");
-        if ($last_seq) {
-            $seq = $this->couchsag->get("/_changes?since=$last_seq&feed=longpoll");
-
-        } else {
-            $seq = $this->couchsag->get("/_changes");
-        }
+            if ($last_seq) {
+                $seq = $this->couchsag->get("/_changes?since=$last_seq&feed=longpoll&filter=namefilter/namefind&name=$lobby");
+            } else {
+                $seq = $this->couchsag->get("/_changes");
+            }
         $last_seq = $seq->last_seq;
         $data = $this->input->post();
         $chatsIndex = 0;
         if ($data["chatsIndex"])
             $chatsIndex = $data["chatsIndex"];
-        $doc = $this->couchsag->get("MainLobby");
+        $doc = $this->couchsag->get($lobby);
         $games = $doc->games;
         $chats = array_slice($doc->chats, $chatsIndex);
         $chatsIndex = count($doc->chats);
@@ -78,10 +86,10 @@ class Lobby extends CI_Controller
         echo json_encode(compact('chats', 'chatsIndex', 'last_seq', 'users', 'games', 'clock'));
     }
 
-    public function add($chat)
+    public function add($lobby = "MainLobby")
     {
         $user = $this->session->userdata("user");
-        $doc = $this->couchsag->get("MainLobby");
+        $doc = $this->couchsag->get($lobby);
         if ($_POST) {
             if (!is_array($doc->chats))
                 $doc->chats = array();
