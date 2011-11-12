@@ -52,7 +52,7 @@
             }
             that = this;
             $.ajax(
-                    {url: "<?=site_url("lobby/fetch") . "/";?>" + last_seq,
+                    {url: "<?=site_url("lobby/fetch/$lobby") . "/";?>" + last_seq,
                         type:"POST",
                         data:theArgs,
                         success:function(data, textstatus) {
@@ -141,7 +141,7 @@
 
     function doit() {
         var mychat = $("#mychat").attr("value");
-        $.ajax({url: "<?=site_url("lobby/add/");?>",
+        $.ajax({url: "<?=site_url("lobby/add/$lobby");?>",
             type: "POST",
             data:{chat:mychat,
             },
