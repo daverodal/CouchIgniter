@@ -10,7 +10,7 @@ class Lobby extends CI_Controller
             redirect("/lobby/login/");
         }
         echo "Welcome $user";
-        $this->load->view("lobby/lobbyView");
+        $this->load->view("lobbyView");
 
     }
 

@@ -1,9 +1,9 @@
 <!doctype html>
 <html>
 <head>
-  <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
-  <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+  <link href="<?=base_url("js/jquery-ui.css");?>" rel="stylesheet" type="text/css"/>
+  <script src="<?=base_url("js/jquery.min.js");?>"></script>
+  <script src="<?=base_url("js/jquery-ui.min.js");?>"></script>
   <style type="text/css">
     #draggable {border:0px solid red;z-index:100;position:absolute; width: 50px; height: 50px; background: silver; }
     #city {background-color:red;border:0px solid red;position:absolute;top:300px;width:100px;height:100px;}
@@ -28,7 +28,7 @@
 		}
 		that = this;
 		  $.ajax(
-		    {url: "/~drodal/ci/index.php/lobby/fetch/"+last_seq,
+		    {url: "<?=site_url("lobby/fetch")."/";?>"+last_seq,
 		    	type:"POST",
 		    	data:theArgs,
 		    	success:function(data,textstatus){
@@ -119,7 +119,7 @@ x.fetch(0);
 
 function doit(){
 	var mychat = $("#mychat").attr("value");
-	$.ajax({url: "/~drodal/ci/index.php/lobby/add/",
+	$.ajax({url: "<?=site_url("lobby/add/");?>",
 		type: "POST",
 		data:{chat:mychat,
 		},
@@ -130,7 +130,7 @@ function doit(){
 
 </script>
 <body>
-<a href="/~drodal/ci/index.php/lobby/logout"/>logout</a>
+<a href="<?=site_url("lobby/logout");?>"/>logout</a>
 <form onsubmit="doit();return false;" id="chatform" method="post">
 <fieldset style="float:left;">
 <legend>Time
