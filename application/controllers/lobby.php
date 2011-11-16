@@ -14,89 +14,82 @@ class Lobby extends CI_Controller
 
     }
 
-    function chat($lobby = "MainLobby")
+    function chat()
     {
         $user = $this->session->userdata("user");
         if (!$user) {
             redirect("/lobby/login/");
         }
+        $lobby = $this->session->userdata("lobby");
+        $seq = $this->couchsag->get("/_design/lobbies/_view/getLobbies");
+        foreach($seq->rows as $row){
+            $lobbies[] =  array("name"=>$row->id);
+        }
         echo "Welcome $user";
-        $this->load->view("lobby/lobbyView",compact("lobby"));
+        //echo $this->twig->render("lobby/lobbyView.php",compact("lobby","lobbies"));
+        $this->parser->parse("lobby/lobbyView",compact("lobby","lobbies"));
 
     }
 
     function logout()
     {
         $user = $this->session->userdata("user");
-        $doc = $this->couchsag->get("MainLobby");
-        $newUsers = array();
-        if (in_array($user, $doc->users)) {
-            foreach ($doc->users as $aUser) {
-                if ($user != $aUser) {
-                    $newUsers[] = $aUser;
-                }
-            }
-        }
-        $doc->users = $newUsers;
-        $this->couchsag->update("MainLobby", $doc);
-        $user = $this->session->sess_destroy();
+        $lobby = $this->session->userdata("lobby");
+        $this->load->model("lobby/lobby_model");
+        $this->lobby_model->leaveLobby($user,$lobby);
+        $this->session->sess_destroy();
         redirect("/lobby/");
     }
 
     function login()
     {
+        echo "this";
         $user = $this->session->userdata("user");
+        echo $user;echo "ii";
         $data = $this->input->post();
+        echo $data;
         if (!$user && $data) {
             $user = $data['name'];
             $this->session->set_userdata(array("user" => $user));
-            $doc = $this->couchsag->get("MainLobby");
-            if (!is_array($doc->users)) {
-                $doc->users = array();
-            }
-            if (!in_array($user, $doc->users)) {
-                $doc->users[] = $user;
-            }
-            $this->couchsag->update("MainLobby", $doc);
+            $this->session->set_userdata(array("lobby" => "MainLobby"));
+            $this->load->model('lobby/lobby_model');
+            $this->lobby_model->enterLobby($user, "MainLobby");
             redirect("/lobby/");
         }
         $this->load->view("login");
 
     }
 
+    function changeLobby($newLobby = "MainLobby"){
+        $user = $this->session->userdata("user");
+        if (!$user) {
+            redirect("/lobby/login/");
+        }
+        $lobby = $this->session->userdata("lobby");
+
+        $this->load->model("lobby/lobby_model");
+        $this->lobby_model->leaveLobby($user,$lobby);
+        $this->lobby_model->enterLobby($user,$newLobby);
+
+        $this->session->set_userdata(array("lobby" => $newLobby));
+        redirect("/lobby/");
+    }
+
     public function fetch($lobby = "MainLobby", $last_seq = '')
     {
         header("Content-Type: application/json");
-            if ($last_seq) {
-                $seq = $this->couchsag->get("/_changes?since=$last_seq&feed=longpoll&filter=namefilter/namefind&name=$lobby");
-            } else {
-                $seq = $this->couchsag->get("/_changes");
-            }
-        $last_seq = $seq->last_seq;
-        $data = $this->input->post();
-        $chatsIndex = 0;
-        if ($data["chatsIndex"])
-            $chatsIndex = $data["chatsIndex"];
-        $doc = $this->couchsag->get($lobby);
-        $games = $doc->games;
-        $chats = array_slice($doc->chats, $chatsIndex);
-        $chatsIndex = count($doc->chats);
-        $users = $doc->users;
-        $clock = $doc->clock;
-        echo json_encode(compact('chats', 'chatsIndex', 'last_seq', 'users', 'games', 'clock'));
+        $this->load->model("lobby/lobby_model");
+        $chatsIndex = $this->input->post('chatsIndex');
+        $ret = $this->lobby_model->getChanges($lobby, $last_seq,$chatsIndex);
+        echo json_encode($ret);
     }
 
     public function add($lobby = "MainLobby")
     {
         $user = $this->session->userdata("user");
-        $doc = $this->couchsag->get($lobby);
-        if ($_POST) {
-            if (!is_array($doc->chats))
-                $doc->chats = array();
-
-            $doc->chats[] = $user . ": " . $_POST["chat"];
-            $success = $this->couchsag->update($doc->_id, $doc);
-        }
+        $chat = $this->input->post('chat');
+        $this->load->model("lobby/lobby_model");
+        $this->lobby_model->addChat($chat,$user,$lobby);
         return compact('success');
     }
 
