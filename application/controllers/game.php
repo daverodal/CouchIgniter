@@ -168,9 +168,11 @@ class Game extends CI_Controller
         $doc = $this->couchsag->get("TheGame");
         var_dump($doc);
         echo "after";
+        $battleResults = new stdClass();
         foreach ($doc->users as $user) {
+            $battleResults->$user = new stdClass();
             $doc->$user->data->lose = false;
-            $doc->$user->data->gold = 50;
+            $doc->$user->xdata->gold = 50;
             $doc->$user->data->mines = 5;
             $doc->$user->data->factories = 1;
             $doc->$user->data->battle = array();
