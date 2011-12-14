@@ -72,7 +72,15 @@ class Couchsag
 
   function get($id)
   {
-    return $this->sag->get($id)->body;
+      try{
+          $body = $this->sag->get($id)->body;
+
+      }catch (SagCouchException $e){
+          if($e->getCode() == 402)
+              return false;
+          throw $e;
+      }
+    return $body;
   }
 
   /**
@@ -99,7 +107,7 @@ class Couchsag
    * @param $data The data to be placed into the document
    * @return mixed The respons of the creation
    */
-  function create($id, $data)
+  function create($id, $data = null)
   {
     return $this->sag->post($id, $data);
   }

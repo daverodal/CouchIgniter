@@ -1,4 +1,5 @@
 <head>
+    <link rel="shortcut icon" href="/favicon.ico" type="image/icon">
     <link href="<?=base_url("js/jquery-ui.css");?>" rel="stylesheet" type="text/css"/>
     <script src="<?=base_url("js/jquery.min.js");?>"></script>
     <script src="<?=base_url("js/jquery-ui.min.js");?>"></script>
@@ -33,6 +34,19 @@
 
         #users {
             float: left;
+        }
+        #chats li{
+            float:left;
+            clear:both;
+            background:pink;
+            list-style: none;
+            border-radius: 10px;
+            padding:0 10px;
+            border: 2px #eee solid;
+            color:#999;
+        }
+        #chats li span{
+            color:#333;
         }
     </style>
     <script>function Sync(arg) {
@@ -115,6 +129,8 @@
         var str;
         for (i in chats) {
             str = "<li>" + chats[i] + "</li>";
+            str = str.replace(/:/,":<span>");
+            str = str.replace(/$/,"</span>");
             $("#chats").prepend(str);
         }
     });

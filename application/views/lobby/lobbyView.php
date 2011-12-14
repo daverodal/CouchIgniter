@@ -2,10 +2,11 @@
 <html>
     <?=$this->load->view("lobby/lobbyHead.php");?>
     <body>
-        <h1>Welecome To the {lobby}</h1>
+        <h1>Welcome {user} To the <span style="font-style: italic;">&ldquo;{lobby}&rdquo;"</span></h1>
         {lobbies}
-            <a href="<?=site_url("lobby/changeLobby");?>/{name}">{name}</a>
+            <a href="<?=site_url("lobby/changeLobby");?>/{id}">{name}</a>
         {/lobbies}
+        <a href="<?=site_url("lobby/createLobby");?>">Create Lobby</a>
         <a href="<?=site_url("lobby/logout");?>">logout</a>
         <form onsubmit="doit();return false;" id="chatform" method="post">
             <fieldset style="float:left;">

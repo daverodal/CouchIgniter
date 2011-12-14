@@ -4,6 +4,25 @@ class Game extends CI_Controller
 {
     protected $alive = true;
 
+    function enqueue(){
+        $this->load->helper("url");
+        $user = $this->session->userdata("user");
+        if (!$user) {
+            redirect("/game/login/");
+        }
+        $doc = $this->couchsag->get("GameQueue");
+        if(!is_array($doc->queue)){
+            $doc->queue = array();
+
+        }
+        $doc->queue[] = $user;
+        $success = $this->couchsag->update($doc->_id, $doc);
+        redirect("/game/wait");
+    }
+    function wait(){
+        $this->load->view("game/gameWait");
+
+    }
     function kill()
     {
         $doc = $this->couchsag->get("TheGame");
@@ -23,7 +42,7 @@ class Game extends CI_Controller
             redirect("/game/login/");
         }
         echo "Welcome $user";
-        $this->load->view("game");
+        $this->load->view("gameView");
 
     }
 
@@ -48,7 +67,6 @@ class Game extends CI_Controller
 
     function login()
     {
-        echo system('ls');
         $this->load->helper("url");
         $user = $this->session->userdata("user");
         $data = $this->input->post();
@@ -107,10 +125,11 @@ class Game extends CI_Controller
         $lose = $userData->lose;
         $win = $doc->$myEnemy->data->lose;
         $clock = $doc->clock;
+        $games = $doc->games;
         $building = $userData->building;
         $enemy = $doc->$myEnemy->data->army;
         $battle = array($doc->$user->data->battle, $doc->$myEnemy->data->battle);
-        echo json_encode(compact('chats', 'chatsIndex', 'last_seq', 'users', 'army', 'mines', 'factories', 'gold', 'clock', 'building', "enemy", "lose", "battle", "win"));
+        echo json_encode(compact('seq','games','chats', 'chatsIndex', 'last_seq', 'users', 'army', 'mines', 'factories', 'gold', 'clock', 'building', "enemy", "lose", "battle", "win"));
     }
 
     public function add($chat)
