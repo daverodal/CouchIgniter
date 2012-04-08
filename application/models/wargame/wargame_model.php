@@ -181,6 +181,8 @@ echo "HI";
         $mapGrid = new MapGrid($doc->wargame->mapData);
         $mapUnits = array();
         $moveRules = $doc->wargame->moveRules;
+        $combatRules = $doc->wargame->combatRules;
+        $moveRules->index = $combatRules->index;
         foreach($units as $unit){
             $mapGrid->setHexagonXY( $unit->hexagon->x, $unit->hexagon->y);
             $mapUnit = new StdClass();
