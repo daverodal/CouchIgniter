@@ -125,9 +125,7 @@ echo "HI";
     }
     public function setDoc($doc)
     {
-        var_dump($doc);
         $success = $this->couchsag->update($doc->_id, $doc);
-        var_dump($success);
         return $success;
     }
 

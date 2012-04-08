@@ -114,7 +114,7 @@ class Wargame extends CI_Controller
         echo "HIeeI $unit";
         var_dump($battle->force->getUnitHexagon($unit));
         	$battle->gameRules->processEvent(SELECT_COUNTER_EVENT, $unit, $battle->force->getUnitHexagon($unit));
-        echo "jjjjjjjjjjjjjjj";
+        echo "jjjjjjjjjjjeeejjjj";
 //        $myBattle = $battle->save();
 //        $jBattle = json_encode($myBattle);
 //        //    $jBattle = preg_replace("/{/","{\n",$jBattle);
@@ -122,9 +122,10 @@ class Wargame extends CI_Controller
 //        file_put_contents("afile.out", $jBattle);
 
         $doc->wargame = $battle->save();
-        var_dump($doc->wargame);
-        $doc = $this->wargame_model->setDoc($doc);
-
+        echo "wargame";
+//        var_dump($doc->wargame);
+        $succ = $this->wargame_model->setDoc($doc);
+var_dump($succ);
         return compact('success');
     }
     public function map($wargame = "MainWargame")
@@ -132,7 +133,6 @@ class Wargame extends CI_Controller
         $user = $this->session->userdata("user");
         $x = $this->input->post('x',FALSE);
         $y = $this->input->post('y',FALSE);
-var_dump($_POST);
         echo "$x";echo "jejeje";
         $this->load->model("wargame/wargame_model");
         echo "loaded";
@@ -143,9 +143,9 @@ var_dump($_POST);
 echo "kkk";
         $mapGrid = new MapGrid($battle->mapData);
         $mapGrid->setPixels($x, $y);
-        echo "HIeeI $x $y ";var_dump($mapGrid->getHexagon());echo "Hexed";
+        echo "HIeeI $x $y ";var_dump($mapGrid->getHexagon()->number);echo "Hexed";
         $battle->gameRules->processEvent(SELECT_MAP_EVENT, MAP, $mapGrid->getHexagon() );
-        echo "jjjjjjjjjjjjjjj";
+        echo "jjjjjjjwwwwjjjjjjj";
         //        $myBattle = $battle->save();
         //        $jBattle = json_encode($myBattle);
         //        //    $jBattle = preg_replace("/{/","{\n",$jBattle);
@@ -153,9 +153,10 @@ echo "kkk";
         //        file_put_contents("afile.out", $jBattle);
 
         $doc->wargame = $battle->save();
-        var_dump($doc->wargame);
+//        var_dump($doc->wargame);
         $doc = $this->wargame_model->setDoc($doc);
 
+//        var_dump($doc);
         return compact('success');
     }
    public function unitInit($wargame = "MainWargame",$unit = null)
