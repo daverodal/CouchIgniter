@@ -173,9 +173,8 @@ function counterMouseDown(event) {
 }
 
 function nextPhaseMouseDown(event) {
+    doitNext();
 
-    gameRules.processEvent( SELECT_BUTTON_EVENT, "nextPhase", 0, 0 );
-    updateForm();
 }
 
 function attachMouseEventsToMap(objectName) {

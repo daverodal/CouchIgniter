@@ -113,10 +113,7 @@ class Wargame extends CI_Controller
         require_once("/Documents and Settings/Owner/Desktop/webwargaming/BattleForAllenCreek.php");
         $battle = new BattleForAllenCreek($doc->wargame);
 
-        echo "HIeeI $unit";
-        var_dump($battle->force->getUnitHexagon($unit));
         	$battle->gameRules->processEvent(SELECT_COUNTER_EVENT, $unit, $battle->force->getUnitHexagon($unit));
-        echo "jjjjjjjjjjjeeejjjj";
 //        $myBattle = $battle->save();
 //        $jBattle = json_encode($myBattle);
 //        //    $jBattle = preg_replace("/{/","{\n",$jBattle);
@@ -124,10 +121,8 @@ class Wargame extends CI_Controller
 //        file_put_contents("afile.out", $jBattle);
 
         $doc->wargame = $battle->save();
-        echo "wargame";
 //        var_dump($doc->wargame);
         $succ = $this->wargame_model->setDoc($doc);
-var_dump($succ);
         return compact('success');
     }
     public function map($wargame = "MainWargame")
@@ -162,6 +157,39 @@ echo "kkk";
 //        var_dump($doc);
         return compact('success');
     }
+    public function phase($wargame = "MainWargame")
+    {
+        $user = $this->session->userdata("user");
+        $x = $this->input->post('x',FALSE);
+        $y = $this->input->post('y',FALSE);
+        echo "X: $x Y: $y";
+        $this->load->model("wargame/wargame_model");
+        echo "loaded";
+        $doc = $this->wargame_model->getDoc(urldecode($wargame));
+
+        require_once("/Documents and Settings/Owner/Desktop/webwargaming/BattleForAllenCreek.php");
+        $battle = new BattleForAllenCreek($doc->wargame);
+        var_dump($battle->force->units[5]);
+        echo "kkk";
+        $mapGrid = new MapGrid($battle->mapData);
+        $mapGrid->setPixels($x, $y);
+        echo "HIeeI $x $y ";var_dump($mapGrid->getHexagon()->number);echo "Hexed";
+        $battle->gameRules->processEvent(SELECT_BUTTON_EVENT, "next_phase", 0,0 );
+        echo "jjjjjjjwwwwjjjjjjj";
+        //        $myBattle = $battle->save();
+        //        $jBattle = json_encode($myBattle);
+        //        //    $jBattle = preg_replace("/{/","{\n",$jBattle);
+        //        //    $jBattle = preg_replace("/}/","\n}",$jBattle);
+        //        file_put_contents("afile.out", $jBattle);
+
+        $doc->wargame = $battle->save();
+        //        var_dump($doc->wargame);
+        $doc = $this->wargame_model->setDoc($doc);
+
+        //        var_dump($doc);
+        return compact('success');
+    }
+
    public function unitInit($wargame = "MainWargame",$unit = null)
     {
         $user = $this->session->userdata("user");

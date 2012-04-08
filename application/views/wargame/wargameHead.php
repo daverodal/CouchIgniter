@@ -49,6 +49,7 @@
         #chats li span{
             color:#333;
         }
+        .unit {border:2px solid blue;}
     </style>
     <script>function Sync(arg) {
         this.id = "Sync";
@@ -159,7 +160,7 @@
         for (i in mapUnits) {
             width = $("#"+i).width();
             height = $("#"+i).height();
-            $("#"+i).css({left: mapUnits[i].x-width/2+"px",top:mapUnits[i].y-height/2+"px"});
+            $("#"+i).css({left: -1+mapUnits[i].x-width/2+"px",top:-1+mapUnits[i].y-height/2+"px"});
         }
     });
     x.register("moveRules", function(moveRules) {
@@ -167,6 +168,42 @@
         $("#status").html("");
         if(moveRules.anyUnitIsMoving){
             $("#status").html("Unit #:"+moveRules.movingUnitId+" is currently moving");
+//            alert($("#"+moveRules.movingUnitId).css('opacity',.5));
+        }
+    });
+    x.register("units", function(units) {
+        for (i in units) {
+            color = "green";
+            switch(units[i].status){
+                case 1:
+                case 2:
+                    color = "green";
+                    break;
+                case 3:
+                case 4:
+                    color = "orange";
+                    break;
+                case 6:
+                    color = "black";
+                    break;
+                case 8:
+                case 9:
+                    color = "red";
+                        break;
+                case 13:
+                    color = "purple";
+                    break;
+                case 14:
+                    color = "yellow";
+                    break;
+                case 16:
+                    color = "red";
+                    break;
+                case 17:
+                    color = "red";
+                    break;
+            }
+            $("#"+i).css({borderColor: color});
         }
     });
 
@@ -200,6 +237,15 @@
             data:{x:x,
                 y:y
             },
+            success:function(data, textstatus) {
+            }
+        });
+
+    }
+    function doitNext() {
+        $.ajax({url: "<?=site_url("wargame/phase/MainWargame");?>/",
+            type: "POST",
+
             success:function(data, textstatus) {
             }
         });
