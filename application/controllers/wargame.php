@@ -87,6 +87,8 @@ class Wargame extends CI_Controller
     }
     public function fetch($wargame = "MainWargame", $last_seq = '')
     {
+
+
         header("Content-Type: application/json");
         $this->load->model("wargame/wargame_model");
         $chatsIndex = $this->input->post('chatsIndex');
@@ -133,7 +135,7 @@ var_dump($succ);
         $user = $this->session->userdata("user");
         $x = $this->input->post('x',FALSE);
         $y = $this->input->post('y',FALSE);
-        echo "$x";echo "jejeje";
+        echo "X: $x Y: $y";
         $this->load->model("wargame/wargame_model");
         echo "loaded";
         $doc = $this->wargame_model->getDoc(urldecode($wargame));

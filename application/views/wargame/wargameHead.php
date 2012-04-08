@@ -154,6 +154,15 @@
     x.register("clock", function(clock) {
         $("#clock").html(clock);
     });
+    x.register("mapUnits", function(mapUnits) {
+        var str;
+        for (i in mapUnits) {
+            width = $("#"+i).width();
+            height = $("#"+i).height();
+            $("#"+i).css({left: mapUnits[i].x-width/2+"px",top:mapUnits[i].y-height/2+"px"});
+        }
+    });
+
     x.fetch(0);
 
     function doit() {
@@ -169,29 +178,24 @@
     }
     function doitUnit(id) {
         var mychat = $("#mychat").attr("value");
-        alert("doitUsnit");
         $.ajax({url: "<?=site_url("wargame/unit/MainWargame");?>/"+id,
             type: "POST",
             data:{unit:id,
             },
             success:function(data, textstatus) {
-                alert("Succ");
             }
         });
         $("#mychat").attr("value", "");
     }
     function doitMap(x,y) {
-        alert("doitUsnit" + x + " " + y);
         $.ajax({url: "<?=site_url("wargame/map/MainWargame");?>/",
             type: "POST",
             data:{x:x,
                 y:y
             },
             success:function(data, textstatus) {
-                alert("Succ");
             }
         });
-        alert("doit0090999it" + x + " " + y);
 
     }
 

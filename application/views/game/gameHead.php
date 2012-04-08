@@ -109,7 +109,6 @@
                       type:"POST",
                       data:theArgs,
                       success:function(data, textstatus) {
-                          alert(textstatus);
                           fetchArgs = {};
                           for (var i in that.callbacks) {
                               if (data[i]) {

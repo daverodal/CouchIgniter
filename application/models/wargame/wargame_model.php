@@ -1,4 +1,5 @@
 <?php
+require_once("/Documents and Settings/Owner/Desktop/webwargaming/BattleForAllenCreek.php");
 
 class Wargame_model extends CI_Model
 {
@@ -146,7 +147,20 @@ echo "HI";
         $chatsIndex = count($doc->chats);
         $users = $doc->users;
         $clock = $doc->clock;
-        return compact('seq', 'chats', 'chatsIndex', 'last_seq', 'users', 'games', 'clock');
+        $units = $doc->wargame->force->units;
+
+        $mapGrid = new MapGrid($doc->wargame->mapData);
+        $mapUnits = array();
+
+        foreach($units as $unit){
+            $mapGrid->setHexagonXY( $unit->hexagon->x, $unit->hexagon->y);
+            $mapUnit = new StdClass();
+            $mapUnit->x = $mapGrid->getPixelX();
+            $mapUnit->y = $mapGrid->getPixelY();
+            $mapUnits[] = $mapUnit;
+        }
+
+        return compact('seq', 'chats', 'chatsIndex', 'last_seq', 'users', 'games', 'clock', 'mapUnits');
     }
 
 }

@@ -107,10 +107,13 @@ function mapMouseDown(event) {
         pixelX =  event.offsetX;
         pixelY =  event.offsetY;
     }
-    alert(pixelX);
-    alert(pixelY);
-    doitMap(pixelX,pixelY);
-    alert("didit");
+    var p;
+    p = $("#map").offset();
+    pixelX -= p.left;
+    pixelY -= p.top;
+    alert("PixelX "+ pixelX+ " PixelY "+pixelY);
+
+     doitMap(pixelX,pixelY);
 
 }
 
@@ -159,7 +162,6 @@ function mapMouseDown(event) {
 //}
 
 function counterMouseDown(event) {
-alert("HII");
     var id;
     if ( document.addEventListener ) {
         id = event.target.id.toString();
@@ -168,9 +170,7 @@ alert("HII");
     else {
         id = event.srcElement.id.toString();
     }
-    alert(id);
     doitUnit(id);
-    alert("didit");
 }
 
 function nextPhaseMouseDown(event) {
