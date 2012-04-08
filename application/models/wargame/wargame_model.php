@@ -1,25 +1,25 @@
 <?php
 
-class Lobby_model extends CI_Model
+class Wargame_model extends CI_Model
 {
 
-    public function enterLobby($user, $lobby)
+    public function enterWargame($user, $wargame)
     {
-        $doc = $this->couchsag->get($lobby);
+        $doc = $this->couchsag->get($wargame);
         if (!is_array($doc->users)) {
             $doc->users = array();
         }
         if (!in_array($user, $doc->users)) {
             $doc->users[] = $user;
         }
-        $this->couchsag->update($lobby, $doc);
+        $this->couchsag->update($wargame, $doc);
 
     }
 
 
-    public function leaveLobby($user, $lobby)
+    public function leaveWargame($user, $wargame)
     {
-        $doc = $this->couchsag->get($lobby);
+        $doc = $this->couchsag->get($wargame);
         if(!$doc)
             return;
         $newUsers = array();
@@ -31,20 +31,20 @@ class Lobby_model extends CI_Model
             }
         }
         $doc->users = $newUsers;
-        $this->couchsag->update($lobby, $doc);
+        $this->couchsag->update($wargame, $doc);
     }
 
     public function initDoc()
     {
         $views = new StdClass();
         $views->getLobbies = new StdClass;
-        $views->getLobbies->map = "function(doc){if(doc.docType == 'lobby'){emit(doc._id,doc._id);}}";
+        $views->getLobbies->map = "function(doc){if(doc.docType == 'wargame'){emit(doc._id,doc._id);}}";
         $filters = new StdClass();
-        $filters->namefind = "function(doc){if(doc.docType == 'lobby'){emit(doc._id,doc._id);}}";
+        $filters->namefind = "function(doc){if(doc.docType == 'wargame'){emit(doc._id,doc._id);}}";
         $users = new StdClass();
         $users->map = <<<aHEREMAP
         function(doc) {
-            if(doc.docType == 'game' || doc.docType == 'lobby'){
+            if(doc.docType == 'game' || doc.docType == 'wargame'){
                 var ret = 0;
 
                 if(doc.users){
@@ -58,10 +58,10 @@ class Lobby_model extends CI_Model
             }
         }
 aHEREMAP;
-        $lobby = new StdClass();
-        $lobby->map = <<<HEREMAP
+        $wargame = new StdClass();
+        $wargame->map = <<<HEREMAP
         function(doc) {
-            if(doc.docType == 'game' || doc.docType == 'lobby'){
+            if(doc.docType == 'game' || doc.docType == 'wargame'){
                 var ret = 0;
 
                 if(doc.users ){
@@ -71,7 +71,7 @@ aHEREMAP;
             }
         }
 HEREMAP;
-$lobby->reduce = <<<HERE
+$wargame->reduce = <<<HERE
 function(keys,values){return sum(values);}
 HERE;
 $update = <<<HEREUPDATE
@@ -87,9 +87,9 @@ HEREUPDATE;
         $updates = new StdClass();
 
         $updates->addchat = $update;
-        $views->lobby = $lobby;
+        $views->wargame = $wargame;
         $views->users = $users;
-        var_dump($lobby);echo "HEE";
+        var_dump($wargame);echo "HEE";
         $data = array("_id" => "_design/newFilter", "views" => $views, "filters" => $filters, "updates"=> $updates);
         try{
         $doc = $this->couchsag->get("_design/newFilter");
@@ -103,14 +103,14 @@ echo "HI";
         $this->couchsag->create($data);
     }
 
-    public function createLobby($name)
+    public function createWargame($name)
     {
-        $data = array('docType' => "lobby", "_id" => $name, "name" => $name);
+        $data = array('docType' => "wargame", "_id" => $name, "name" => $name);
         $this->couchsag->create($data);
     }
-    public function addChat($chat, $user, $lobby)
+    public function addChat($chat, $user, $wargame)
     {
-        $doc = $this->couchsag->get($lobby);
+        $doc = $this->couchsag->get($wargame);
         if (!is_array($doc->chats))
             $doc->chats = array();
 
@@ -118,18 +118,31 @@ echo "HI";
         $success = $this->couchsag->update($doc->_id, $doc);
         return $success;
     }
+    public function getDoc($wargame)
+    {
+        $doc = $this->couchsag->get($wargame);
+        return $doc;
+    }
+    public function setDoc($doc)
+    {
+        var_dump($doc);
+        $success = $this->couchsag->update($doc->_id, $doc);
+        var_dump($success);
+        return $success;
+    }
 
-    public function getChanges($lobby, $last_seq = '', $chatsIndex = 0){
+
+    public function getChanges($wargame, $last_seq = '', $chatsIndex = 0){
         do{
             if ($last_seq) {
-                $seq = $this->couchsag->get("/_changes?since=$last_seq&feed=longpoll&filter=namefilter/namefind&name=$lobby");
+                $seq = $this->couchsag->get("/_changes?since=$last_seq&feed=longpoll&filter=namefilter/namefind&name=$wargame");
             } else {
                 $seq = $this->couchsag->get("/_changes");
             }
         }while(count($seq->results) == 0);
         $last_seq = $seq->last_seq;
 
-        $doc = $this->couchsag->get($lobby);
+        $doc = $this->couchsag->get($wargame);
         $games = $doc->games;
         $chats = array_slice($doc->chats, $chatsIndex);
         $chatsIndex = count($doc->chats);

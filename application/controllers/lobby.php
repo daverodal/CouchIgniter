@@ -22,7 +22,8 @@ class Lobby extends CI_Controller
             redirect("/lobby/login/");
         }
         $lobby = urldecode($this->session->userdata("lobby"));
-        $seq = $this->couchsag->get("/_design/lobbies/_view/getLobbies");
+        $seq = $this->couchsag->get("/_design/newFilter/_view/getLobbies");
+echo $seq;
         foreach($seq->rows as $row){
             $lobbies[] =  array("name"=>$row->value, "id"=>$row->id);
         }
@@ -58,6 +59,12 @@ class Lobby extends CI_Controller
 
     }
 
+    function addchat(){
+        echo "Addingchat";
+        $chat['chat'] = "hi there!";
+        $this->couchsag->update("_design/newFilter/_update/addchat/templobby?chat=th jjjg iseeee bites","");
+        echo "addedchat";
+    }
     function changeLobby($newLobby = "MainLobby"){
         $user = $this->session->userdata("user");
         if (!$user) {
@@ -73,6 +80,10 @@ class Lobby extends CI_Controller
         redirect("/lobby/");
     }
 
+    public function initDoc(){
+        $this->load->model("lobby/lobby_model");
+        $this->lobby_model->initDoc();
+    }
     public function fetch($lobby = "MainLobby", $last_seq = '')
     {
         header("Content-Type: application/json");
@@ -87,7 +98,7 @@ class Lobby extends CI_Controller
         $user = $this->session->userdata("user");
         $chat = $this->input->post('chat',TRUE);
         $this->load->model("lobby/lobby_model");
-        $this->lobby_model->addChat($chat,$user,$lobby);
+        $this->lobby_model->addChat($chat,$user,urldecode($lobby));
         return compact('success');
     }
 
@@ -110,7 +121,7 @@ class Lobby extends CI_Controller
             $doc = $this->couchsag->get("MainLobby");
             $doc->clock = $date;
             $success = $this->couchsag->update($doc->_id, $doc);
-            sleep(1);
+            sleep(1);die();
         }
     }
 }
