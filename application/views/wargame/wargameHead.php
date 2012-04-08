@@ -162,6 +162,13 @@
             $("#"+i).css({left: mapUnits[i].x-width/2+"px",top:mapUnits[i].y-height/2+"px"});
         }
     });
+    x.register("moveRules", function(moveRules) {
+        var str;
+        $("#status").html("");
+        if(moveRules.anyUnitIsMoving){
+            $("#status").html("Unit #:"+moveRules.movingUnitId+" is currently moving");
+        }
+    });
 
     x.fetch(0);
 

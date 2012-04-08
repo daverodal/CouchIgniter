@@ -93,7 +93,6 @@ var promptText;
 
 function mapMouseDown(event) {
 
-    alert("reallY");
 
     var pixelX, pixelY;
     // get pixel coordinates
@@ -111,7 +110,7 @@ function mapMouseDown(event) {
     p = $("#map").offset();
     pixelX -= p.left;
     pixelY -= p.top;
-    alert("PixelX "+ pixelX+ " PixelY "+pixelY);
+//    alert("PixelX "+ pixelX+ " PixelY "+pixelY);
 
      doitMap(pixelX,pixelY);
 

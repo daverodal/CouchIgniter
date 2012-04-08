@@ -142,6 +142,7 @@ var_dump($succ);
 
         require_once("/Documents and Settings/Owner/Desktop/webwargaming/BattleForAllenCreek.php");
         $battle = new BattleForAllenCreek($doc->wargame);
+        var_dump($battle->force->units[5]);
 echo "kkk";
         $mapGrid = new MapGrid($battle->mapData);
         $mapGrid->setPixels($x, $y);
