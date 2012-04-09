@@ -197,10 +197,10 @@
                     color = "yellow";
                     break;
                 case 16:
-                    color = "red";
+                    color = "pink";
                     break;
                 case 17:
-                    color = "red";
+                    color = "cyan";
                     break;
             }
             $("#"+i).css({borderColor: color});
