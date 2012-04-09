@@ -114,13 +114,21 @@ class Wargame extends CI_Controller
         $battle = new BattleForAllenCreek($doc->wargame);
 
         	$battle->gameRules->processEvent(SELECT_COUNTER_EVENT, $unit, $battle->force->getUnitHexagon($unit));
+        $units = $battle->force->units;
+        $combats = array();
+        foreach($units as $unitId => $unit){
+            if($unit->combatNumber){
+                $combats[$unit->combatNumber]['combatIndex'] = $unit->combatIndex;
+                $combats[$unit->combatNumber]['units'][] = $unitId;
+            }
+        }
 //        $myBattle = $battle->save();
 //        $jBattle = json_encode($myBattle);
 //        //    $jBattle = preg_replace("/{/","{\n",$jBattle);
 //        //    $jBattle = preg_replace("/}/","\n}",$jBattle);
 //        file_put_contents("afile.out", $jBattle);
-
         $doc->wargame = $battle->save();
+        $doc->wargame->combats[] = $combats;
 //        var_dump($doc->wargame);
         $succ = $this->wargame_model->setDoc($doc);
         return compact('success');
@@ -137,13 +145,20 @@ class Wargame extends CI_Controller
 
         require_once("/Documents and Settings/Owner/Desktop/webwargaming/BattleForAllenCreek.php");
         $battle = new BattleForAllenCreek($doc->wargame);
-        var_dump($battle->force->units[5]);
-echo "kkk";
         $mapGrid = new MapGrid($battle->mapData);
         $mapGrid->setPixels($x, $y);
-        echo "HIeeI $x $y ";var_dump($mapGrid->getHexagon()->number);echo "Hexed";
         $battle->gameRules->processEvent(SELECT_MAP_EVENT, MAP, $mapGrid->getHexagon() );
-        echo "jjjjjjjwwwwjjjjjjj";
+        $units = $battle->force->units;
+        $combats = array();
+        foreach($units as $unitId => $unit){
+            if($unit->combatNumber){
+                $combats[$unit->combatNumber]['combatIndex'] = $unit->combatIndex;
+                $combats[$unit->combatNumber]['units'][] = $unitId;
+            }
+        }
+//        $prompt = $battle->prompt->getPrompt(OVER_MAP_EVENT, MAP, $mapGrid->getHexagon());
+
+
         //        $myBattle = $battle->save();
         //        $jBattle = json_encode($myBattle);
         //        //    $jBattle = preg_replace("/{/","{\n",$jBattle);
@@ -151,6 +166,7 @@ echo "kkk";
         //        file_put_contents("afile.out", $jBattle);
 
         $doc->wargame = $battle->save();
+        $doc->wargame->combats = $combats;
 //        var_dump($doc->wargame);
         $doc = $this->wargame_model->setDoc($doc);
 
@@ -175,6 +191,7 @@ echo "kkk";
         $mapGrid->setPixels($x, $y);
         echo "HIeeI $x $y ";var_dump($mapGrid->getHexagon()->number);echo "Hexed";
         $battle->gameRules->processEvent(SELECT_BUTTON_EVENT, "next_phase", 0,0 );
+
         echo "jjjjjjjwwwwjjjjjjj";
         //        $myBattle = $battle->save();
         //        $jBattle = json_encode($myBattle);
