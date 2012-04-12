@@ -192,7 +192,7 @@ echo "HI";
         }
         $gameRules = $wargame->gameRules;
         $clock = "The turn is ".$gameRules->turn.". The Phase is ". $phase_name[$gameRules->phase].". The mode is ". $mode_name[$gameRules->mode];
-        return compact('units','seq', 'chats', 'chatsIndex', 'last_seq', 'users', 'games', 'clock', 'mapUnits','moveRules');
+        return compact("combatRules",'units','seq', 'chats', 'chatsIndex', 'last_seq', 'users', 'games', 'clock', 'mapUnits','moveRules');
     }
 
 }

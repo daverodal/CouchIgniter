@@ -5,6 +5,14 @@ class Wargame extends CI_Controller
 {
     /* @var Wargame_model $wargame_model */
 
+    function test(){
+        echo "testing";
+        $doc = $this->couchsag->get("/MyWargame");
+        $doc->alist[] = "alis";
+//        var_dump($doc);
+        $seq = $this->couchsag->update($doc->_id,$doc);
+
+    }
     function index($wargame = "MainWargame")
     {
         $user = $this->session->userdata("user");
@@ -185,11 +193,11 @@ class Wargame extends CI_Controller
 
         require_once("/Documents and Settings/Owner/Desktop/webwargaming/BattleForAllenCreek.php");
         $battle = new BattleForAllenCreek($doc->wargame);
-        var_dump($battle->force->units[5]);
+//        var_dump($battle->force->units[5]);
         echo "kkk";
         $mapGrid = new MapGrid($battle->mapData);
         $mapGrid->setPixels($x, $y);
-        echo "HIeeI $x $y ";var_dump($mapGrid->getHexagon()->number);echo "Hexed";
+//        echo "HIeeI $x $y ";var_dump($mapGrid->getHexagon()->number);echo "Hexed";
         $battle->gameRules->processEvent(SELECT_BUTTON_EVENT, "next_phase", 0,0 );
 
         echo "jjjjjjjwwwwjjjjjjj";

@@ -186,9 +186,9 @@
                 case 6:
                     color = "black";
                     break;
-                case 8:
+//                case 8:
                 case 9:
-                    color = "red";
+                    color = "DarkRed";
                         break;
                 case 13:
                     color = "purple";
@@ -204,6 +204,34 @@
                     break;
             }
             $("#"+i).css({borderColor: color});
+        }
+    });
+    x.register("combatRules", function(combatRules) {
+        for(var combatCol = 1;combatCol <= 6;combatCol++){
+            $(".col"+combatCol).css({background:"#333"});
+
+        }
+        if(combatRules && combatRules.currentDefender !== false){
+            cD = combatRules.currentDefender;
+            if(cD !== false && Object.keys(combatRules.combats[cD].attackers).length != 0){
+            combatCol = combatRules.combats[cD].index + 1;
+            $(".col"+combatCol).css({background:"#666"});
+            }
+            $("#"+cD).css({borderColor: "white"});
+            attackers = combatRules.combats[cD].attackers;
+            for(var i in attackers){
+//                alert(i);
+//                alert(attackers[i]);
+                $("#"+i).css({borderColor: "crimson"});
+
+            }
+            str = ""
+            for(i in combatRules.combats){
+                str += "Combat "+i+" has "+combatRules.combats[i].index+"<br>";
+            }
+            $("#status").html(str);
+//            alert(attackers);
+
         }
     });
 
