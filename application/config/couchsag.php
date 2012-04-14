@@ -6,9 +6,21 @@
  * Time: 5:31 PM
  * To change this template use File | Settings | File Templates.
  */
+$remote = false;
+if($remote){
+    $config["host"] = "markarian.cloudant.com";
 
-$config["host"] = "127.0.0.1";
+    $config["port"] = 80;
 
-$config["port"] = 5984;
+    $config["database"] = "mydatabase";
 
-$config["database"] = "mydatabase";
+    $config["user"] = "markarian";
+
+    $config["password"] = "2bcloudy";
+}else{
+    $config["host"] = "localhost";
+
+    $config["port"] = 5984;
+
+    $config["database"] = "mydatabase";
+}

@@ -8,6 +8,7 @@
  */
 
 require_once('Sag.php');
+require_once('SagFileCache.php');
 
 /**
  * Couchsag codeigniter library to access Sag driver for couch db.
@@ -30,7 +31,7 @@ class Couchsag
   public function __construct($params)
   {
     $host = "127.0.0.1";
-    $port = 5984;
+    $port = 443;
 
     if (is_array($params)) {
       foreach ($params as $key => $value) {
@@ -62,6 +63,10 @@ class Couchsag
       if ($database) {
         $this->sag->setDatabase($database);
       }
+        try{
+        $cache = new SagFileCache(".");
+        }catch(Exception $e){var_dump($e);}
+        $this->sag->setCache($cache);
     }
   }
 
@@ -74,8 +79,7 @@ class Couchsag
   {
       try{
           $body = $this->sag->get($id)->body;
-
-      }catch (SagCouchException $e){
+      }catch (Exception $e){
           if($e->getCode() == 402)
               return false;
           throw $e;

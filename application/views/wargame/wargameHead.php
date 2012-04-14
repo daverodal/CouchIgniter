@@ -30,7 +30,7 @@
 
         #clock {
             font-size: 16px;
-            float: left
+            float: left;
         }
 
         #users {
@@ -172,6 +172,7 @@
         }
     });
     x.register("units", function(units) {
+
         for (i in units) {
             color = "green";
             switch(units[i].status){
@@ -208,31 +209,63 @@
     });
     x.register("combatRules", function(combatRules) {
         for(var combatCol = 1;combatCol <= 6;combatCol++){
-            $(".col"+combatCol).css({background:"#333"});
+            $(".col"+combatCol).css({background:"transparent"});
+//            $(".odd .col"+combatCol).css({color:"white"});
+//            $(".even .col"+combatCol).css({color:"black"});
 
         }
-        if(combatRules && combatRules.currentDefender !== false){
+        var title = "Combat Results ";
+        str = ""
+
+        if(combatRules ){
             cD = combatRules.currentDefender;
-            if(cD !== false && Object.keys(combatRules.combats[cD].attackers).length != 0){
+            if(cD !== false){
+                if(combatRules.combats){
+
+                $("#"+cD).css({borderColor: "white"});
+                if(Object.keys(combatRules.combats[cD].attackers).length != 0){
             combatCol = combatRules.combats[cD].index + 1;
-            $(".col"+combatCol).css({background:"#666"});
-            }
-            $("#"+cD).css({borderColor: "white"});
-            attackers = combatRules.combats[cD].attackers;
-            for(var i in attackers){
+            $(".col"+combatCol).css('background-color',"rgba(10,10,255,.3)");
+                    if(combatRules.combats[cD].Die !== false){
+                        title += "<strong style='margin-left:20px;font-size:150%'>"+combatRules.combats[cD].combatResult+"</strong>";
+                        $(".row"+combatRules.combats[cD].Die+" .col"+combatCol).css('font-size',"110%");
+                        $(".row"+combatRules.combats[cD].Die+" .col"+combatCol).css('background',"#eee");
+                    }
+
+//                $(".odd .col"+combatCol).css('color',"white");
+//                $(".even .col"+combatCol).css('color',"black");
+                attackers = combatRules.combats[cD].attackers;
+                for(var i in attackers){
 //                alert(i);
 //                alert(attackers[i]);
-                $("#"+i).css({borderColor: "crimson"});
+//                    $("#"+i).css({borderColor: "crimson"});
 
+                }
             }
-            str = ""
-            for(i in combatRules.combats){
-                str += "Combat "+i+" has "+combatRules.combats[i].index+"<br>";
+ 
             }
+             }
+            str = "";
+            if(combatRules.combatsToResolve){
+                alert("TOP");
+                for(i in combatRules.combatsToResolve){
+                    alert(i);
+                    if(combatRules.combatsToResolve[i].Die){
+                        str += " Die "+combatRules.combatsToResolve[i].Die + " result "+combatRules.combatsToResolve[i].combatResult;
+                    }
+                    if(combatRules.combatsToResolve[i].index !== null){
+                        str += "Defendeer "+i+" A "+combatRules.combatsToResolve[i].attackStrength+" - D "+combatRules.combatsToResolve[i].defenseStrength+ " - T "+combatRules.combatsToResolve[i].terrainCombatEffect+ " = "+combatRules.combatsToResolve[i].index;
+                        str += "<br>";
+                    }
+
+                }
+            }
+
             $("#status").html(str);
 //            alert(attackers);
 
         }
+        $("#crt h3").html(title);
     });
 
     x.fetch(0);

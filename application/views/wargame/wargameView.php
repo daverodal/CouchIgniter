@@ -10,13 +10,21 @@
         <a href="<?=site_url("wargame/logout");?>">logout</a>
         <div id="content">
             <style type="text/css">
+                body{
+                    background:wheat;
+                    color:#333;
+                }
+                fieldset{
+                    background:wheat;
+                    border-radius:9px;
+                }
                 #crt{
                     border-radius:15px;
-                    border:10px solid #777;
+                    border:10px solid rgb(153,255,255);
                     position:relative;
                     width:250px;
                     height:210px;
-                    background:#333;color:white;
+                    background:#fff;color:black;
                     font-weight:bold;
                     padding:1px 5px 0 15px;
                     float:left;
@@ -43,32 +51,45 @@
                 .col6{
                     left:220px;
                 }
+                .roll{
+                    height:20px;
+                    width:90%;
+                    background :rgb(153,255,255);
+                    position:absolute;
+
+                }
+                .even{
+                    color:black;
+                }
+                .odd{
+                    color:black;
+                }
                 .row1{
                     top:80px;
+
                 }
                 .row2{
                     top:100px;
+                    background:white;
                 }
                 .row3 {
                     top:120px;
                 }
                 .row4{
                     top:140px;
+                    background:white;
                 }
                 .row5{
                     top:160px;
                 }
                 .row6{
                     top:180px;
+                    background:white;
                 }
                 #odds{
                     position:absolute;
                     text-indent:8px;
                     top:60px;
-                }
-                .roll{
-                    position:absolute;
-                    
                 }
                 .roll span{
                     margin-right:10px
@@ -77,12 +98,12 @@
             <div id="crt">
                 <h3>Combat Odds</h3>
                 <div id="odds"><span class="col1">0</span> <span class="col2">1</span> <span class="col3">2</span> <span class="col4">3</span> <span class="col5">4</span> <span class="col6">5</span></div>
-                <div class="roll row1"><span class="col0">1</span><span class="col1">DR</span> <span class="col2">DR</span> <span class="col3">DR</span> <span class="col4">DE</span> <span class="col5">DE</span> <span class="col6">DE</span></div>
-                <div class="roll row2"><span class="col0">2</span><span class="col1">NR</span> <span class="col2">DR</span> <span class="col3">DR</span> <span class="col4">DR</span> <span class="col5">DE</span> <span class="col6">DE</span></div>
-                <div class="roll row3"><span class="col0">3</span><span class="col1">NR</span> <span class="col2">NR</span> <span class="col3">NR</span> <span class="col4">DR</span> <span class="col5">DR</span> <span class="col6">DE</span></div>
-                <div class="roll row4"><span class="col0">4</span><span class="col1">AR</span> <span class="col2">NR</span> <span class="col3">NR</span> <span class="col4">DR</span> <span class="col5">DR</span> <span class="col6">DR</span></div>
-                <div class="roll row5"><span class="col0">5</span><span class="col1">AR</span> <span class="col2">AR</span> <span class="col3">NR</span> <span class="col4">NR</span> <span class="col5">DR</span> <span class="col6">DR</span></div>
-                <div class="roll row6"><span class="col0">6</span><span class="col1">AR</span> <span class="col2">AR</span> <span class="col3">AR</span> <span class="col4">NR</span> <span class="col5">DR</span> <span class="col6">DR</span></div>
+                <div class="roll row1 odd"><span class="col0">1</span><span class="col1">DR</span> <span class="col2">DR</span> <span class="col3">DR</span> <span class="col4">DE</span> <span class="col5">DE</span> <span class="col6">DE</span></div>
+                <div class="roll row2 even"><span class="col0">2</span><span class="col1">NR</span> <span class="col2">DR</span> <span class="col3">DR</span> <span class="col4">DR</span> <span class="col5">DE</span> <span class="col6">DE</span></div>
+                <div class="roll row3 odd"><span class="col0">3</span><span class="col1">NR</span> <span class="col2">NR</span> <span class="col3">NR</span> <span class="col4">DR</span> <span class="col5">DR</span> <span class="col6">DE</span></div>
+                <div class="roll row4 even"><span class="col0">4</span><span class="col1">AR</span> <span class="col2">NR</span> <span class="col3">NR</span> <span class="col4">DR</span> <span class="col5">DR</span> <span class="col6">DR</span></div>
+                <div class="roll row5 odd"><span class="col0">5</span><span class="col1">AR</span> <span class="col2">AR</span> <span class="col3">NR</span> <span class="col4">NR</span> <span class="col5">DR</span> <span class="col6">DR</span></div>
+                <div class="roll row6 even"><span class="col0">6</span><span class="col1">AE</span> <span class="col2">AR</span> <span class="col3">AR</span> <span class="col4">NR</span> <span class="col5">DR</span> <span class="col6">DR</span></div>
             </div>
         <div id="gameImages" style="float:left;margin-left:10px;position: relative;width:252px;height:260px;border:10px solid #333;border-radius:10px;">
             <img id="map" alt="map" src="<?php echo base_url();?>js/BattleForAllenCreekMap.png" style="position: relative;visibility: visible;z-index: 0;">
