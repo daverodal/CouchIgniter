@@ -273,6 +273,7 @@ class Wargame extends CI_Controller
         $doc = $this->wargame_model->getDoc(urldecode($wargame));
         $battle = new BattleForAllenCreek();
         $doc->wargame = $battle->save();
+        $doc->chats = array();
         $doc = $this->wargame_model->setDoc($doc);
         redirect("wargame/play");
 

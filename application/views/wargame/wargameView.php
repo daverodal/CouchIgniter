@@ -98,6 +98,7 @@
                     margin-right:10px
                 }
             </style>
+            <div style="height:20px;"> </div>
             <div id="crt">
                 <h3>Combat Odds</h3>
                 <div id="odds"><span class="col1">0</span> <span class="col2">1</span> <span class="col3">2</span> <span class="col4">3</span> <span class="col5">4</span> <span class="col6">5</span></div>
@@ -110,17 +111,33 @@
             </div>
         <div id="gameImages" style="float:left;margin-left:10px;position: relative;width:252px;height:260px;border:10px solid #333;border-radius:10px;">
             <img id="map" alt="map" src="<?php echo base_url();?>js/BattleForAllenCreekMap.png" style="position: relative;visibility: visible;z-index: 0;">
-            <img class="unit" id="0" alt="0" src="<?php echo base_url();?>js/infantry-3a.png" class="counter" style="position: absolute; left: 180px; top: 140px; ">
-            <img class="unit" id="1" alt="1" src="<?php echo base_url();?>js/infantry-3a.png" class="counter" style="position: absolute; left: -138px; top: 144px; ">
-            <img class="unit" id="2" alt="2" src="<?php echo base_url();?>js/infantry-3a.png" class="counter" style="position: absolute; left: -62px; top: 44px; ">
-            <img class="unit" id="3" alt="3" src="<?php echo base_url();?>js/infantry-1a.png" class="counter" style="position: absolute; left: -94px; top: 124px; ">
-            <img class="unit" id="4" alt="4" src="<?php echo base_url();?>js/infantry-1a.png" class="counter" style="position: absolute; left: -126px; top: 164px; ">
-            <img class="unit" id="5" alt="5" src="<?php echo base_url();?>js/armour-1a.png" class="counter" style="position: absolute; left: -158px; top: 204px; "></div>
+            <img class="unit" id="0" alt="0" src="<?php echo base_url();?>js/infantry-3a.png" class="counter" style="position: absolute; left: 180px; top: 140px; z-index:100">
+            <img class="unit" id="1" alt="1" src="<?php echo base_url();?>js/infantry-3a.png" class="counter" style="position: absolute; left: -138px; top: 144px;z-index:100">
+            <img class="unit" id="2" alt="2" src="<?php echo base_url();?>js/infantry-3a.png" class="counter" style="position: absolute; left: -62px; top: 44px;  z-index:100; ">
+            <img class="unit" id="3" alt="3" src="<?php echo base_url();?>js/infantry-1a.png" class="counter" style="position: absolute; left: -94px; top: 124px;z-index:100 ">
+            <img class="unit" id="4" alt="4" src="<?php echo base_url();?>js/infantry-1a.png" class="counter" style="position: absolute; left: -126px; top: 164px; z-index:100">
+            <img class="unit" id="5" alt="5" src="<?php echo base_url();?>js/armour-1a.png" class="counter" style="position: absolute; left: -158px; top: 204px; z-index:100; ">
+            <fieldset id="redReinBox" style="z-index:20;background:transparent;position:absolute;left:278px;top:46px;width:26px;height:42px;border:black 1px solid;"><legend>Red</legend></fieldset>
+            <fieldset id="blueReinBox" style="z-index:20;background:transparent;position:absolute;left:278px;top:123px;width:26px;height:127px;border:black 1px solid;"><legend>Blue</legend></fieldset>
+        </div>
         <!-- end gameImages -->
         </div>
+    <div style="float:left;margin-left: 80px">
+        <form onsubmit="doit();return false;" id="chatform" method="post">
+
+    <input id="mychat" name="chats" type="text">
+    <input name="submit" type="submit">
+    <fieldset>
+        <legend>Chats
+        </legend>
+        <div id="chats"></div>
+    </fieldset>
+    </div>
+    </form>
+
+
         <div style="clear:both;"></div>
         <button id="nextPhaseButton">Next Phase</button>
-        <form onsubmit="doit();return false;" id="chatform" method="post">
             <fieldset style="float:left;">
                 <legend>Time
                 </legend>
@@ -137,18 +154,10 @@
                 <div id="users"></div>
             </fieldset>
             <div style="clear:both;"></div>
-            <input id="mychat" name="chats" type="text">
-            <input name="submit" type="submit">
-            <fieldset>
-                <legend>Chats
-                </legend>
-                <div id="chats"></div>
-            </fieldset>
             <fieldset>
                 <legend>Games
                 </legend>
                 <div id="games"></div>
             </fieldset>
-        </form>
      </body>
 </html>
