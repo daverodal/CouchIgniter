@@ -16,6 +16,8 @@
 */
 $config['base_url']	= 'http://192.168.1.10/CouchIgniter/';
 
+$config['gamePath'] = "/Documents and Settings/Owner/Desktop/webwargaming/";
+
 /*
 |--------------------------------------------------------------------------
 | Index File

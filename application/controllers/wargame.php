@@ -1,5 +1,8 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 /* wargame.php */
+include_once("/Documents and Settings/Owner/Desktop/webwargaming/BattleForAllenCreek.php");
+
+include_once("/home/davidrod/webwargaming/BattleForAllenCreek.php");
 
 class Wargame extends CI_Controller
 {
@@ -52,6 +55,7 @@ class Wargame extends CI_Controller
 
     function login()
     {
+        var_dump($this->config);
         $user = $this->session->userdata("user");
         $data = $this->input->post();
         if (!$user && $data) {
@@ -128,7 +132,6 @@ class Wargame extends CI_Controller
         $chat = $this->input->post('chat',TRUE);
         $this->load->model("wargame/wargame_model");
         $doc = $this->wargame_model->getDoc(urldecode($wargame));
-        require_once("/Documents and Settings/Owner/Desktop/webwargaming/BattleForAllenCreek.php");
         $battle = new BattleForAllenCreek($doc->wargame);
 
         	$battle->gameRules->processEvent(SELECT_COUNTER_EVENT, $unit, $battle->force->getUnitHexagon($unit));
@@ -161,7 +164,6 @@ class Wargame extends CI_Controller
         $chat = $this->input->post('chat',TRUE);
         $this->load->model("wargame/wargame_model");
         $doc = $this->wargame_model->getDoc(urldecode($wargame));
-        require_once("/Documents and Settings/Owner/Desktop/webwargaming/BattleForAllenCreek.php");
         $battle = new BattleForAllenCreek($doc->wargame);
 
         $battle->gameRules->processEvent(SELECT_COUNTER_EVENT, $unit, $battle->force->getUnitHexagon($unit));
@@ -196,7 +198,6 @@ class Wargame extends CI_Controller
         $this->load->model("wargame/wargame_model");
         $doc = $this->wargame_model->getDoc(urldecode($wargame));
 
-        require_once("/Documents and Settings/Owner/Desktop/webwargaming/BattleForAllenCreek.php");
         $battle = new BattleForAllenCreek($doc->wargame);
         $mapGrid = new MapGrid($battle->mapData);
         $mapGrid->setPixels($x, $y);
@@ -238,7 +239,6 @@ class Wargame extends CI_Controller
         $this->load->model("wargame/wargame_model");
         $doc = $this->wargame_model->getDoc(urldecode($wargame));
 
-        require_once("/Documents and Settings/Owner/Desktop/webwargaming/BattleForAllenCreek.php");
         $battle = new BattleForAllenCreek($doc->wargame);
         $mapGrid = new MapGrid($battle->mapData);
         $mapGrid->setPixels($x, $y);
@@ -269,11 +269,10 @@ class Wargame extends CI_Controller
         $chat = $this->input->post('chat',TRUE);
         $this->load->model("wargame/wargame_model");
         $doc = $this->wargame_model->getDoc(urldecode($wargame));
-        require_once("/Documents and Settings/Owner/Desktop/webwargaming/BattleForAllenCreek.php");
         $battle = new BattleForAllenCreek();
         $doc->wargame = $battle->save();
         $doc = $this->wargame_model->setDoc($doc);
-        redirect("wargame/chat");
+        redirect("wargame/play");
 
         //        	$battle->gameRules->processEvent(SELECT_COUNTER_EVENT, $unit, $battle->force->getUnitHexagon($umit));
         //        $myBattle = $battle->save();

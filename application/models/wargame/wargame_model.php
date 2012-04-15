@@ -1,5 +1,4 @@
 <?php
-require_once("/Documents and Settings/Owner/Desktop/webwargaming/BattleForAllenCreek.php");
 
 class Wargame_model extends CI_Model
 {
@@ -105,7 +104,7 @@ echo "HI";
 
     public function createWargame($name)
     {
-        $data = array('docType' => "game", "_id" => $name, "name" => $name);
+        $data = array('docType' => "game", "_id" => $name, "name" => $name, "chats" => array());
         $this->couchsag->create($data);
     }
     public function addChat($chat, $user, $wargame)
