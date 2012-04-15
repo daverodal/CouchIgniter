@@ -69,10 +69,8 @@ class Wargame extends CI_Controller
     }
 
     function addchat(){
-        echo "Addingchat";
         $chat['chat'] = "hi there!";
         $this->couchsag->update("_design/newFilter/_update/addchat/tempwargame?chat=th jjjg iseeee bites","");
-        echo "addedchat";
     }
     function changeWargame($newWargame = "MainWargame"){
         $user = $this->session->userdata("user");
@@ -146,9 +144,7 @@ class Wargame extends CI_Controller
         $user = $this->session->userdata("user");
         $x = $this->input->post('x',FALSE);
         $y = $this->input->post('y',FALSE);
-        echo "X: $x Y: $y";
         $this->load->model("wargame/wargame_model");
-        echo "loaded";
         $doc = $this->wargame_model->getDoc(urldecode($wargame));
 
         require_once("/Documents and Settings/Owner/Desktop/webwargaming/BattleForAllenCreek.php");
@@ -186,21 +182,16 @@ class Wargame extends CI_Controller
         $user = $this->session->userdata("user");
         $x = $this->input->post('x',FALSE);
         $y = $this->input->post('y',FALSE);
-        echo "X: $x Y: $y";
         $this->load->model("wargame/wargame_model");
-        echo "loaded";
         $doc = $this->wargame_model->getDoc(urldecode($wargame));
 
         require_once("/Documents and Settings/Owner/Desktop/webwargaming/BattleForAllenCreek.php");
         $battle = new BattleForAllenCreek($doc->wargame);
-//        var_dump($battle->force->units[5]);
-        echo "kkk";
         $mapGrid = new MapGrid($battle->mapData);
         $mapGrid->setPixels($x, $y);
 //        echo "HIeeI $x $y ";var_dump($mapGrid->getHexagon()->number);echo "Hexed";
         $battle->gameRules->processEvent(SELECT_BUTTON_EVENT, "next_phase", 0,0 );
 
-        echo "jjjjjjjwwwwjjjjjjj";
         //        $myBattle = $battle->save();
         //        $jBattle = json_encode($myBattle);
         //        //    $jBattle = preg_replace("/{/","{\n",$jBattle);
@@ -226,7 +217,6 @@ class Wargame extends CI_Controller
         $doc->wargame = $battle->save();
         $doc = $this->wargame_model->setDoc($doc);
 
-        echo "HII $unit";
         //        	$battle->gameRules->processEvent(SELECT_COUNTER_EVENT, $unit, $battle->force->getUnitHexagon($umit));
         //        $myBattle = $battle->save();
         //        $jBattle = json_encode($myBattle);
@@ -251,7 +241,6 @@ class Wargame extends CI_Controller
 
         while (true) {
             $date = date("h:i:s A");
-            echo "HI";
             $doc = $this->couchsag->get("MainWargame");
             $doc->clock = $date;
             $success = $this->couchsag->update($doc->_id, $doc);
