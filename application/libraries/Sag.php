@@ -951,7 +951,7 @@ class Sag {
    * @see setCookie()
    */
   public function getCookie($key) {
-    return ($this->globalCookies[$key]) ?: null;
+    return ($this->globalCookies[$key]) ?$this->globalCookies[$key]: null;
   }
 
   /**

@@ -8,15 +8,7 @@
  */
 $remote = false;
 if($remote){
-    $config["host"] = "markarian.cloudant.com";
 
-    $config["port"] = 80;
-
-    $config["database"] = "mydatabase";
-
-    $config["user"] = "markarian";
-
-    $config["password"] = "2bcloudy";
 }else{
     $config["host"] = "localhost";
 

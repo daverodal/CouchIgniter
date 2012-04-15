@@ -55,13 +55,14 @@
         this.id = "Sync";
         this.callbacks = Object;
         this.lengths = {};
+        this.fetchTimes =  [];
         this.register = function(name, callback) {
             this.callbacks[name] = callback;
             this.lengths[name] = 0;
         }
         this.fetch = function(last_seq, args) {
             var chatsIndex = 0;
-            var theArgs = {}
+            var theArgs = {};
             if (args) {
                 chatsIndex = parseInt(args.chatsIndex);
                 theArgs = args;
@@ -72,7 +73,16 @@
                         type:"POST",
                         data:theArgs,
                         success:function(data, textstatus) {
-                            fetchArgs = {};
+                            var now = ((new Date()).getTime()) /1000;
+                            that.fetchTimes.push(now);
+                            if(that.fetchTimes.length > 10){
+                                var then = that.fetchTimes.shift();
+                                if((now - then) < 2){
+                                    $("#comlink").html("Comlink Down, Try refreshing Page");
+                                    return;
+                                }
+                            }
+                           fetchArgs = {};
                             for (var i in that.callbacks) {
                                 if (data[i]) {
                                     if ($.isArray(data[i])) {
@@ -118,9 +128,22 @@
                       last_seq = data.last_seq;
                       }else{alert("help"+data);}*/
                             last_seq = data.last_seq;
+                                    var msg = '<span title="'+last_seq+'">Working</span>';
+                            $("#comlink").html(msg);
+//                            $("#comlink").html("<span title='"+last_seq+">Working</span>");
                             that.fetch(last_seq, fetchArgs);
                         },
                         complete:function(jq, textstatus) {
+                            var now = ((new Date()).getTime()) /1000;
+                            that.fetchTimes.push(now);
+                            if(that.fetchTimes.length > 10){
+                                var then = that.fetchTimes.shift();
+                                if((now - then) < 2){
+                                    $("#comlink").html("Comlink Down, Try refreshing Page");
+                                    return;
+                                }
+                            }
+
                             if (textstatus != "success")that.fetch(0);
                         }
                     });
