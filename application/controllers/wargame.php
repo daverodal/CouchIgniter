@@ -58,12 +58,15 @@ class Wargame extends CI_Controller
         $user = $this->session->userdata("user");
         $data = $this->input->post();
         if (!$user && $data) {
+            if($data['password'] == "2havefun")
+            {
             $user = $data['name'];
             $this->session->set_userdata(array("user" => $user));
             $this->session->set_userdata(array("wargame" => "MainWargame"));
             $this->load->model('wargame/wargame_model');
             $this->wargame_model->enterWargame($user, "MainWargame");
             redirect("/wargame/");
+            }
         }
         $this->load->view("login");
 

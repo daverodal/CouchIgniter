@@ -14,7 +14,7 @@
 | path to your installation.
 |
 */
-$config['base_url']	= 'http://192.168.1.10/CouchIgniter/';
+$config['base_url']	= '';
 
 $config['gamePath'] = "/Documents and Settings/Owner/Desktop/webwargaming/";
 
