@@ -8,7 +8,6 @@
  */
 $remote = false;
 if($remote){
-
 }else{
     $config["host"] = "localhost";
 
