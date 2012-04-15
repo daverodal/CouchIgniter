@@ -8,5 +8,5 @@
  
 ?>
 <form method="POST">
-Chat room name? <input name="lobby">
+Chat room name? <input name="wargame">
 </form>

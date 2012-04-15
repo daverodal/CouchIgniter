@@ -69,7 +69,7 @@
             }
             that = this;
             $.ajax(
-                    {url: "<?=site_url("wargame/fetch/$wargame") . "/";?>" + last_seq,
+                    {url: "<?=site_url("wargame/fetch/") . "/";?>" + last_seq,
                         type:"POST",
                         data:theArgs,
                         success:function(data, textstatus) {
@@ -319,7 +319,7 @@
 
     function doit() {
         var mychat = $("#mychat").attr("value");
-        $.ajax({url: "<?=site_url("wargame/add/$wargame");?>",
+        $.ajax({url: "<?=site_url("wargame/add/");?>",
             type: "POST",
             data:{chat:mychat,
             },
@@ -330,7 +330,7 @@
     }
     function doitUnit(id) {
         var mychat = $("#mychat").attr("value");
-        $.ajax({url: "<?=site_url("wargame/unit/MainWargame");?>/"+id,
+        $.ajax({url: "<?=site_url("wargame/unit");?>/"+id,
             type: "POST",
             data:{unit:id,
             },
@@ -340,7 +340,7 @@
         $("#mychat").attr("value", "");
     }
     function doitMap(x,y) {
-        $.ajax({url: "<?=site_url("wargame/map/MainWargame");?>/",
+        $.ajax({url: "<?=site_url("wargame/map/");?>/",
             type: "POST",
             data:{x:x,
                 y:y
@@ -351,7 +351,7 @@
 
     }
     function doitNext() {
-        $.ajax({url: "<?=site_url("wargame/phase/MainWargame");?>/",
+        $.ajax({url: "<?=site_url("wargame/phase/");?>/",
             type: "POST",
 
             success:function(data, textstatus) {

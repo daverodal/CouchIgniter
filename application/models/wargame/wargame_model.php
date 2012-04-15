@@ -13,7 +13,7 @@ class Wargame_model extends CI_Model
         if (!in_array($user, $doc->users)) {
             $doc->users[] = $user;
         }
-        $this->couchsag->update($wargame, $doc);
+        $this->couchsag->update($doc->_id, $doc);
 
     }
 
@@ -31,8 +31,7 @@ class Wargame_model extends CI_Model
                 }
             }
         }
-        $doc->users = $newUsers;
-        $this->couchsag->update($wargame, $doc);
+        $doc->users = $newUsers;;
     }
 
     public function initDoc()
@@ -106,7 +105,7 @@ echo "HI";
 
     public function createWargame($name)
     {
-        $data = array('docType' => "wargame", "_id" => $name, "name" => $name);
+        $data = array('docType' => "game", "_id" => $name, "name" => $name);
         $this->couchsag->create($data);
     }
     public function addChat($chat, $user, $wargame)

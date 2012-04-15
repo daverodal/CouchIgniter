@@ -5,26 +5,24 @@ class Wargame extends CI_Controller
 {
     /* @var Wargame_model $wargame_model */
 
-    function test(){
-        echo "testing";
-        $doc = $this->couchsag->get("/MyWargame");
-        $doc->alist[] = "alis";
-//        var_dump($doc);
-        $seq = $this->couchsag->update($doc->_id,$doc);
-
-    }
-    function index($wargame = "MainWargame")
+//    function test(){
+//        echo "testing";
+//        $doc = $this->couchsag->get("/MyWargame");
+//        $doc->alist[] = "alis";
+////        var_dump($doc);
+//        $seq = $this->couchsag->update($doc->_id,$doc);
+//
+//    }
+    function index()
     {
         $user = $this->session->userdata("user");
         if (!$user) {
             redirect("/wargame/login/");
         }
-        redirect("/wargame/chat");
-        $this->load->view("wargame/wargameView",compact("wargame"));
-
+        redirect("/wargame/play");
     }
 
-    function chat()
+    function play()
     {
         $user = $this->session->userdata("user");
         if (!$user) {
@@ -68,10 +66,6 @@ class Wargame extends CI_Controller
 
     }
 
-    function addchat(){
-        $chat['chat'] = "hi there!";
-        $this->couchsag->update("_design/newFilter/_update/addchat/tempwargame?chat=th jjjg iseeee bites","");
-    }
     function changeWargame($newWargame = "MainWargame"){
         $user = $this->session->userdata("user");
         if (!$user) {
@@ -83,16 +77,26 @@ class Wargame extends CI_Controller
         $this->wargame_model->leaveWargame($user,$wargame);
         $this->wargame_model->enterWargame($user,$newWargame);
 
+
         $this->session->set_userdata(array("wargame" => $newWargame));
         redirect("/wargame/");
     }
 
     public function initDoc(){
+        $user = $this->session->userdata("user");
+        if (!$user) {
+            redirect("/wargame/login/");
+        }
         $this->load->model("wargame/wargame_model");
         $this->wargame_model->initDoc();
     }
-    public function fetch($wargame = "MainWargame", $last_seq = '')
+    public function fetch( $last_seq = '')
     {
+        $user = $this->session->userdata("user");
+        if (!$user) {
+            redirect("/wargame/login/");
+        }
+        $wargame = urldecode($this->session->userdata("wargame"));
 
 
         header("Content-Type: application/json");
@@ -102,17 +106,25 @@ class Wargame extends CI_Controller
         echo json_encode($ret);
     }
 
-    public function add($wargame = "MainWargame")
+    public function add()
     {
         $user = $this->session->userdata("user");
+        if (!$user) {
+            redirect("/wargame/login/");
+        }
+        $wargame = urldecode($this->session->userdata("wargame"));
         $chat = $this->input->post('chat',TRUE);
         $this->load->model("wargame/wargame_model");
         $this->wargame_model->addChat($chat,$user,urldecode($wargame));
         return compact('success');
     }
-    public function unit($wargame = "MainWargame",$unit = null)
+    public function unit($unit = null)
     {
         $user = $this->session->userdata("user");
+        if (!$user) {
+            redirect("/wargame/login/");
+        }
+        $wargame = urldecode($this->session->userdata("wargame"));
         $chat = $this->input->post('chat',TRUE);
         $this->load->model("wargame/wargame_model");
         $doc = $this->wargame_model->getDoc(urldecode($wargame));
@@ -139,9 +151,46 @@ class Wargame extends CI_Controller
         $succ = $this->wargame_model->setDoc($doc);
         return compact('success');
     }
-    public function map($wargame = "MainWargame")
+    public function save()
     {
         $user = $this->session->userdata("user");
+        if (!$user) {
+            redirect("/wargame/login/");
+        }
+        $wargame = urldecode($this->session->userdata("wargame"));
+        $chat = $this->input->post('chat',TRUE);
+        $this->load->model("wargame/wargame_model");
+        $doc = $this->wargame_model->getDoc(urldecode($wargame));
+        require_once("/Documents and Settings/Owner/Desktop/webwargaming/BattleForAllenCreek.php");
+        $battle = new BattleForAllenCreek($doc->wargame);
+
+        $battle->gameRules->processEvent(SELECT_COUNTER_EVENT, $unit, $battle->force->getUnitHexagon($unit));
+        $units = $battle->force->units;
+        $combats = array();
+        foreach($units as $unitId => $unit){
+            if($unit->combatNumber){
+                $combats[$unit->combatNumber]['combatIndex'] = $unit->combatIndex;
+                $combats[$unit->combatNumber]['units'][] = $unitId;
+            }
+        }
+        //        $myBattle = $battle->save();
+        //        $jBattle = json_encode($myBattle);
+        //        //    $jBattle = preg_replace("/{/","{\n",$jBattle);
+        //        //    $jBattle = preg_replace("/}/","\n}",$jBattle);
+        //        file_put_contents("afile.out", $jBattle);
+        $doc->wargame = $battle->save();
+        //        $doc->wargame->combats[] = $combats;
+        //        var_dump($doc->wargame);
+        $succ = $this->wargame_model->setDoc($doc);
+        return compact('success');
+    }
+    public function map()
+    {
+        $user = $this->session->userdata("user");
+        if (!$user) {
+            redirect("/wargame/login/");
+        }
+        $wargame = urldecode($this->session->userdata("wargame"));
         $x = $this->input->post('x',FALSE);
         $y = $this->input->post('y',FALSE);
         $this->load->model("wargame/wargame_model");
@@ -177,9 +226,13 @@ class Wargame extends CI_Controller
 //        var_dump($doc);
         return compact('success');
     }
-    public function phase($wargame = "MainWargame")
+    public function phase()
     {
         $user = $this->session->userdata("user");
+        if (!$user) {
+            redirect("/wargame/login/");
+        }
+        $wargame = urldecode($this->session->userdata("wargame"));
         $x = $this->input->post('x',FALSE);
         $y = $this->input->post('y',FALSE);
         $this->load->model("wargame/wargame_model");
@@ -206,9 +259,13 @@ class Wargame extends CI_Controller
         return compact('success');
     }
 
-   public function unitInit($wargame = "MainWargame",$unit = null)
+   public function unitInit()
     {
         $user = $this->session->userdata("user");
+        if (!$user) {
+            redirect("/wargame/login/");
+        }
+        $wargame = urldecode($this->session->userdata("wargame"));
         $chat = $this->input->post('chat',TRUE);
         $this->load->model("wargame/wargame_model");
         $doc = $this->wargame_model->getDoc(urldecode($wargame));
@@ -216,6 +273,7 @@ class Wargame extends CI_Controller
         $battle = new BattleForAllenCreek();
         $doc->wargame = $battle->save();
         $doc = $this->wargame_model->setDoc($doc);
+        redirect("wargame/chat");
 
         //        	$battle->gameRules->processEvent(SELECT_COUNTER_EVENT, $unit, $battle->force->getUnitHexagon($umit));
         //        $myBattle = $battle->save();
@@ -224,27 +282,33 @@ class Wargame extends CI_Controller
         //        //    $jBattle = preg_replace("/}/","\n}",$jBattle);
         //        file_put_contents("afile.out", $jBattle);
 
-        return compact('success');
     }
     public function createWargame()
     {
+        $user = $this->session->userdata("user");
+        if (!$user) {
+            redirect("/wargame/login/");
+        }
+
         $wargame = $this->input->post('wargame');
         if($wargame){
             $this->load->model("wargame/wargame_model");
             $this->wargame_model->createWargame($wargame);
-            redirect("/wargame/changewargame/$wargame");
+//            $this->unitInit($wargame);
+            $this->session->set_userdata(array("wargame" => $wargame));
+            redirect("/wargame/unitInit");
         }
         $this->load->view("wargame/wargameCreate");
     }
-    public function clock()
-    {
-
-        while (true) {
-            $date = date("h:i:s A");
-            $doc = $this->couchsag->get("MainWargame");
-            $doc->clock = $date;
-            $success = $this->couchsag->update($doc->_id, $doc);
-            sleep(1);die();
-        }
-    }
+//    public function clock()
+//    {
+//
+//        while (true) {
+//            $date = date("h:i:s A");
+//            $doc = $this->couchsag->get("MainWargame");
+//            $doc->clock = $date;
+//            $success = $this->couchsag->update($doc->_id, $doc);
+//            sleep(1);die();
+//        }
+//    }
 }

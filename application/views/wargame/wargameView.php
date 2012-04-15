@@ -10,6 +10,7 @@
         {/lobbies}
         <a href="<?=site_url("wargame/createWargame");?>">Create Wargame</a>
         <a href="<?=site_url("wargame/logout");?>">logout</a>
+        <a href="<?=site_url("wargame/unitInit");?>">Nuke Game</a>
         <div id="content">
             <style type="text/css">
                 body{
