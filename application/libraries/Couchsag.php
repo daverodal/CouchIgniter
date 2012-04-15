@@ -64,9 +64,9 @@ class Couchsag
         $this->sag->setDatabase($database);
       }
         try{
-        $cache = new SagFileCache(".");
+//        $cache = new SagFileCache(".");
         }catch(Exception $e){var_dump($e);}
-        $this->sag->setCache($cache);
+//        $this->sag->setCache($cache);
     }
   }
 
