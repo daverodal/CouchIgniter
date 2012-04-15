@@ -1,8 +1,8 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 /* wargame.php */
-include_once("/Documents and Settings/Owner/Desktop/webwargaming/BattleForAllenCreek.php");
+@include_once("/Documents and Settings/Owner/Desktop/webwargaming/BattleForAllenCreek.php");
 
-include_once("/home/davidrod/webwargaming/BattleForAllenCreek.php");
+@include_once("/home/davidrod/webwargaming/BattleForAllenCreek.php");
 
 class Wargame extends CI_Controller
 {
