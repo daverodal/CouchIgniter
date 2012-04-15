@@ -23,6 +23,9 @@ class Wargame_model extends CI_Model
         if(!$doc)
             return;
         $newUsers = array();
+        if(!is_array($doc->users)){
+            $doc->users = array();
+        }
         if (in_array($user, $doc->users)) {
             foreach ($doc->users as $aUser) {
                 if ($user != $aUser) {

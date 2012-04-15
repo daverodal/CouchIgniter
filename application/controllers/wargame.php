@@ -55,7 +55,6 @@ class Wargame extends CI_Controller
 
     function login()
     {
-        var_dump($this->config);
         $user = $this->session->userdata("user");
         $data = $this->input->post();
         if (!$user && $data) {
