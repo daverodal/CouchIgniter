@@ -227,14 +227,23 @@
             combatCol = combatRules.combats[cD].index + 1;
             $(".col"+combatCol).css('background-color',"rgba(10,10,255,.3)");
                     if(combatRules.combats[cD].Die !== false){
-                        title += "<strong style='margin-left:20px;font-size:150%'>"+combatRules.combats[cD].combatResult+"</strong>";
                         $(".row"+combatRules.combats[cD].Die+" .col"+combatCol).css('font-size',"110%");
                         $(".row"+combatRules.combats[cD].Die+" .col"+combatCol).css('background',"#eee");
                     }
 
 //                $(".odd .col"+combatCol).css('color',"white");
 //                $(".even .col"+combatCol).css('color',"black");
-                attackers = combatRules.combats[cD].attackers;
+                      for(i in combatRules.combats){
+                        if(combatRules.combats[i].Die){
+                            str += " Die "+combatRules.combats[i].Die + " result "+combatRules.combats[i].combatResult;
+                        }
+                        if(combatRules.combats[i].index !== null){
+                            str += "Defendeer "+i+" A "+combatRules.combats[i].attackStrength+" - D "+combatRules.combats[i].defenseStrength+ " - T "+combatRules.combats[i].terrainCombatEffect+ " = "+combatRules.combats[i].index;
+                            str += "<br>";
+                        }
+
+                    }
+                    attackers = combatRules.combats[cD].attackers;
                 for(var i in attackers){
 //                alert(i);
 //                alert(attackers[i]);
@@ -245,16 +254,31 @@
  
             }
              }
-            str = "";
             if(combatRules.combatsToResolve){
-                alert("TOP");
+                if(combatRules.lastResolvedCombat){
+                    title += "<strong style='margin-left:20px;font-size:150%'>"+combatRules.lastResolvedCombat.combatResult+"</strong>";
+                }
+                str += "Combats to Resolve<br>";
+                if(Object.keys(combatRules.combatsToResolve) == 0){
+                    str += "there are no combats to resolve<br>";
+                }
                 for(i in combatRules.combatsToResolve){
-                    alert(i);
                     if(combatRules.combatsToResolve[i].Die){
                         str += " Die "+combatRules.combatsToResolve[i].Die + " result "+combatRules.combatsToResolve[i].combatResult;
                     }
                     if(combatRules.combatsToResolve[i].index !== null){
                         str += "Defendeer "+i+" A "+combatRules.combatsToResolve[i].attackStrength+" - D "+combatRules.combatsToResolve[i].defenseStrength+ " - T "+combatRules.combatsToResolve[i].terrainCombatEffect+ " = "+combatRules.combatsToResolve[i].index;
+                        str += "<br>";
+                    }
+
+                }
+                str += "Resolved Combats<br>";
+              for(i in combatRules.resolvedCombats){
+                    if(combatRules.resolvedCombats[i].Die){
+                        str += " Die "+combatRules.resolvedCombats[i].Die + " result "+combatRules.resolvedCombats[i].combatResult;
+                    }
+                    if(combatRules.resolvedCombats[i].index !== null){
+                        str += "Defendeer "+i+" A "+combatRules.resolvedCombats[i].attackStrength+" - D "+combatRules.resolvedCombats[i].defenseStrength+ " - T "+combatRules.resolvedCombats[i].terrainCombatEffect+ " = "+combatRules.resolvedCombats[i].index;
                         str += "<br>";
                     }
 

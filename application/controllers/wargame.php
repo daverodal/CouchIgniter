@@ -136,7 +136,7 @@ class Wargame extends CI_Controller
 //        //    $jBattle = preg_replace("/}/","\n}",$jBattle);
 //        file_put_contents("afile.out", $jBattle);
         $doc->wargame = $battle->save();
-        $doc->wargame->combats[] = $combats;
+//        $doc->wargame->combats[] = $combats;
 //        var_dump($doc->wargame);
         $succ = $this->wargame_model->setDoc($doc);
         return compact('success');
