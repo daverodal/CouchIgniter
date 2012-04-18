@@ -14,7 +14,7 @@
         <div id="content">
             <style type="text/css">
                 body{
-                    background:wheat;
+                    background:#eee;
                     color:#333;
                 }
                 fieldset{
@@ -23,7 +23,7 @@
                 }
                 #crt{
                     border-radius:15px;
-                    border:10px solid rgb(153,255,255);
+                    border:10px solid #1AF;
                     position:relative;
                     width:250px;
                     height:210px;
@@ -57,7 +57,7 @@
                 .roll{
                     height:20px;
                     width:90%;
-                    background :rgb(153,255,255);
+                    background :#1af;
                     position:absolute;
 
                 }
@@ -97,8 +97,48 @@
                 .roll span{
                     margin-right:10px
                 }
+                #gameturnContainer{
+                    position:relative;
+                }
+                #gameturnContainer div{
+                    float:left;
+                    height:60px;
+                    width:60px;
+                    border:solid black;
+                    border-width:1px 1px 1px 0;
+                    font-size:23px;
+                    text-indent:5px;
+                }
+                #gameturnContainer #turn1{
+                    border-width:1px;
+                }
+                #gameturnContainer #turnCounter{
+                    position:absolute;
+                    z-index:20;
+                    width:56px;
+                    height:56px;
+                    color:black;
+                    background:#9ff;
+                    font-size:20px;
+                    text-indent:0px;
+                    top:2px;
+                    left:2px;
+                    text-align:center;
+                }
+
             </style>
-            <div style="height:20px;"> </div>
+            <div id="gameturnContainer">
+                <div id="turn1">1</div>
+                <div id="turn2">2</div>
+                <div id="turn3">3</div>
+                <div id="turn4">4</div>
+                <div id="turn5">5</div>
+                <div id="turn6">6</div>
+                <div id="turn7">7</div>
+                <div id="turnCounter">Game Turn</div>
+            </div>
+
+            <div style="clear:both;height:20px;"> </div>
             <div id="crt">
                 <h3>Combat Odds</h3>
                 <div id="odds"><span class="col1">0</span> <span class="col2">1</span> <span class="col3">2</span> <span class="col4">3</span> <span class="col5">4</span> <span class="col6">5</span></div>

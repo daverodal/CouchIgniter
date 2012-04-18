@@ -56,6 +56,7 @@
         this.callbacks = Object;
         this.lengths = {};
         this.fetchTimes =  [];
+        this.animate = false;
         this.register = function(name, callback) {
             this.callbacks[name] = callback;
             this.lengths[name] = 0;
@@ -167,6 +168,18 @@
             $("#users").append(str);
         }
     });
+    x.register("gameRules", function(gameRules) {
+//            alert(gameRules.turn);
+            turn = gameRules.turn;
+            var pix = turn  + (turn - 1) * 60 + 2;
+            $("#turnCounter").css("left",pix+"px");
+        if(gameRules.attackingForceId == 1){
+            $("#turnCounter").css("background","#9ff");
+        }else{
+            $("#turnCounter").css("background","rgb(255,204,153)");
+
+        }
+    });
     x.register("games", function(games) {
         var str;
         $("#games").html("");
@@ -194,14 +207,23 @@
 //            alert($("#"+moveRules.movingUnitId).css('opacity',.5));
         }
     });
-    x.register("units", function(units) {
+    x.register("force", function(force) {
+//        if(this.animate !== false){
+//            self.clearInterval(this.animate);
+//            this.animate = false;
+//            $("#"+this.animateId).stop(true);
+//        }
+        var units = force.units;
 
         for (i in units) {
-            color = "green";
+            color = "transparent";
             switch(units[i].status){
                 case 1:
                 case 2:
+                    if(units[i].forceId === force.attackingForceId){
+
                     color = "green";
+            }
                     break;
                 case 3:
                 case 4:
@@ -228,6 +250,7 @@
                     break;
             }
             $("#"+i).css({borderColor: color});
+
         }
     });
     x.register("combatRules", function(combatRules) {
@@ -239,16 +262,29 @@
         }
         var title = "Combat Results ";
         str = ""
-
         if(combatRules ){
             cD = combatRules.currentDefender;
             if(cD !== false){
                 if(combatRules.combats){
 
-                $("#"+cD).css({borderColor: "white"});
+                    $("#"+cD).css({borderColor: "#333"});
+//                    $("#"+cD+"").animate({borderColor: "#333"}, 1400).animate({borderColor: "white"}, 1400);
+
+//                   this.animate =self.setInterval(function(){
+//                           this.animateid = cD;
+//                            $("#"+cD+"").animate({borderColor: "#333"}, 1400).animate({borderColor: "white"}, 1400);
+//
+//                        }
+//
+//                        ,3000);
+
+//                $("#"+cD).everyTime(3,function(){
+//                        alert("hi");
+//                    }
+//                );
                 if(Object.keys(combatRules.combats[cD].attackers).length != 0){
             combatCol = combatRules.combats[cD].index + 1;
-            $(".col"+combatCol).css('background-color',"rgba(10,10,255,.3)");
+            $(".col"+combatCol).css('background-color',"rgba(255,255,1,.6)");
                     if(combatRules.combats[cD].Die !== false){
                         $(".row"+combatRules.combats[cD].Die+" .col"+combatCol).css('font-size',"110%");
                         $(".row"+combatRules.combats[cD].Die+" .col"+combatCol).css('background',"#eee");
@@ -268,9 +304,7 @@
                     }
                     attackers = combatRules.combats[cD].attackers;
                 for(var i in attackers){
-//                alert(i);
-//                alert(attackers[i]);
-//                    $("#"+i).css({borderColor: "crimson"});
+                    $("#"+i).css({borderColor: "crimson"});
 
                 }
             }

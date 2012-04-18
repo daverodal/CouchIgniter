@@ -176,7 +176,7 @@ echo "HI";
         $chatsIndex = count($doc->chats);
         $users = $doc->users;
         $clock = $doc->clock;
-        $units = $doc->wargame->force->units;
+        $force = $doc->wargame->force;
         $wargame = $doc->wargame;
 
         $mapGrid = new MapGrid($doc->wargame->mapData);
@@ -184,6 +184,7 @@ echo "HI";
         $moveRules = $doc->wargame->moveRules;
         $combatRules = $doc->wargame->combatRules;
         $moveRules->index = $combatRules->index;
+        $units = $force->units;
         foreach($units as $unit){
             $mapGrid->setHexagonXY( $unit->hexagon->x, $unit->hexagon->y);
             $mapUnit = new StdClass();
@@ -193,7 +194,7 @@ echo "HI";
         }
         $gameRules = $wargame->gameRules;
         $clock = "The turn is ".$gameRules->turn.". The Phase is ". $phase_name[$gameRules->phase].". The mode is ". $mode_name[$gameRules->mode];
-        return compact("combatRules",'units','seq', 'chats', 'chatsIndex', 'last_seq', 'users', 'games', 'clock', 'mapUnits','moveRules');
+        return compact("combatRules",'force','seq', 'chats', 'chatsIndex', 'last_seq', 'users', 'games', 'clock', 'mapUnits','moveRules','gameRules');
     }
 
 }
