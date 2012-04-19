@@ -99,14 +99,15 @@
                 }
                 #gameturnContainer{
                     position:relative;
+                    float:right;
                 }
                 #gameturnContainer div{
                     float:left;
-                    height:60px;
-                    width:60px;
+                    height:36px;
+                    width:36px;
                     border:solid black;
                     border-width:1px 1px 1px 0;
-                    font-size:23px;
+                    font-size:20px;
                     text-indent:5px;
                 }
                 #gameturnContainer #turn1{
@@ -115,30 +116,19 @@
                 #gameturnContainer #turnCounter{
                     position:absolute;
                     z-index:20;
-                    width:56px;
-                    height:56px;
+                    width:32px;
+                    height:32px;
                     color:black;
                     background:#9ff;
-                    font-size:20px;
+                    font-size:10px;
                     text-indent:0px;
                     top:2px;
                     left:2px;
                     text-align:center;
+                    border-width:1px;
                 }
 
             </style>
-            <div id="gameturnContainer">
-                <div id="turn1">1</div>
-                <div id="turn2">2</div>
-                <div id="turn3">3</div>
-                <div id="turn4">4</div>
-                <div id="turn5">5</div>
-                <div id="turn6">6</div>
-                <div id="turn7">7</div>
-                <div id="turnCounter">Game Turn</div>
-            </div>
-
-            <div style="clear:both;height:20px;"> </div>
             <div id="crt">
                 <h3>Combat Odds</h3>
                 <div id="odds"><span class="col1">0</span> <span class="col2">1</span> <span class="col3">2</span> <span class="col4">3</span> <span class="col5">4</span> <span class="col6">5</span></div>
@@ -162,6 +152,18 @@
         </div>
         <!-- end gameImages -->
         </div>
+    <div id="gameturnContainer">
+        <div id="turn1">1</div>
+        <div id="turn2">2</div>
+        <div id="turn3">3</div>
+        <div id="turn4">4</div>
+        <div id="turn5">5</div>
+        <div id="turn6">6</div>
+        <div id="turn7">7</div>
+        <div id="turnCounter">Game Turn</div>
+    </div>
+
+    <div style="clear:both;height:20px;"> </div>
     <div style="float:left;margin-left: 80px">
         <form onsubmit="doit();return false;" id="chatform" method="post">
 

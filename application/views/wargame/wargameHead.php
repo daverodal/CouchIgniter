@@ -171,7 +171,7 @@
     x.register("gameRules", function(gameRules) {
 //            alert(gameRules.turn);
             turn = gameRules.turn;
-            var pix = turn  + (turn - 1) * 60 + 2;
+            var pix = turn  + (turn - 1) * 36 + 1;
             $("#turnCounter").css("left",pix+"px");
         if(gameRules.attackingForceId == 1){
             $("#turnCounter").css("background","#9ff");
