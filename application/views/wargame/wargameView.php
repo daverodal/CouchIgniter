@@ -24,17 +24,21 @@
                 #crt{
                     border-radius:15px;
                     border:10px solid #1AF;
-                    position:relative;
+                    //position:relative;
                     width:250px;
-                    height:210px;
                     background:#fff;color:black;
                     font-weight:bold;
-                    padding:1px 5px 0 15px;
+                    padding:1px 5px 10px 15px;
                     float:left;
                 }
+                #crt h3{
+                    height:40px;
+                    margin-bottom:5px;
+                    vertical-align:bottom;
+                }
                 #crt span{
-                    width:25px;
-                    position:absolute;
+                    width:22px;
+                   // position:absolute;
                 }
                 .col1{
                     left:20px;
@@ -54,12 +58,12 @@
                 .col6{
                     left:220px;
                 }
-                .roll{
+                .roll, #odds{
                     height:20px;
-                    width:90%;
                     background :#1af;
-                    position:absolute;
-
+                }
+                #odds{
+                    background:white;
                 }
                 .even{
                     color:black;
@@ -89,13 +93,14 @@
                     top:180px;
                     background:white;
                 }
-                #odds{
-                    position:absolute;
-                    text-indent:8px;
-                    top:60px;
+                .roll span, #odds span{
+                    margin-right:10px;
+                    float:left;
+                    display:block;
+                    width:22px;
                 }
-                .roll span{
-                    margin-right:10px
+                #odds span{
+                    text-indent:7px
                 }
                 #gameturnContainer{
                     position:relative;
@@ -131,7 +136,7 @@
             </style>
             <div id="crt">
                 <h3>Combat Odds</h3>
-                <div id="odds"><span class="col1">0</span> <span class="col2">1</span> <span class="col3">2</span> <span class="col4">3</span> <span class="col5">4</span> <span class="col6">5</span></div>
+                <div id="odds"><span class="col0">&nbsp;</span></span><span class="col1">0</span> <span class="col2">1</span> <span class="col3">2</span> <span class="col4">3</span> <span class="col5">4</span> <span class="col6">5</span></div>
                 <div class="roll row1 odd"><span class="col0">1</span><span class="col1">DR</span> <span class="col2">DR</span> <span class="col3">DR</span> <span class="col4">DE</span> <span class="col5">DE</span> <span class="col6">DE</span></div>
                 <div class="roll row2 even"><span class="col0">2</span><span class="col1">NR</span> <span class="col2">DR</span> <span class="col3">DR</span> <span class="col4">DR</span> <span class="col5">DE</span> <span class="col6">DE</span></div>
                 <div class="roll row3 odd"><span class="col0">3</span><span class="col1">NR</span> <span class="col2">NR</span> <span class="col3">NR</span> <span class="col4">DR</span> <span class="col5">DR</span> <span class="col6">DE</span></div>

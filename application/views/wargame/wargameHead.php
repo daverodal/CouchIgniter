@@ -313,8 +313,13 @@
              }
             if(combatRules.combatsToResolve){
                 if(combatRules.lastResolvedCombat){
-                    title += "<strong style='margin-left:20px;font-size:150%'>"+combatRules.lastResolvedCombat.combatResult+"</strong>";
-                }
+                    title += "<strong style='margin-left:20px;font-size:150%'>"+combatRules.lastResolvedCombat.Die+" "+combatRules.lastResolvedCombat.combatResult+"</strong>";
+                    combatCol = combatRules.lastResolvedCombat.index + 1;
+                    combatRoll = combatRules.lastResolvedCombat.Die;
+                    $(".col"+combatCol).css('background-color',"rgba(255,255,1,.6)");
+                    $(".row"+combatRoll+" .col"+combatCol).css('background-color',"cyan");
+//                    $(".row"+combatRoll+" .col"+combatCol).css('color',"white");
+               }
                 str += "Combats to Resolve<br>";
                 if(Object.keys(combatRules.combatsToResolve) == 0){
                     str += "there are no combats to resolve<br>";
