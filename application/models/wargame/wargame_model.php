@@ -133,33 +133,7 @@ echo "HI";
 
 
     public function getChanges($wargame, $last_seq = '', $chatsIndex = 0){
-        // mode names
-        $mode_name = array();
-        $mode_name[ 1] = "moving mode";
-        $mode_name[ 2] = "moving mode";
-        $mode_name[ 3] = "combat setup mode";
-        $mode_name[ 4] = "combat resolution";
-        $mode_name[ 5] = "fire combat setup mode";
-        $mode_name[ 6] = "fire combat resolution";
-        $mode_name[ 7] = "retreating mode";
-        $mode_name[ 8] = "retreating mode";
-        $mode_name[ 9] = "retreating mode";
-        $mode_name[10] = "retreating mode";
-        $mode_name[11] = "advancing mode";
-        $mode_name[12] = "advancing mode";
-        $mode_name[13] = "select units to delete";
-        $mode_name[14] = "deleting unit";
-        $mode_name[15] = "checking combat";
-        $mode_name[16] = "game over";
-
-        $phase_name = array();
-        $phase_name[1] = "Blue Move";
-        $phase_name[2] = "Blue Combat";
-        $phase_name[3] = "Blue Fire Combat";
-        $phase_name[4] = "Red Move";
-        $phase_name[5] = "Red Combat";
-        $phase_name[6] = "Red Fire Combat";
-        $phase_name[7] = "Victory";
+        global $mode_name, $phase_name;
 
         do{
             if ($last_seq) {
