@@ -72,7 +72,7 @@ class Wargame extends CI_Controller
 
     }
 
-    function changeWargame($newWargame = "MainWargame"){
+    function changeWargame($newWargame = "MainWargame", $player = "obeserver"){
         $user = $this->session->userdata("user");
         if (!$user) {
             redirect("/wargame/login/");
@@ -83,6 +83,7 @@ class Wargame extends CI_Controller
         $this->wargame_model->leaveWargame($user,$wargame);
         $this->wargame_model->enterWargame($user,$newWargame);
 
+        $this->session->set_userdata(array("player" => $player));
 
         $this->session->set_userdata(array("wargame" => $newWargame));
         redirect("/wargame/");
@@ -130,10 +131,18 @@ class Wargame extends CI_Controller
         if (!$user) {
             redirect("/wargame/login/");
         }
+        $player = $this->session->userdata("player");
+
         $wargame = urldecode($this->session->userdata("wargame"));
         $chat = $this->input->post('chat',TRUE);
         $this->load->model("wargame/wargame_model");
         $doc = $this->wargame_model->getDoc(urldecode($wargame));
+        if($doc->wargame->gameRules->attackingForceId !== (int)$player){
+            var_dump($doc->wargame->gameRules->attackingForceId);
+            var_dump($player);
+            echo "Nope $player";
+            return "nope";
+        }
         $battle = new BattleForAllenCreek($doc->wargame);
 
         	$battle->gameRules->processEvent(SELECT_COUNTER_EVENT, $unit, $battle->force->getUnitHexagon($unit));
@@ -162,6 +171,7 @@ class Wargame extends CI_Controller
         if (!$user) {
             redirect("/wargame/login/");
         }
+        $player = $this->session->userdata("player");
         $wargame = urldecode($this->session->userdata("wargame"));
         $chat = $this->input->post('chat',TRUE);
         $this->load->model("wargame/wargame_model");
@@ -194,11 +204,18 @@ class Wargame extends CI_Controller
         if (!$user) {
             redirect("/wargame/login/");
         }
+        $player = $this->session->userdata("player");
         $wargame = urldecode($this->session->userdata("wargame"));
         $x = $this->input->post('x',FALSE);
         $y = $this->input->post('y',FALSE);
         $this->load->model("wargame/wargame_model");
         $doc = $this->wargame_model->getDoc(urldecode($wargame));
+        if($doc->wargame->gameRules->attackingForceId !== (int)$player){
+            var_dump($doc->wargame->gameRules->attackingForceId);
+            var_dump($player);
+            echo "Nope $player";
+            return "nope";
+        }
 
         $battle = new BattleForAllenCreek($doc->wargame);
         $mapGrid = new MapGrid($battle->mapData);
@@ -235,12 +252,18 @@ class Wargame extends CI_Controller
         if (!$user) {
             redirect("/wargame/login/");
         }
+        $player = $this->session->userdata("player");
         $wargame = urldecode($this->session->userdata("wargame"));
         $x = $this->input->post('x',FALSE);
         $y = $this->input->post('y',FALSE);
         $this->load->model("wargame/wargame_model");
         $doc = $this->wargame_model->getDoc(urldecode($wargame));
-
+        if($doc->wargame->gameRules->attackingForceId !== (int)$player){
+            var_dump($doc->wargame->gameRules->attackingForceId);
+            var_dump($player);
+            echo "Nope $player";
+            return "nope";
+        }
         $battle = new BattleForAllenCreek($doc->wargame);
         $mapGrid = new MapGrid($battle->mapData);
         $mapGrid->setPixels($x, $y);

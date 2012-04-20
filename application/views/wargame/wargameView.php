@@ -6,7 +6,8 @@
         <h1>Welcome {user} To the <span style="font-style: italic;">&ldquo;{wargame}&rdquo;"</span></h1>
         <div style="clear:both"></div>
         {lobbies}
-            <a href="<?=site_url("wargame/changeWargame");?>/{id}">{name}</a>
+            <a href="<?=site_url("wargame/changeWargame");?>/{id}/1">{name} As Blue</a>
+            <a href="<?=site_url("wargame/changeWargame");?>/{id}/2">{name}As Red</a>
         {/lobbies}
         <a href="<?=site_url("wargame/createWargame");?>">Create Wargame</a>
         <a href="<?=site_url("wargame/logout");?>">logout</a>
