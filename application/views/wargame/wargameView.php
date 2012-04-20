@@ -135,12 +135,20 @@
                 }
 
                 #map {
-                    width:522px;
-                    height:425px;
+                    width:1044px;
+                    height:850px;
+                    width:783px;
+                    height:638px;
+                    /*width:522px;*/
+                    /*height:425px;*/
                 }
                 .unit{
-                    width:32px;
-                    height:32px;
+                    width:64px;
+                    height:64px;
+                    width:48px;
+                    height:49px;
+                    /*width:32px;*/
+                    /*height:32px;*/
                 }
             </style>
             <div id="crt">
@@ -164,7 +172,7 @@
                 <div id="turnCounter">Game Turn</div>
             </div>
            <div style="clear:both"></div>
-        <div id="gameImages" style="float:left;margin-left:10px;position: relative;width:252px;height:260px;border:10px solid #333;border-radius:10px;">
+        <div id="gameImages" style="float:left;margin-left:50px;position: relative;border:10px solid #333;border-radius:10px;">
             <img id="map" alt="map" src="<?php echo base_url();?>js/fullmap.png" style="position: relative;visibility: visible;z-index: 0;">
 
             <?php for($i = 0 ; $i < 13;$i++){?>
@@ -172,39 +180,33 @@
 
 <?php }?>
     <?php for($i = 0 ; $i < 3;$i++){?>
-            <img class="unit" id="<?=$i?>" alt="0" src="<?php echo base_url();?>js/gerPzr12.png" class="counter" style="position: absolute; left: 180px; top: 140px; z-index:100">
+            <img class="unit" id="<?=$i+13?>" alt="0" src="<?php echo base_url();?>js/gerPzr12.png" class="counter" style="position: absolute; left: 180px; top: 140px; z-index:100">
     <?php }?>
             <?php for(;$i < 4;$i++){?>
-            <img class="unit" id="<?=$i?>" alt="0" src="<?php echo base_url();?>js/gerPzr10.png" class="counter" style="position: absolute; left: 180px; top: 140px; z-index:100">
+            <img class="unit" id="<?=$i+13?>" alt="0" src="<?php echo base_url();?>js/gerPzr10.png" class="counter" style="position: absolute; left: 180px; top: 140px; z-index:100">
             <?php }?>
             <?php for(;$i < 6;$i++){?>
-            <img class="unit" id="<?=$i?>" alt="0" src="<?php echo base_url();?>js/gerPzr9.png" class="counter" style="position: absolute; left: 180px; top: 140px; z-index:100">
+            <img class="unit" id="<?=$i+13?>" alt="0" src="<?php echo base_url();?>js/gerPzr9.png" class="counter" style="position: absolute; left: 180px; top: 140px; z-index:100">
             <?php }?>
             <?php for(;$i < 8;$i++){?>
-            <img class="unit" id="<?=$i?>" alt="0" src="<?php echo base_url();?>js/gerPzr8.png" class="counter" style="position: absolute; left: 180px; top: 140px; z-index:100">
+            <img class="unit" id="<?=$i+13?>" alt="0" src="<?php echo base_url();?>js/gerPzr8.png" class="counter" style="position: absolute; left: 180px; top: 140px; z-index:100">
             <?php }?>
             <?php for(;$i < 10;$i++){?>
-            <img class="unit" id="<?=$i?>" alt="0" src="<?php echo base_url();?>js/gerInf8.png" class="counter" style="position: absolute; left: 180px; top: 140px; z-index:100">
+            <img class="unit" id="<?=$i+13?>" alt="0" src="<?php echo base_url();?>js/gerInf8.png" class="counter" style="position: absolute; left: 180px; top: 140px; z-index:100">
             <?php }?>
             <?php for(;$i < 13;$i++){?>
-            <img class="unit" id="<?=$i?>" alt="0" src="<?php echo base_url();?>js/gerInf7.png" class="counter" style="position: absolute; left: 180px; top: 140px; z-index:100">
+            <img class="unit" id="<?=$i+13?>" alt="0" src="<?php echo base_url();?>js/gerInf7.png" class="counter" style="position: absolute; left: 180px; top: 140px; z-index:100">
             <?php }?>
             <?php for(;$i < 18;$i++){?>
-            <img class="unit" id="<?=$i?>" alt="0" src="<?php echo base_url();?>js/gerInf6.png" class="counter" style="position: absolute; left: 180px; top: 140px; z-index:100">
+            <img class="unit" id="<?=$i+13?>" alt="0" src="<?php echo base_url();?>js/gerInf6.png" class="counter" style="position: absolute; left: 180px; top: 140px; z-index:100">
             <?php }?>
             <?php for(;$i < 20;$i++){?>
-            <img class="unit" id="<?=$i?>" alt="0" src="<?php echo base_url();?>js/gerInf5.png" class="counter" style="position: absolute; left: 180px; top: 140px; z-index:100">
+            <img class="unit" id="<?=$i+13?>" alt="0" src="<?php echo base_url();?>js/gerInf5.png" class="counter" style="position: absolute; left: 180px; top: 140px; z-index:100">
             <?php }?>
             <?php for(;$i < 22;$i++){?>
-            <img class="unit" id="<?=$i?>" alt="0" src="<?php echo base_url();?>js/gerInf4.png" class="counter" style="position: absolute; left: 180px; top: 140px; z-index:100">
+            <img class="unit" id="<?=$i+13?>" alt="0" src="<?php echo base_url();?>js/gerInf4.png" class="counter" style="position: absolute; left: 180px; top: 140px; z-index:100">
             <?php }?>
 
-            <img class="unit" id="0" alt="0" src="<?php echo base_url();?>js/infantry-3a.png" class="counter" style="position: absolute; left: 180px; top: 140px; z-index:100">
-            <img class="unit" id="1" alt="1" src="<?php echo base_url();?>js/infantry-3a.png" class="counter" style="position: absolute; left: -138px; top: 144px;z-index:100">
-            <img class="unit" id="2" alt="2" src="<?php echo base_url();?>js/infantry-3a.png" class="counter" style="position: absolute; left: -62px; top: 44px;  z-index:100; ">
-            <img class="unit" id="3" alt="3" src="<?php echo base_url();?>js/infantry-1a.png" class="counter" style="position: absolute; left: -94px; top: 124px;z-index:100 ">
-            <img class="unit" id="4" alt="4" src="<?php echo base_url();?>js/infantry-1a.png" class="counter" style="position: absolute; left: -126px; top: 164px; z-index:100">
-            <img class="unit" id="5" alt="5" src="<?php echo base_url();?>js/armour-1a.png" class="counter" style="position: absolute; left: -158px; top: 204px; z-index:100; ">
             <fieldset id="redReinBox" style="z-index:20;background:transparent;position:absolute;left:278px;top:46px;width:26px;height:42px;border:black 1px solid;"><legend>Red</legend></fieldset>
             <fieldset id="blueReinBox" style="z-index:20;background:transparent;position:absolute;left:278px;top:123px;width:26px;height:127px;border:black 1px solid;"><legend>Blue</legend></fieldset>
         </div>

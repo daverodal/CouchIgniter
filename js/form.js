@@ -287,7 +287,6 @@ function initialize() {
         for(id = 0;id < 35;id++){
             this.attachMouseEventsToCounter(id);
         }
-
 //    for ( id = 0; id < force.units.length; id++ ) {
 //        createImage( id, force.units[id].image, 0, 0 );
 //        this.attachMouseEventsToCounter( id );

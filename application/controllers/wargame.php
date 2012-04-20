@@ -206,8 +206,8 @@ class Wargame extends CI_Controller
         }
         $player = $this->session->userdata("player");
         $wargame = urldecode($this->session->userdata("wargame"));
-        $x = $this->input->post('x',FALSE);
-        $y = $this->input->post('y',FALSE);
+        $x = (int)$this->input->post('x',FALSE);
+        $y = (int)$this->input->post('y',FALSE);
         $this->load->model("wargame/wargame_model");
         $doc = $this->wargame_model->getDoc(urldecode($wargame));
         if($doc->wargame->gameRules->attackingForceId !== (int)$player){
@@ -218,8 +218,10 @@ class Wargame extends CI_Controller
         }
 
         $battle = new BattleForAllenCreek($doc->wargame);
+        var_dump($x);var_dump($y);
         $mapGrid = new MapGrid($battle->mapData);
         $mapGrid->setPixels($x, $y);
+        var_dump($mapGrid);
         $battle->gameRules->processEvent(SELECT_MAP_EVENT, MAP, $mapGrid->getHexagon() );
         $units = $battle->force->units;
         $combats = array();
