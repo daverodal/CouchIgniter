@@ -9,6 +9,8 @@
             <a href="<?=site_url("wargame/changeWargame");?>/{id}/1">{name} As Blue</a>
             <a href="<?=site_url("wargame/changeWargame");?>/{id}/2">{name}As Red</a>
         {/lobbies}
+    <a href="<?=site_url("wargame/resize/0");?>">BIG</a>
+    <a href="<?=site_url("wargame/resize/1");?>">small</a>
         <a href="<?=site_url("wargame/createWargame");?>">Create Wargame</a>
         <a href="<?=site_url("wargame/logout");?>">logout</a>
         <a href="<?=site_url("wargame/unitInit");?>">Nuke Game</a>
@@ -26,7 +28,7 @@
                     border-radius:15px;
                     border:10px solid #1AF;
                     //position:relative;
-                    width:250px;
+                    width:350px;
                     background:#fff;color:black;
                     font-weight:bold;
                     padding:1px 5px 10px 15px;
@@ -37,7 +39,7 @@
                     vertical-align:bottom;
                 }
                 #crt span{
-                    width:22px;
+                    width:32px;
                    // position:absolute;
                 }
                 .col1{
@@ -97,13 +99,10 @@
                     margin-right:10px;
                     float:left;
                     display:block;
-                    width:22px;
+                    width:32px;
                 }
                 #leftcol {
                     float:left;
-                }
-                #odds span{
-                    text-indent:7px
                 }
                 #gameturnContainer{
                     position:relative;
@@ -157,15 +156,27 @@
                 }
             </style>
             <div id="leftcol">
-            <div id="crt">
-                <h3>Combat Odds</h3>
-                <div id="odds"><span class="col0">&nbsp;</span></span><span class="col1">0</span> <span class="col2">1</span> <span class="col3">2</span> <span class="col4">3</span> <span class="col5">4</span> <span class="col6">5</span></div>
-                <div class="roll row1 odd"><span class="col0">1</span><span class="col1">DR</span> <span class="col2">DR</span> <span class="col3">DR</span> <span class="col4">DE</span> <span class="col5">DE</span> <span class="col6">DE</span></div>
-                <div class="roll row2 even"><span class="col0">2</span><span class="col1">NR</span> <span class="col2">DR</span> <span class="col3">DR</span> <span class="col4">DR</span> <span class="col5">DE</span> <span class="col6">DE</span></div>
-                <div class="roll row3 odd"><span class="col0">3</span><span class="col1">NR</span> <span class="col2">NR</span> <span class="col3">NR</span> <span class="col4">DR</span> <span class="col5">DR</span> <span class="col6">DE</span></div>
-                <div class="roll row4 even"><span class="col0">4</span><span class="col1">AR</span> <span class="col2">NR</span> <span class="col3">NR</span> <span class="col4">DR</span> <span class="col5">DR</span> <span class="col6">DR</span></div>
-                <div class="roll row5 odd"><span class="col0">5</span><span class="col1">AR</span> <span class="col2">AR</span> <span class="col3">NR</span> <span class="col4">NR</span> <span class="col5">DR</span> <span class="col6">DR</span></div>
-                <div class="roll row6 even"><span class="col0">6</span><span class="col1">AE</span> <span class="col2">AR</span> <span class="col3">AR</span> <span class="col4">NR</span> <span class="col5">DR</span> <span class="col6">DR</span></div>
+                <?php global $results_name;?>
+
+                <div id="crt">
+                    <h3>Combat Odds</h3>
+
+                    <div id="odds"><span class="col0">&nbsp;</span></span><span class="col1">1:1</span> <span
+                        class="col2">2:1</span> <span class="col3">3:1</span> <span class="col4">4:1</span> <span
+                        class="col5">5:1</span> <span class="col6">6:1</span></div>
+                    <?php
+                    $crt = new CombatResultsTable();
+                    $rowNum = 1;$odd = ($rowNum & 1) ? "odd":"even";
+                    foreach ($crt->combatResultsTable as $row) {
+                        ?>
+                        <div class="roll <?="row$rowNum $odd"?>">
+                            <span class="col0"><?=$rowNum++?></span>
+                            <?php $col = 1;foreach ($row as $cell) { ?>
+                            <span class="col<?=$col++?>"><?=$results_name[$cell]?></span>
+
+                            <?php }?>
+                        </div>
+                        <?php }?>
             </div>
             <div id="gameturnContainer">
                 <div id="turn1">1</div>
@@ -181,36 +192,36 @@
         <div id="gameImages" style="float:left;margin-left:50px;position: relative;border:10px solid #333;border-radius:10px;">
             <img id="map" alt="map" src="<?php echo base_url();?>js/fullmap.png" style="position: relative;visibility: visible;z-index: 0;">
 
-            <?php for($i = 0 ; $i < 13;$i++){?>
-    <img class="unit" id="<?=$i?>" alt="0" src="<?php echo base_url();?>js/rusInf4.png" class="counter" style="position: absolute; left: 180px; top: 140px; z-index:100">
+            <?php for($i = 0 ; $i < 16;$i++){?>
+    <img class="unit" id="<?=$i?>" alt="0" src="<?php echo base_url();?>js/rusInf8.png" class="counter" style="position: absolute; left: 180px; top: 140px; z-index:100">
 
 <?php }?>
     <?php for($i = 0 ; $i < 3;$i++){?>
-            <img class="unit" id="<?=$i+13?>" alt="0" src="<?php echo base_url();?>js/gerPzr12.png" class="counter" style="position: absolute; left: 180px; top: 140px; z-index:100">
+            <img class="unit" id="<?=$i+16?>" alt="0" src="<?php echo base_url();?>js/gerPzr12.png" class="counter" style="position: absolute; left: 180px; top: 140px; z-index:100">
     <?php }?>
             <?php for(;$i < 4;$i++){?>
-            <img class="unit" id="<?=$i+13?>" alt="0" src="<?php echo base_url();?>js/gerPzr10.png" class="counter" style="position: absolute; left: 180px; top: 140px; z-index:100">
+            <img class="unit" id="<?=$i+16?>" alt="0" src="<?php echo base_url();?>js/gerPzr10.png" class="counter" style="position: absolute; left: 180px; top: 140px; z-index:100">
             <?php }?>
             <?php for(;$i < 6;$i++){?>
-            <img class="unit" id="<?=$i+13?>" alt="0" src="<?php echo base_url();?>js/gerPzr9.png" class="counter" style="position: absolute; left: 180px; top: 140px; z-index:100">
+            <img class="unit" id="<?=$i+16?>" alt="0" src="<?php echo base_url();?>js/gerPzr9.png" class="counter" style="position: absolute; left: 180px; top: 140px; z-index:100">
             <?php }?>
             <?php for(;$i < 8;$i++){?>
-            <img class="unit" id="<?=$i+13?>" alt="0" src="<?php echo base_url();?>js/gerPzr8.png" class="counter" style="position: absolute; left: 180px; top: 140px; z-index:100">
+            <img class="unit" id="<?=$i+16?>" alt="0" src="<?php echo base_url();?>js/gerPzr8.png" class="counter" style="position: absolute; left: 180px; top: 140px; z-index:100">
             <?php }?>
             <?php for(;$i < 10;$i++){?>
-            <img class="unit" id="<?=$i+13?>" alt="0" src="<?php echo base_url();?>js/gerInf8.png" class="counter" style="position: absolute; left: 180px; top: 140px; z-index:100">
+            <img class="unit" id="<?=$i+16?>" alt="0" src="<?php echo base_url();?>js/gerInf8.png" class="counter" style="position: absolute; left: 180px; top: 140px; z-index:100">
             <?php }?>
             <?php for(;$i < 13;$i++){?>
-            <img class="unit" id="<?=$i+13?>" alt="0" src="<?php echo base_url();?>js/gerInf7.png" class="counter" style="position: absolute; left: 180px; top: 140px; z-index:100">
+            <img class="unit" id="<?=$i+16?>" alt="0" src="<?php echo base_url();?>js/gerInf7.png" class="counter" style="position: absolute; left: 180px; top: 140px; z-index:100">
             <?php }?>
             <?php for(;$i < 18;$i++){?>
-            <img class="unit" id="<?=$i+13?>" alt="0" src="<?php echo base_url();?>js/gerInf6.png" class="counter" style="position: absolute; left: 180px; top: 140px; z-index:100">
+            <img class="unit" id="<?=$i+16?>" alt="0" src="<?php echo base_url();?>js/gerInf6.png" class="counter" style="position: absolute; left: 180px; top: 140px; z-index:100">
             <?php }?>
             <?php for(;$i < 20;$i++){?>
-            <img class="unit" id="<?=$i+13?>" alt="0" src="<?php echo base_url();?>js/gerInf5.png" class="counter" style="position: absolute; left: 180px; top: 140px; z-index:100">
+            <img class="unit" id="<?=$i+16?>" alt="0" src="<?php echo base_url();?>js/gerInf5.png" class="counter" style="position: absolute; left: 180px; top: 140px; z-index:100">
             <?php }?>
             <?php for(;$i < 22;$i++){?>
-            <img class="unit" id="<?=$i+13?>" alt="0" src="<?php echo base_url();?>js/gerInf4.png" class="counter" style="position: absolute; left: 180px; top: 140px; z-index:100">
+            <img class="unit" id="<?=$i+16?>" alt="0" src="<?php echo base_url();?>js/gerInf4.png" class="counter" style="position: absolute; left: 180px; top: 140px; z-index:100">
             <?php }?>
         </div>
         <!-- end gameImages -->

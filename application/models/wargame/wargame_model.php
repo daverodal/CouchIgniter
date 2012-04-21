@@ -162,6 +162,7 @@ echo "HI";
         foreach($units as $unit){
             $mapGrid->setHexagonXY( $unit->hexagon->x, $unit->hexagon->y);
             $mapUnit = new StdClass();
+            $mapUnit->isReduced = $unit->isReduced;
             $mapUnit->x = $mapGrid->getPixelX();
             $mapUnit->y = $mapGrid->getPixelY();
             $mapUnits[] = $mapUnit;

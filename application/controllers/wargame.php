@@ -40,6 +40,8 @@ class Wargame extends CI_Controller
         foreach($seq->rows as $row){
             $lobbies[] =  array("name"=>$row->value, "id"=>$row->id);
         }
+
+        $myCrt = new CombatResultsTable();
         //echo "Welcome $user";
         //echo $this->twig->render("wargame/wargameView.php",compact("wargame","lobbies"));
         $this->parser->parse("wargame/wargameView",compact("wargame","lobbies","user","mapWidth","mapHeight","unitSize"));
