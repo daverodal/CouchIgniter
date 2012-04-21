@@ -30,7 +30,6 @@
                     background:#fff;color:black;
                     font-weight:bold;
                     padding:1px 5px 10px 15px;
-                    float:left;
                 }
                 #crt h3{
                     height:40px;
@@ -100,12 +99,14 @@
                     display:block;
                     width:22px;
                 }
+                #leftcol {
+                    float:left;
+                }
                 #odds span{
                     text-indent:7px
                 }
                 #gameturnContainer{
                     position:relative;
-                    float:right;
                 }
                 #gameturnContainer div{
                     float:left;
@@ -141,16 +142,21 @@
                     height:638px;
                     /*width:522px;*/
                     /*height:425px;*/
+                    width:{mapWidth};
+                    height:{mapHeight};
                 }
                 .unit{
                     width:64px;
                     height:64px;
                     width:48px;
                     height:49px;
+                    width:{unitSize};
+                    height:{unitSize};
                     /*width:32px;*/
                     /*height:32px;*/
                 }
             </style>
+            <div id="leftcol">
             <div id="crt">
                 <h3>Combat Odds</h3>
                 <div id="odds"><span class="col0">&nbsp;</span></span><span class="col1">0</span> <span class="col2">1</span> <span class="col3">2</span> <span class="col4">3</span> <span class="col5">4</span> <span class="col6">5</span></div>
@@ -171,7 +177,7 @@
                 <div id="turn7">7</div>
                 <div id="turnCounter">Game Turn</div>
             </div>
-           <div style="clear:both"></div>
+                </div>
         <div id="gameImages" style="float:left;margin-left:50px;position: relative;border:10px solid #333;border-radius:10px;">
             <img id="map" alt="map" src="<?php echo base_url();?>js/fullmap.png" style="position: relative;visibility: visible;z-index: 0;">
 
@@ -206,9 +212,6 @@
             <?php for(;$i < 22;$i++){?>
             <img class="unit" id="<?=$i+13?>" alt="0" src="<?php echo base_url();?>js/gerInf4.png" class="counter" style="position: absolute; left: 180px; top: 140px; z-index:100">
             <?php }?>
-
-            <fieldset id="redReinBox" style="z-index:20;background:transparent;position:absolute;left:278px;top:46px;width:26px;height:42px;border:black 1px solid;"><legend>Red</legend></fieldset>
-            <fieldset id="blueReinBox" style="z-index:20;background:transparent;position:absolute;left:278px;top:123px;width:26px;height:127px;border:black 1px solid;"><legend>Blue</legend></fieldset>
         </div>
         <!-- end gameImages -->
         </div>

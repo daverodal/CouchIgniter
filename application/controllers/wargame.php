@@ -32,6 +32,9 @@ class Wargame extends CI_Controller
             redirect("/wargame/login/");
         }
         $wargame = urldecode($this->session->userdata("wargame"));
+        $mapWidth = urldecode($this->session->userdata("mapWidth"));
+        $mapHeight = urldecode($this->session->userdata("mapHeight"));
+        $unitSize = urldecode($this->session->userdata("unitSize"));
 
         $seq = $this->couchsag->get("/_design/newFilter/_view/getLobbies");
         foreach($seq->rows as $row){
@@ -39,7 +42,7 @@ class Wargame extends CI_Controller
         }
         //echo "Welcome $user";
         //echo $this->twig->render("wargame/wargameView.php",compact("wargame","lobbies"));
-        $this->parser->parse("wargame/wargameView",compact("wargame","lobbies","user"));
+        $this->parser->parse("wargame/wargameView",compact("wargame","lobbies","user","mapWidth","mapHeight","unitSize"));
 
     }
 
@@ -84,6 +87,9 @@ class Wargame extends CI_Controller
         $this->wargame_model->enterWargame($user,$newWargame);
 
         $this->session->set_userdata(array("player" => $player));
+        $this->session->set_userdata(array("mapWidth" => "783px"));
+        $this->session->set_userdata(array("mapHeight" => "638px"));
+        $this->session->set_userdata(array("unitSize" => "48px"));
 
         $this->session->set_userdata(array("wargame" => $newWargame));
         redirect("/wargame/");
@@ -247,6 +253,48 @@ class Wargame extends CI_Controller
 
 //        var_dump($doc);
         return compact('success');
+    }
+    public function resize($small = true)
+    {
+        $user = $this->session->userdata("user");
+        if (!$user) {
+            redirect("/wargame/login/");
+        }
+        $player = $this->session->userdata("player");
+        $wargame = urldecode($this->session->userdata("wargame"));
+        $this->load->model("wargame/wargame_model");
+        $doc = $this->wargame_model->getDoc(urldecode($wargame));
+        if($doc->wargame->gameRules->attackingForceId !== (int)$player){
+            echo "Nope $player";
+            return "nope";
+        }
+        $battle = new BattleForAllenCreek($doc->wargame);
+
+        if($small){
+                   $battle->mapData->setData(44,58, // originX, originY
+            20, 20, // top hexagon height, bottom hexagon height
+            12, 24, // hexagon edge width, hexagon center width
+            1410, 1410 // max right hexagon, max bottom hexagon
+        );
+        $this->session->set_userdata(array("mapWidth" => "522px"));
+        $this->session->set_userdata(array("mapHeight" => "425px"));
+        $this->session->set_userdata(array("unitSize" => "32px"));
+        }else{
+            $battle->mapData->setData(66,87, // originX, originY
+                30, 30, // top hexagon height, bottom hexagon height
+                18, 36, // hexagon edge width, hexagon center width
+                1410, 1410 // max right hexagon, max bottom hexagon
+            );
+            $this->session->set_userdata(array("mapWidth" => "783px"));
+            $this->session->set_userdata(array("mapHeight" => "638px"));
+            $this->session->set_userdata(array("unitSize" => "48px"));
+
+        }
+        $doc->wargame = $battle->save();
+        $doc = $this->wargame_model->setDoc($doc);
+
+        //        var_dump($doc);
+        redirect("/wargame/play/");
     }
     public function phase()
     {
