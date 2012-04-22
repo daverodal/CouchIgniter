@@ -266,10 +266,6 @@ class Wargame extends CI_Controller
         $wargame = urldecode($this->session->userdata("wargame"));
         $this->load->model("wargame/wargame_model");
         $doc = $this->wargame_model->getDoc(urldecode($wargame));
-        if($doc->wargame->gameRules->attackingForceId !== (int)$player){
-            echo "Nope $player";
-            return "nope";
-        }
         $battle = new BattleForAllenCreek($doc->wargame);
 
         if($small){
