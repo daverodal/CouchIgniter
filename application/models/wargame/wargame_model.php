@@ -168,6 +168,9 @@ echo "HI";
             $mapUnits[] = $mapUnit;
         }
         $gameRules = $wargame->gameRules;
+        $gameRules->phase_name = $phase_name;
+        $gameRules->mode_name = $mode_name;
+        $gameRules->exchangeAmount = $force->exchangeAmount;
         $clock = "The turn is ".$gameRules->turn.". The Phase is ". $phase_name[$gameRules->phase].". The mode is ". $mode_name[$gameRules->mode];
         return compact("combatRules",'force','seq', 'chats', 'chatsIndex', 'last_seq', 'users', 'games', 'clock', 'mapUnits','moveRules','gameRules');
     }

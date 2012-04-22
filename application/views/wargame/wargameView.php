@@ -20,6 +20,9 @@
                     background:#eee;
                     color:#333;
                 }
+                #status{
+                    text-align:right;
+                }
                 fieldset{
                     background:wheat;
                     border-radius:9px;
@@ -28,7 +31,7 @@
                     border-radius:15px;
                     border:10px solid #1AF;
                     //position:relative;
-                    width:350px;
+                    width:308px;
                     background:#fff;color:black;
                     font-weight:bold;
                     padding:1px 5px 10px 15px;
@@ -105,7 +108,9 @@
                     float:left;
                 }
                 #gameturnContainer{
+                    height:38px;
                     position:relative;
+                    float:left;
                 }
                 #gameturnContainer div{
                     float:left;
@@ -139,10 +144,10 @@
                     height:850px;
                     width:783px;
                     height:638px;
-                    /*width:522px;*/
-                    /*height:425px;*/
                     width:{mapWidth};
                     height:{mapHeight};
+                width:522px;
+                height:425px;
                 }
                 .unit{
                     width:64px;
@@ -151,8 +156,8 @@
                     height:49px;
                     width:{unitSize};
                     height:{unitSize};
-                    /*width:32px;*/
-                    /*height:32px;*/
+                    width:32px;
+                    height:32px;
                 }
             </style>
             <div id="leftcol">
@@ -188,82 +193,88 @@
                 <div id="turn7">7</div>
                 <div id="turnCounter">Game Turn</div>
             </div>
+                <button id="nextPhaseButton">Next Phase</button>
+                <div style="clear:both;"></div>
+
+                <fieldset style="">
+                    <legend>Phase Mode
+                    </legend>
+                    <div id="clock"></div>
+                </fieldset>
+                <fieldset style="">
+                    <legend>Status
+                    </legend>
+                    <div id="status"></div>
+                </fieldset>
+                <fieldset style="display:none;">
+                    <legend>Users
+                    </legend>
+                    <div id="users"></div>
+                </fieldset>
+                <div style="clear:both;"></div>
+                <fieldset style="display:none;">
+                    <legend>Games
+                    </legend>
+                    <div id="games"></div>
+                </fieldset>
+                <div style="float:left;margin-left: 80px">
+                    <form onsubmit="doit();return false;" id="chatform" method="post">
+
+                        <input id="mychat" name="chats" type="text">
+                        <input name="submit" type="submit">
+                        <fieldset>
+                            <legend>Chats
+                            </legend>
+                            <div id="chats"></div>
+                        </fieldset>
+                    </form>
                 </div>
+
+
+                <div style="clear:both;"></div>
+    </body>
+
+            </div>
         <div id="gameImages" style="float:left;margin-left:50px;position: relative;border:10px solid #333;border-radius:10px;">
             <img id="map" alt="map" src="<?php echo base_url();?>js/fullmap.png" style="position: relative;visibility: visible;z-index: 0;">
+            <img class="unit" id="0" alt="0" src="<?php echo base_url();?>js/rusInf10.png" class="counter" style="position: absolute; left: 180px; top: 140px; z-index:100">
 
-            <?php for($i = 0 ; $i < 16;$i++){?>
-    <img class="unit" id="<?=$i?>" alt="0" src="<?php echo base_url();?>js/rusInf8.png" class="counter" style="position: absolute; left: 180px; top: 140px; z-index:100">
+            <?php for($i = 1,$id=1 ; $i < 17;$i++){?>
+    <img class="unit" id="<?=$id++?>" alt="0" src="<?php echo base_url();?>js/rusInf8.png" class="counter" style="position: absolute; left: 180px; top: 140px; z-index:100">
 
 <?php }?>
     <?php for($i = 0 ; $i < 3;$i++){?>
-            <img class="unit" id="<?=$i+16?>" alt="0" src="<?php echo base_url();?>js/gerPzr12.png" class="counter" style="position: absolute; left: 180px; top: 140px; z-index:100">
+            <img class="unit" id="<?=$id++?>" alt="0" src="<?php echo base_url();?>js/gerPzr12.png" class="counter" style="position: absolute; left: 180px; top: 140px; z-index:100">
     <?php }?>
             <?php for(;$i < 4;$i++){?>
-            <img class="unit" id="<?=$i+16?>" alt="0" src="<?php echo base_url();?>js/gerPzr10.png" class="counter" style="position: absolute; left: 180px; top: 140px; z-index:100">
+            <img class="unit" id="<?=$id++?>" alt="0" src="<?php echo base_url();?>js/gerPzr10.png" class="counter" style="position: absolute; left: 180px; top: 140px; z-index:100">
             <?php }?>
             <?php for(;$i < 6;$i++){?>
-            <img class="unit" id="<?=$i+16?>" alt="0" src="<?php echo base_url();?>js/gerPzr9.png" class="counter" style="position: absolute; left: 180px; top: 140px; z-index:100">
+            <img class="unit" id="<?=$id++?>" alt="0" src="<?php echo base_url();?>js/gerPzr9.png" class="counter" style="position: absolute; left: 180px; top: 140px; z-index:100">
             <?php }?>
             <?php for(;$i < 8;$i++){?>
-            <img class="unit" id="<?=$i+16?>" alt="0" src="<?php echo base_url();?>js/gerPzr8.png" class="counter" style="position: absolute; left: 180px; top: 140px; z-index:100">
+            <img class="unit" id="<?=$id++?>" alt="0" src="<?php echo base_url();?>js/gerPzr8.png" class="counter" style="position: absolute; left: 180px; top: 140px; z-index:100">
             <?php }?>
             <?php for(;$i < 10;$i++){?>
-            <img class="unit" id="<?=$i+16?>" alt="0" src="<?php echo base_url();?>js/gerInf8.png" class="counter" style="position: absolute; left: 180px; top: 140px; z-index:100">
+            <img class="unit" id="<?=$id++?>" alt="0" src="<?php echo base_url();?>js/gerInf8.png" class="counter" style="position: absolute; left: 180px; top: 140px; z-index:100">
             <?php }?>
             <?php for(;$i < 13;$i++){?>
-            <img class="unit" id="<?=$i+16?>" alt="0" src="<?php echo base_url();?>js/gerInf7.png" class="counter" style="position: absolute; left: 180px; top: 140px; z-index:100">
+            <img class="unit" id="<?=$id++?>" alt="0" src="<?php echo base_url();?>js/gerInf7.png" class="counter" style="position: absolute; left: 180px; top: 140px; z-index:100">
             <?php }?>
             <?php for(;$i < 18;$i++){?>
-            <img class="unit" id="<?=$i+16?>" alt="0" src="<?php echo base_url();?>js/gerInf6.png" class="counter" style="position: absolute; left: 180px; top: 140px; z-index:100">
+            <img class="unit" id="<?=$id++?>" alt="0" src="<?php echo base_url();?>js/gerInf6.png" class="counter" style="position: absolute; left: 180px; top: 140px; z-index:100">
             <?php }?>
             <?php for(;$i < 20;$i++){?>
-            <img class="unit" id="<?=$i+16?>" alt="0" src="<?php echo base_url();?>js/gerInf5.png" class="counter" style="position: absolute; left: 180px; top: 140px; z-index:100">
+            <img class="unit" id="<?=$id++?>" alt="0" src="<?php echo base_url();?>js/gerInf5.png" class="counter" style="position: absolute; left: 180px; top: 140px; z-index:100">
             <?php }?>
             <?php for(;$i < 22;$i++){?>
-            <img class="unit" id="<?=$i+16?>" alt="0" src="<?php echo base_url();?>js/gerInf4.png" class="counter" style="position: absolute; left: 180px; top: 140px; z-index:100">
+            <img class="unit" id="<?=$id++?>" alt="0" src="<?php echo base_url();?>js/gerInf4.png" class="counter" style="position: absolute; left: 180px; top: 140px; z-index:100">
             <?php }?>
         </div>
+
         <!-- end gameImages -->
         </div>
 
     <div style="clear:both;height:20px;"> </div>
-    <div style="float:left;margin-left: 80px">
-        <form onsubmit="doit();return false;" id="chatform" method="post">
 
-    <input id="mychat" name="chats" type="text">
-    <input name="submit" type="submit">
-    <fieldset>
-        <legend>Chats
-        </legend>
-        <div id="chats"></div>
-    </fieldset>
-    </div>
-    </form>
-
-
-        <div style="clear:both;"></div>
-        <button id="nextPhaseButton">Next Phase</button>
-            <fieldset style="float:left;">
-                <legend>Time
-                </legend>
-                <div id="clock"></div>
-            </fieldset>
-            <fieldset style="float:left;">
-                <legend>Status
-                </legend>
-                <div id="status"></div>
-            </fieldset>
-            <fieldset style="float:right;">
-                <legend>Users
-                </legend>
-                <div id="users"></div>
-            </fieldset>
-            <div style="clear:both;"></div>
-            <fieldset>
-                <legend>Games
-                </legend>
-                <div id="games"></div>
-            </fieldset>
-     </body>
 </html>

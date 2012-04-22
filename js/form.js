@@ -284,7 +284,7 @@ function initialize() {
     this.attachMouseEventsToMap("map");
 
     var id;
-        for(id = 0;id < 38;id++){
+        for(id = 0;id < 39;id++){
             this.attachMouseEventsToCounter(id);
         }
 //    for ( id = 0; id < force.units.length; id++ ) {
