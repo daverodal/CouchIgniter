@@ -14,6 +14,10 @@
         <a href="<?=site_url("wargame/createWargame");?>">Create Wargame</a>
         <a href="<?=site_url("wargame/logout");?>">logout</a>
         <a href="<?=site_url("wargame/unitInit");?>">Nuke Game</a>
+    <a href="#" onclick="seeUnits();return false;">See Units</a>
+    <a href="#" onclick="seeBoth();return false;">See Both</a>
+    <a href="#" onclick="seeMap();return false;">See Map</a>
+
         <div id="content">
             <style type="text/css">
                 body{
@@ -22,6 +26,9 @@
                 }
                 #status{
                     text-align:right;
+                }
+                #status legend{
+                    text-align:left;
                 }
                 fieldset{
                     background:wheat;
@@ -66,6 +73,7 @@
                 .roll, #odds{
                     height:20px;
                     background :#1af;
+                    margin-right:14px
                 }
                 #odds{
                     background:white;
@@ -114,7 +122,7 @@
                 }
                 #leftcol {
                     float:left;
-                    width:350px;
+                    width:360px;
                 }
                 #gameturnContainer{
                     height:38px;
@@ -127,8 +135,11 @@
                     width:36px;
                     border:solid black;
                     border-width:1px 1px 1px 0;
-                    font-size:20px;
-                    text-indent:5px;
+                    font-size:18px;
+                    text-indent:2px;
+                }
+                .mud {
+                    font-size:50%;
                 }
                 #gameturnContainer #turn1{
                     border-width:1px;
@@ -139,8 +150,8 @@
                     width:32px;
                     height:32px;
                     color:black;
-                    background:#9ff;
-                    font-size:10px;
+                    background-color:rgb(101,200,85);
+                    font-size:11px;
                     text-indent:0px;
                     top:2px;
                     left:2px;
@@ -195,8 +206,8 @@
             <div id="gameturnContainer">
                 <div id="turn1">1</div>
                 <div id="turn2">2</div>
-                <div id="turn3">3</div>
-                <div id="turn4">4</div>
+                <div id="turn3">3 <span class="mud">mud</span></div>
+                <div id="turn4">4 <span class="mud">mud</span></div>
                 <div id="turn5">5</div>
                 <div id="turn6">6</div>
                 <div id="turn7">7</div>
