@@ -104,8 +104,17 @@
                     display:block;
                     width:32px;
                 }
+                #gameImages{
+                    float:left;
+                    margin-left:50px;
+                    position: relative;
+                    border:10px solid #1af;
+                    border-radius:10px;
+                    height:425px;
+                }
                 #leftcol {
                     float:left;
+                    width:350px;
                 }
                 #gameturnContainer{
                     height:38px;
@@ -235,7 +244,7 @@
     </body>
 
             </div>
-        <div id="gameImages" style="float:left;margin-left:50px;position: relative;border:10px solid #333;border-radius:10px;">
+        <div id="gameImages" >
             <img id="map" alt="map" src="<?php echo base_url();?>js/fullmap.png" style="position: relative;visibility: visible;z-index: 0;">
             <img class="unit" id="0" alt="0" src="<?php echo base_url();?>js/rusInf10.png" class="counter" style="position: absolute; left: 180px; top: 140px; z-index:100">
 
