@@ -40,12 +40,13 @@
         #chats li{
             float:left;
             clear:both;
-            background:pink;
+            background:#1af;
             list-style: none;
             border-radius: 10px;
             padding:0 10px;
-            border: 2px #eee solid;
-            color:#999;
+            border: 2px #ccc solid;
+            color:#333;
+            background:rgb(101,200,85);
         }
         #chats li span{
             color:#333;

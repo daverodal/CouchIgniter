@@ -31,7 +31,7 @@
                     text-align:left;
                 }
                 fieldset{
-                    background:wheat;
+                    background:white;
                     border-radius:9px;
                 }
                 #crt{

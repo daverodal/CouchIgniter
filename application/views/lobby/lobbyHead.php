@@ -1,4 +1,4 @@
-<head>
+<head>aaaaaaa
     <link rel="shortcut icon" href="/favicon.ico" type="image/icon">
     <link href="<?=base_url("js/jquery-ui.css");?>" rel="stylesheet" type="text/css"/>
     <script src="<?=base_url("js/jquery.min.js");?>"></script>
@@ -38,12 +38,12 @@
         #chats li{
             float:left;
             clear:both;
-            background:pink;
+            background:#1af;
             list-style: none;
             border-radius: 10px;
             padding:0 10px;
             border: 2px #eee solid;
-            color:#999;
+            color:#333;
         }
         #chats li span{
             color:#333;
