@@ -40,9 +40,9 @@ class Wargame_model extends CI_Model
     {
         $views = new StdClass();
         $views->getLobbies = new StdClass;
-        $views->getLobbies->map = "function(doc){if(doc.docType == 'wargame'){emit(doc._id,doc._id);}}";
+        $views->getLobbies->map = "function(doc){if(doc.docType == 'lobby'){emit(doc._id,doc._id);}}";
         $filters = new StdClass();
-        $filters->namefind = "function(doc){if(doc.docType == 'wargame'){emit(doc._id,doc._id);}}";
+        $filters->namefind = "function(doc,req){if(!req.query.name){return false;} var names = req.query.name;names = names.split(',');for(var i = 0;i < names.length;i++){if(doc._id == names[i]){return true;}}return false;}";
         $users = new StdClass();
         $users->map = <<<aHEREMAP
         function(doc) {
@@ -131,13 +131,52 @@ echo "HI";
         return $success;
     }
 
+public function poke($event, $id, $x, $y){
+    $doc = $this->wargame_model->getDoc(urldecode($wargame));
+    if($doc->wargame->gameRules->attackingForceId !== (int)$player){
+        echo "Nope $player";
+        return "nope";
+    }
 
+    $battle = new BattleForAllenCreek($doc->wargame);
+    switch($event){
+        case SELECT_MAP_EVENT:
+            $mapGrid = new MapGrid($battle->mapData);
+            $mapGrid->setPixels($x, $y);
+            $battle->gameRules->processEvent(SELECT_MAP_EVENT, MAP, $mapGrid->getHexagon() );
+            break;
+
+        case SELECT_COUNTER_EVENT:
+            echo "COUNTER $id";
+
+            $battle->gameRules->processEvent(SELECT_COUNTER_EVENT, $id, $battle->force->getUnitHexagon($id));
+
+
+
+        case SELECT_BUTTON_EVENT:
+            $battle->gameRules->processEvent(SELECT_BUTTON_EVENT, "next_phase", 0,0 );
+
+
+    }
+    $units = $battle->force->units;
+    $combats = array();
+    foreach($units as $unitId => $unit){
+        if($unit->combatNumber){
+            $combats[$unit->combatNumber]['combatIndex'] = $unit->combatIndex;
+            $combats[$unit->combatNumber]['units'][] = $unitId;
+        }
+    }
+    $doc->wargame = $battle->save();
+    $doc->wargame->combats = $combats;
+    $doc = $this->wargame_model->setDoc($doc);
+
+}
     public function getChanges($wargame, $last_seq = '', $chatsIndex = 0){
         global $mode_name, $phase_name;
 
         do{
             if ($last_seq) {
-                $seq = $this->couchsag->get("/_changes?since=$last_seq&feed=longpoll&filter=namefilter/namefind&name=$wargame");
+                $seq = $this->couchsag->get("/_changes?since=$last_seq&feed=longpoll&filter=newFilter/namefind&name=$wargame");
             } else {
                 $seq = $this->couchsag->get("/_changes");
             }
@@ -152,7 +191,10 @@ echo "HI";
         $clock = $doc->clock;
         $force = $doc->wargame->force;
         $wargame = $doc->wargame;
+        $gameName = $doc->gameName;
 
+        Battle::loadGame($gameName);
+//Battle::getHeader();
         $mapGrid = new MapGrid($doc->wargame->mapData);
         $mapUnits = array();
         $moveRules = $doc->wargame->moveRules;
@@ -167,6 +209,14 @@ echo "HI";
             $mapUnit->y = $mapGrid->getPixelY();
             $mapUnits[] = $mapUnit;
         }
+        foreach($units as $i => $unit){
+            $u = new StdClass();
+            $u->status = $unit->status;
+            $u->moveAmountUsed = $unit->moveAmountUsed;
+            $u->forceId = $unit->forceId;
+            $units[$i] = $u;
+        }
+        $force->units = $units;
         $gameRules = $wargame->gameRules;
         $gameRules->phase_name = $phase_name;
         $gameRules->mode_name = $mode_name;

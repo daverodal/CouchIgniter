@@ -33,6 +33,7 @@ $.ajax(
 }
 fetchArgs = {};
 for (var i in that.callbacks) {
+//    if(i == "gameRules") continue;
     if (data[i]) {
     if ($.isArray(data[i])) {
     var lastlength = that.lengths[i];

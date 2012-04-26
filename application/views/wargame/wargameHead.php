@@ -3,7 +3,7 @@
     <link href="<?=base_url("js/jquery-ui.css");?>" rel="stylesheet" type="text/css"/>
     <script src="<?=base_url("js/jquery.min.js");?>"></script>
     <script src="<?=base_url("js/jquery-ui.min.js");?>"></script>
-    <script src="<?=base_url("js/form.js");?>"></script>
+<!--    <script src="--><?//=base_url("js/form.js");?><!--"></script>-->
     <script src="<?=base_url("js/sync.js");?>"></script>
     <style type="text/css">
         #draggable {
@@ -53,5 +53,5 @@
         }
         .unit {border:2px solid blue;}
     </style>
-    <?php @include_once("/Documents and Settings/Owner/Desktop/webwargaming/header.php");?>
+    <?php Battle::getHeader($gameName);?>
 </head>
