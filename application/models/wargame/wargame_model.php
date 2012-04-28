@@ -3,14 +3,18 @@
 class Wargame_model extends CI_Model
 {
 
-    public function enterWargame($user, $wargame)
+    public function enterWargame($user, $wargame, $player = 0)
     {
         $doc = $this->couchsag->get($wargame);
-        if (!is_array($doc->users)) {
-            $doc->users = array();
+        if (!is_array($doc->wargame->players)) {
+            $doc->wargame->players = array("","","");
         }
-        if (!in_array($user, $doc->users)) {
-            $doc->users[] = $user;
+        if (!in_array($user, $doc->wargame->players)) {
+            $doc->wargame->players[$player] = $user;
+        }else{
+            $index = array_search($user, $doc->wargame->players);
+            $doc->wargame->players[$index] = "";
+            $doc->wargame->players[$player] = $user;
         }
         $this->couchsag->update($doc->_id, $doc);
 
@@ -19,21 +23,31 @@ class Wargame_model extends CI_Model
 
     public function leaveWargame($user, $wargame)
     {
+        return;
+        echo "leave";
         $doc = $this->couchsag->get($wargame);
-        if(!$doc)
+        if(!$doc){
             return;
-        $newUsers = array();
-        if(!is_array($doc->users)){
-            $doc->users = array();
         }
-        if (in_array($user, $doc->users)) {
-            foreach ($doc->users as $aUser) {
-                if ($user != $aUser) {
-                    $newUsers[] = $aUser;
+        if(!$doc->wargame){
+            return;
+        }
+        echo "iswargema";
+        $newUsers = array();
+        if(!is_array($doc->wargame->players)){
+            echo "not is array<br>";
+            $doc->wargame->players = array("","","");
+        }
+        if (in_array($user, $doc->wargame->players)) {
+            echo "in array<br>";
+            foreach ($doc->wargame->players as $i => $aUser) {
+                echo $aUser." <br>";
+                if ($user == $aUser) {
+                    $doc->wargame->players[i] = "";
                 }
             }
         }
-        $doc->users = $newUsers;;
+        $this->couchsag->update($doc->_id, $doc);
     }
 
     public function initDoc()
@@ -131,47 +145,8 @@ echo "HI";
         return $success;
     }
 
-public function poke($event, $id, $x, $y){
-    $doc = $this->wargame_model->getDoc(urldecode($wargame));
-    if($doc->wargame->gameRules->attackingForceId !== (int)$player){
-        echo "Nope $player";
-        return "nope";
-    }
 
-    $battle = new BattleForAllenCreek($doc->wargame);
-    switch($event){
-        case SELECT_MAP_EVENT:
-            $mapGrid = new MapGrid($battle->mapData);
-            $mapGrid->setPixels($x, $y);
-            $battle->gameRules->processEvent(SELECT_MAP_EVENT, MAP, $mapGrid->getHexagon() );
-            break;
-
-        case SELECT_COUNTER_EVENT:
-            echo "COUNTER $id";
-
-            $battle->gameRules->processEvent(SELECT_COUNTER_EVENT, $id, $battle->force->getUnitHexagon($id));
-
-
-
-        case SELECT_BUTTON_EVENT:
-            $battle->gameRules->processEvent(SELECT_BUTTON_EVENT, "next_phase", 0,0 );
-
-
-    }
-    $units = $battle->force->units;
-    $combats = array();
-    foreach($units as $unitId => $unit){
-        if($unit->combatNumber){
-            $combats[$unit->combatNumber]['combatIndex'] = $unit->combatIndex;
-            $combats[$unit->combatNumber]['units'][] = $unitId;
-        }
-    }
-    $doc->wargame = $battle->save();
-    $doc->wargame->combats = $combats;
-    $doc = $this->wargame_model->setDoc($doc);
-
-}
-    public function getChanges($wargame, $last_seq = '', $chatsIndex = 0){
+    public function getChanges($wargame, $last_seq = '', $chatsIndex = 0,$user = 'observer'){
         global $mode_name, $phase_name;
 
         do{
@@ -189,30 +164,42 @@ public function poke($event, $id, $x, $y){
         $chatsIndex = count($doc->chats);
         $users = $doc->users;
         $clock = $doc->clock;
+        $players = $doc->wargame->players;
+        $player = array_search($user,$players);
+        if($player === false){
+            $player = 0;
+        }
         $force = $doc->wargame->force;
         $wargame = $doc->wargame;
         $gameName = $doc->gameName;
 
         Battle::loadGame($gameName);
 //Battle::getHeader();
-        $mapGrid = new MapGrid($doc->wargame->mapData);
+        $playerData = $doc->wargame->mapData[$player];
+        $mapGrid = new MapGrid($playerData);
         $mapUnits = array();
         $moveRules = $doc->wargame->moveRules;
         $combatRules = $doc->wargame->combatRules;
         $moveRules->index = $combatRules->index;
         $units = $force->units;
+        $storm = $combatRules->storm;
+        $attackingId = $doc->wargame->gameRules->attackingForceId;
         foreach($units as $unit){
             $mapGrid->setHexagonXY( $unit->hexagon->x, $unit->hexagon->y);
             $mapUnit = new StdClass();
             $mapUnit->isReduced = $unit->isReduced;
             $mapUnit->x = $mapGrid->getPixelX();
             $mapUnit->y = $mapGrid->getPixelY();
+            $mapUnit->moveAmountUsed = $unit->moveAmountUsed;
+            $mapUnit->maxMove = $storm ? 1 : $unit->maxMove;
+            $mapUnit->strength = $storm && $unit->forceId == $attackingId ? $unit->strength/2 :$unit->strength ;
             $mapUnits[] = $mapUnit;
         }
         foreach($units as $i => $unit){
             $u = new StdClass();
             $u->status = $unit->status;
             $u->moveAmountUsed = $unit->moveAmountUsed;
+            $u->maxMovve = $unit->maxMove;
             $u->forceId = $unit->forceId;
             $units[$i] = $u;
         }
