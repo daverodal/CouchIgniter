@@ -11,7 +11,8 @@ class Battle
     public static  function getBattle($name,$doc){
         switch($name){
             case "MartianCivilWar":
-                @include_once("/Documents and Settings/Owner/Desktop/webwargaming/MartianCivilWar.php");
+                @include_once("/home/davidrod/webwargaming/MartianCivilWar.php");
+                //@include_once("/Documents and Settings/Owner/Desktop/webwargaming/MartianCivilWar.php");
                 break;
             case "BattleOfMoscow":
                 @include_once("/Documents and Settings/Owner/Desktop/webwargaming/BattleOfMoscow.php");
@@ -28,8 +29,10 @@ class Battle
     public static function getView($name){
         switch($name){
             case "MartianCivilWar":
-                @include_once("/Documents and Settings/Owner/Desktop/webwargaming/MartianCivilWar.php");
-                @include_once("/Documents and Settings/Owner/Desktop/webwargaming/view.php");
+                @include_once("/home/davidrod/webwargaming/MartianCivilWar.php");
+                @include_once("/home/davidrod/webwargaming/view.php.php");
+                //@include_once("/Documents and Settings/Owner/Desktop/webwargaming/MartianCivilWar.php");
+                //@include_once("/Documents and Settings/Owner/Desktop/webwargaming/view.php");
                 break;
            case "BattleOfMoscow":
                @include_once("/Documents and Settings/Owner/Desktop/webwargaming/BattleOfMoscow.php");
@@ -46,8 +49,10 @@ class Battle
     public static function getHeader($name){
         switch($name){
             case "MartianCivilWar":
-                @include_once("/Documents and Settings/Owner/Desktop/webwargaming/MartianCivilWar.php");
-                @include_once("/Documents and Settings/Owner/Desktop/webwargaming/header.php");
+                //@include_once("/Documents and Settings/Owner/Desktop/webwargaming/MartianCivilWar.php");
+                //@include_once("/Documents and Settings/Owner/Desktop/webwargaming/header.php");
+                @include_once("/home/davidrod/webwargaming/MartianCivilWar.php");
+                @include_once("/home/davidrod/webwargaming/header.php.php");
                 break;
             case "BattleOfMoscow":
                 @include_once("/Documents and Settings/Owner/Desktop/webwargaming/BattleOfMoscow.php");
@@ -66,7 +71,9 @@ class Battle
     public static function loadGame($name){
         switch($name){
             case "MartianCivilWar":
-                @include_once("/Documents and Settings/Owner/Desktop/webwargaming/MartianCivilWar.php");
+                @include_once("/home/davidrod/webwargaming/MartianCivilWar.php");
+                @include_once("/home/davidrod/webwargaming/view.php.php");
+                //@include_once("/Documents and Settings/Owner/Desktop/webwargaming/MartianCivilWar.php");
                 break;
             case "BattleOfMoscow":
                 @include_once("/Documents and Settings/Owner/Desktop/webwargaming/BattleOfMoscow.php");
