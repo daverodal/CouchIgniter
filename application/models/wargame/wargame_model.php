@@ -6,6 +6,7 @@ class Wargame_model extends CI_Model
     public function enterWargame($user, $wargame, $player = 0)
     {
         $doc = $this->couchsag->get($wargame);
+        var_dump($doc->wargame->playerData);//die("here");
         if (!is_array($doc->wargame->players)) {
             $doc->wargame->players = array("","","");
         }
@@ -16,6 +17,7 @@ class Wargame_model extends CI_Model
             $doc->wargame->players[$index] = "";
             $doc->wargame->players[$player] = $user;
         }
+        var_dump($doc->wargame->playerData);
         $this->couchsag->update($doc->_id, $doc);
 
     }
@@ -55,6 +57,8 @@ class Wargame_model extends CI_Model
         $views = new StdClass();
         $views->getLobbies = new StdClass;
         $views->getLobbies->map = "function(doc){if(doc.docType == 'lobby'){emit(doc._id,doc._id);}}";
+        $views->getAvailGames = new StdClass;
+        $views->getAvailGames->map = "function(doc){if(doc.docType == 'gamesAvail'){if(doc.games){for(var i in doc.games){emit(doc.games[i],doc.games[i]);}}}}";
         $filters = new StdClass();
         $filters->namefind = "function(doc,req){if(!req.query.name){return false;} var names = req.query.name;names = names.split(',');for(var i = 0;i < names.length;i++){if(doc._id == names[i]){return true;}}return false;}";
         $users = new StdClass();
@@ -199,7 +203,7 @@ echo "HI";
             $u = new StdClass();
             $u->status = $unit->status;
             $u->moveAmountUsed = $unit->moveAmountUsed;
-            $u->maxMovve = $unit->maxMove;
+            $u->maxMove = $unit->maxMove;
             $u->forceId = $unit->forceId;
             $units[$i] = $u;
         }

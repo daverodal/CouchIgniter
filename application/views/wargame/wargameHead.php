@@ -53,5 +53,5 @@
         }
         .unit {border:2px solid blue;}
     </style>
-    <?php Battle::getHeader($gameName);?>
+    <?php Battle::getHeader($gameName, $playerData);?>
 </head>

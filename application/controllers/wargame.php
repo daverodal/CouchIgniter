@@ -36,26 +36,48 @@ class Wargame extends CI_Controller
             redirect("/wargame/login/");
         }
         $wargame = urldecode($this->session->userdata("wargame"));
-        $mapWidth = urldecode($this->session->userdata("mapWidth"));
-        $mapHeight = urldecode($this->session->userdata("mapHeight"));
-        $unitSize = urldecode($this->session->userdata("unitSize"));
-        $unitFontSize = urldecode($this->session->userdata("unitFontSize"));
-        $unitMargin = urldecode($this->session->userdata("unitMargin"));
         $this->load->model("wargame/wargame_model");
 
         $doc = $this->wargame_model->getDoc($wargame);
+
+        $players = $doc->wargame->players;
+        $player = array_search($user,$players);
+        if($player === false){
+            $player = 0;
+        }
         $gameName = $doc->gameName;
-       $this->load->library('battle');
- //        var_dump(Battle::getBattle("BattleOfMoscow"));
+        $this->load->library('battle');
         $seq = $this->couchsag->get("/_design/newFilter/_view/getLobbies");
+        $gamesAvail = $this->couchsag->get("/_design/newFilter/_view/getAvailGames");
         foreach($seq->rows as $row){
             $lobbies[] =  array("name"=>$row->value, "id"=>$row->id);
         }
-
+        foreach($gamesAvail->rows as $row){
+            $games[] =  array("name"=>$row->value);
+        }
+        $units = $doc->wargame->force->units;
+//        var_dump($units[0]);
+//        $units = array($units[0]);
+//        $units = array("hi",'hell');
+        $playerData = array($doc->wargame->playerData->$player);
+        $newUnits = array();
+        foreach($units as $aUnit){
+            $newUnit = array();
+            foreach($aUnit as $key => $value){
+                if($key == "hexagon"){
+                    continue;
+                }
+                $newUnit[$key] = $value;
+            }
+                $newUnit['class'] = $aUnit->nationality;
+            $newUnits[] = $newUnit;
+        }
+        $units = $newUnits;
 //        $myCrt = new CombatResultsTable();
         //echo "Welcome $user";
         //echo $this->twig->render("wargame/wargameView.php",compact("wargame","lobbies"));
-        $this->parser->parse("wargame/wargameView",compact("unitFontSize","unitMargin","gameName","wargame","lobbies","user","mapWidth","mapHeight","unitSize"));
+//        $this->parser->parse("wargame/wargameView",array("things" => array(array("a"=>"a"),array("b"=>"b"),array("c"=>"c"))));
+        $this->parser->parse("wargame/wargameView",compact("units","playerData","games","gameName","wargame","lobbies","user"));
 
     }
 
@@ -310,23 +332,22 @@ class Wargame extends CI_Controller
             12, 24, // hexagon edge width, hexagon center width
             1410, 1410 // max right hexagon, max bottom hexagon
         );
-        $this->session->set_userdata(array("mapWidth" => "787px"));
-        $this->session->set_userdata(array("mapHeight" => "481px"));
-        $this->session->set_userdata(array("unitSize" => "32px"));
-        $this->session->set_userdata(array("unitFontSize" => "12px"));
-        $this->session->set_userdata(array("unitMargin" => "-21px"));
-        }else{
+            $battle->playerData->${player}->mapWidth = "787px";
+            $battle->playerData->${player}->mapHeight = "481px";
+            $battle->playerData->${player}->unitSize = "32px";
+            $battle->playerData->${player}->unitFontSize = "12px";
+            $battle->playerData->${player}->unitMargin = "-21px";
+         }else{
             $battle->mapData[$player]->setData(57,84, // originX, originY
                 28, 28, // top hexagon height, bottom hexagon height
                 16, 32, // hexagon edge width, hexagon center width
                 1410, 1410 // max right hexagon, max bottom hexagon
             );
-            $this->session->set_userdata(array("mapWidth" => "1050px"));
-            $this->session->set_userdata(array("mapHeight" => "669px"));
-            $this->session->set_userdata(array("unitSize" => "42px"));
-            $this->session->set_userdata(array("unitFontSize" => "16px"));
-            $this->session->set_userdata(array("unitMargin" => "-23px"));
-
+            $battle->playerData->${player}->mapWidth = "1050px";
+            $battle->playerData->${player}->mapHeight = "669px";
+            $battle->playerData->${player}->unitSize = "42px";
+            $battle->playerData->${player}->unitFontSize = "16px";
+            $battle->playerData->${player}->unitMargin = "-23px";
         }
         $doc->wargame = $battle->save();
         $doc = $this->wargame_model->setDoc($doc);
