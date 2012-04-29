@@ -11,7 +11,8 @@ class Battle
     public static  function getBattle($name,$doc){
         switch($name){
             case "MartianCivilWar":
-                @include_once("/Documents and Settings/Owner/Desktop/MCW/MartianCivilWar.php");
+                @include_once("/home/davidrod/webwargaming/MartianCivilWar.php");
+                //@include_once("/Documents and Settings/Owner/Desktop/webwargaming/MartianCivilWar.php");
                 break;
             case "NapOnMars":
                 @include_once("/Documents and Settings/Owner/Desktop/NapOnMars/NapOnMars.php");
