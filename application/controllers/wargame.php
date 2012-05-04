@@ -29,7 +29,15 @@ class Wargame extends CI_Controller
         redirect("/wargame/play");
     }
 
-    function play()
+    function leaveGame(){
+        $user = $this->session->userdata("user");
+        if (!$user) {
+            redirect("/wargame/login/");
+        }
+        $this->session->unset_userdata('wargame');
+               redirect("/wargame/play");
+    }
+    function unattachedGame()
     {
         $user = $this->session->userdata("user");
         if (!$user) {
@@ -39,19 +47,53 @@ class Wargame extends CI_Controller
         $this->load->model("wargame/wargame_model");
 
         $doc = $this->wargame_model->getDoc($wargame);
+        $gameName = $doc->gameName;
+        if($gameName){
+            redirect("/wargame/play/");
+        }
 
+
+        $seq = $this->couchsag->get("/_design/newFilter/_view/getLobbies");
+        $gamesAvail = $this->couchsag->get("/_design/newFilter/_view/getAvailGames");
+        $games = array();
+        foreach($gamesAvail->rows as $row){
+        $games[] =  array("name"=>$row->value);
+    }
+
+        $this->parser->parse("wargame/wargameUnattached",compact("games"));
+
+    }
+    function play()
+    {
+        $user = $this->session->userdata("user");
+        if (!$user) {
+            redirect("/wargame/login/");
+        }
+        $wargame = urldecode($this->session->userdata("wargame"));
+        $this->load->model("wargame/wargame_model");
+
+        if(!$wargame){
+            $seq = $this->couchsag->get("/_design/newFilter/_view/getLobbies");
+            foreach($seq->rows as $row){
+                $lobbies[] =  array("name"=>$row->key, "id"=>$row->id);
+            }
+            $this->parser->parse("wargame/wargameLobbyView",compact("lobbies"));
+            return;
+
+        }
+        $doc = $this->wargame_model->getDoc($wargame);
+
+        $gameName = $doc->gameName;
+        if(!$gameName){
+            redirect("/wargame/unattachedGame/");
+        }
         $players = $doc->wargame->players;
         $player = array_search($user,$players);
         if($player === false){
             $player = 0;
         }
-        $gameName = $doc->gameName;
         $this->load->library('battle');
-        $seq = $this->couchsag->get("/_design/newFilter/_view/getLobbies");
         $gamesAvail = $this->couchsag->get("/_design/newFilter/_view/getAvailGames");
-        foreach($seq->rows as $row){
-            $lobbies[] =  array("name"=>$row->value, "id"=>$row->id);
-        }
         foreach($gamesAvail->rows as $row){
             $games[] =  array("name"=>$row->value);
         }
@@ -60,6 +102,9 @@ class Wargame extends CI_Controller
 //        $units = array($units[0]);
 //        $units = array("hi",'hell');
         $playerData = array($doc->wargame->playerData->$player);
+        if(!$units) {
+            $units = array();
+        }
         $newUnits = array();
         foreach($units as $aUnit){
             $newUnit = array();
@@ -113,9 +158,9 @@ class Wargame extends CI_Controller
             {
             $user = $data['name'];
             $this->session->set_userdata(array("user" => $user));
-            $this->session->set_userdata(array("wargame" => "MainWargame"));
-            $this->load->model('wargame/wargame_model');
-            $this->wargame_model->enterWargame($user, "MainWargame");
+//            $this->session->set_userdata(array("wargame" => "MainWargame"));
+//            $this->load->model('wargame/wargame_model');
+//            $this->wargame_model->enterWargame($user, "MainWargame");
             redirect("/wargame/");
             }
         }
@@ -123,7 +168,7 @@ class Wargame extends CI_Controller
 
     }
 
-    function changeWargame($newWargame = "MainWargame", $player = "obeserver"){
+    function changeWargame($newWargame = "MainWargame", $player = "0"){
         $user = $this->session->userdata("user");
         if (!$user) {
             redirect("/wargame/login/");
@@ -327,13 +372,13 @@ class Wargame extends CI_Controller
 //        $battle = new BattleForAllenCreek($doc->wargame);
 
         if($small){
-                   $battle->mapData[$player]->setData(44,58, // originX, originY
+                   $battle->mapData[$player]->setData(44,60, // originX, originY
             20, 20, // top hexagon height, bottom hexagon height
             12, 24, // hexagon edge width, hexagon center width
             1410, 1410 // max right hexagon, max bottom hexagon
         );
-            $battle->playerData->${player}->mapWidth = "787px";
-            $battle->playerData->${player}->mapHeight = "481px";
+            $battle->playerData->${player}->mapWidth = "744px";
+            $battle->playerData->${player}->mapHeight = "425px";
             $battle->playerData->${player}->unitSize = "32px";
             $battle->playerData->${player}->unitFontSize = "12px";
             $battle->playerData->${player}->unitMargin = "-21px";
@@ -343,8 +388,8 @@ class Wargame extends CI_Controller
                 16, 32, // hexagon edge width, hexagon center width
                 1410, 1410 // max right hexagon, max bottom hexagon
             );
-            $battle->playerData->${player}->mapWidth = "1050px";
-            $battle->playerData->${player}->mapHeight = "669px";
+            $battle->playerData->${player}->mapWidth = "996px";
+            $battle->playerData->${player}->mapHeight = "593px";
             $battle->playerData->${player}->unitSize = "42px";
             $battle->playerData->${player}->unitFontSize = "16px";
             $battle->playerData->${player}->unitMargin = "-23px";
@@ -393,14 +438,14 @@ class Wargame extends CI_Controller
         return compact('success');
     }*/
 
-   public function unitInit($game = "BattleOfMoscow")
+   public function unitInit($game = "MartianCivilWar")
     {
         $user = $this->session->userdata("user");
         if (!$user) {
             redirect("/wargame/login/");
         }
         $wargame = urldecode($this->session->userdata("wargame"));
-        $wargame = "MainWargame";
+//        $wargame = "MainWargame";
         $chat = $this->input->post('chat',TRUE);
         $this->load->model("wargame/wargame_model");
         $doc = $this->wargame_model->getDoc(urldecode($wargame));
@@ -412,7 +457,7 @@ class Wargame extends CI_Controller
         $doc->chats = array();
         $doc->gameName = $game;
         $doc = $this->wargame_model->setDoc($doc);
-        redirect("wargame/play");
+        redirect("wargame/playAs/$game");
 
         //        	$battle->gameRules->processEvent(SELECT_COUNTER_EVENT, $unit, $battle->force->getUnitHexagon($umit));
         //        $myBattle = $battle->save();
@@ -421,6 +466,20 @@ class Wargame extends CI_Controller
         //        //    $jBattle = preg_replace("/}/","\n}",$jBattle);
         //        file_put_contents("afile.out", $jBattle);
 
+    }
+    function playAs(){
+        $user = $this->session->userdata("user");
+        if (!$user) {
+            redirect("/wargame/login/");
+        }
+        $wargame = urldecode($this->session->userdata("wargame"));
+//        $wargame = "MainWargame";
+        var_dump($wargame);
+        $this->load->model("wargame/wargame_model");
+        $doc = $this->wargame_model->getDoc(urldecode($wargame));
+        $this->load->library("battle");
+        $game = $doc->gameName;
+        $this->load->view("wargame/wargamePlayAs",compact("game","user","wargame"))   ;
     }
     public function createWargame()
     {
@@ -435,7 +494,8 @@ class Wargame extends CI_Controller
             $this->wargame_model->createWargame($wargame);
 //            $this->unitInit($wargame);
             $this->session->set_userdata(array("wargame" => $wargame));
-            redirect("/wargame/unitInit");
+            redirect("/wargame/play");
+//            redirect("/wargame/unitInit");
         }
         $this->load->view("wargame/wargameCreate");
     }

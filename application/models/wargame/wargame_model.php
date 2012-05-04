@@ -56,7 +56,7 @@ class Wargame_model extends CI_Model
     {
         $views = new StdClass();
         $views->getLobbies = new StdClass;
-        $views->getLobbies->map = "function(doc){if(doc.docType == 'lobby'){emit(doc._id,doc._id);}}";
+        $views->getLobbies->map = "function(doc){if(doc.docType == 'wargame'){emit(doc._id,doc.gameName);}}";
         $views->getAvailGames = new StdClass;
         $views->getAvailGames->map = "function(doc){if(doc.docType == 'gamesAvail'){if(doc.games){for(var i in doc.games){emit(doc.games[i],doc.games[i]);}}}}";
         $filters = new StdClass();
@@ -125,7 +125,7 @@ echo "HI";
 
     public function createWargame($name)
     {
-        $data = array('docType' => "game", "_id" => $name, "name" => $name, "chats" => array());
+        $data = array('docType' => "wargame", "_id" => $name, "name" => $name, "chats" => array());
         $this->couchsag->create($data);
     }
     public function addChat($chat, $user, $wargame)
@@ -194,9 +194,10 @@ echo "HI";
             $mapUnit->isReduced = $unit->isReduced;
             $mapUnit->x = $mapGrid->getPixelX();
             $mapUnit->y = $mapGrid->getPixelY();
+            $mapUnit->parent = $unit->hexagon->parent;
             $mapUnit->moveAmountUsed = $unit->moveAmountUsed;
-            $mapUnit->maxMove = $storm ? 1 : $unit->maxMove;
-            $mapUnit->strength = $storm && $unit->forceId == $attackingId ? $unit->strength/2 :$unit->strength ;
+            $mapUnit->maxMove = $unit->maxMove;
+            $mapUnit->strength = $unit->strength ;
             $mapUnits[] = $mapUnit;
         }
         foreach($units as $i => $unit){

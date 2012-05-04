@@ -162,6 +162,8 @@ function mapMouseDown(event) {
 
 function counterMouseDown(event) {
     var id;
+    alert("shift");
+    alert(event.shiftKey);
     if ( document.addEventListener ) {
         id = event.target.id.toString();
     }

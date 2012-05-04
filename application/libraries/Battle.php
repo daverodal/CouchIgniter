@@ -25,7 +25,7 @@ class Battle
                 @include_once(WARGAMES."BfAC/BattleForAllenCreek.php");
                 break;
             default:
-                throw(new Exception("Bad Class Dude!"));
+                throw(new Exception("Bad Class in getBattle '$name''"));
         }
         return new $name($doc);
     }
@@ -50,7 +50,7 @@ class Battle
                 @include_once(WARGAMES."BfAC/view.php");
                 break;
             default:
-                throw(new Exception("Bad Class Dude!"));
+                throw(new Exception("Bad Class in getView '$name''"));
         }
     }
     public static function getHeader($name,$data){
@@ -74,7 +74,26 @@ class Battle
                 @include_once(WARGAMES."BfAC/header.php");
                 break;
             default:
-                throw(new Exception("Bad Class Dude!"));
+                throw(new Exception("Bad Class in getHeader '$name''"));
+        }
+
+    }
+    public static function playAs($name,$wargame){
+        switch($name){
+            case "MartianCivilWar":
+                @include_once(WARGAMES."MCW/MartianCivilWar.php");
+                MartianCivilWar::playAs($wargame);
+                break;
+            case "NapOnMars":
+                @include_once(WARGAMES."NapOnMars/NapOnMars.php");
+//                @include_once("/Documents and Settings/Owner/Desktop/webwargaming/header.php");
+                break;
+            case "BattleOfMoscow":
+                break;
+            case "BattleForAllenCreek":
+                break;
+            default:
+                throw(new Exception("Bad Class playAs '$name''"));
         }
 
     }
@@ -94,7 +113,7 @@ class Battle
                 @include_once(WARGAMES."BfAC/BattleForAllenCreek.php");
                 break;
             default:
-                throw(new Exception("Bad Class Dude!"));
+                throw(new Exception("Bad Class in loadGame '$name'"));
         }
     }
 
