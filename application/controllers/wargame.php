@@ -75,7 +75,7 @@ class Wargame extends CI_Controller
         if(!$wargame){
             $seq = $this->couchsag->get("/_design/newFilter/_view/getLobbies");
             foreach($seq->rows as $row){
-                $lobbies[] =  array("name"=>$row->key, "id"=>$row->id);
+                $lobbies[] =  array("name"=>$row->value, "id"=>$row->id);
             }
             $this->parser->parse("wargame/wargameLobbyView",compact("lobbies"));
             return;
@@ -368,36 +368,9 @@ class Wargame extends CI_Controller
         $this->load->library("battle");
         $game = $doc->gameName;
         $battle = $this->battle->getBattle($game,$doc->wargame);
-
-//        $battle = new BattleForAllenCreek($doc->wargame);
-
-        if($small){
-                   $battle->mapData[$player]->setData(44,60, // originX, originY
-            20, 20, // top hexagon height, bottom hexagon height
-            12, 24, // hexagon edge width, hexagon center width
-            1410, 1410 // max right hexagon, max bottom hexagon
-        );
-            $battle->playerData->${player}->mapWidth = "744px";
-            $battle->playerData->${player}->mapHeight = "425px";
-            $battle->playerData->${player}->unitSize = "32px";
-            $battle->playerData->${player}->unitFontSize = "12px";
-            $battle->playerData->${player}->unitMargin = "-21px";
-         }else{
-            $battle->mapData[$player]->setData(57,84, // originX, originY
-                28, 28, // top hexagon height, bottom hexagon height
-                16, 32, // hexagon edge width, hexagon center width
-                1410, 1410 // max right hexagon, max bottom hexagon
-            );
-            $battle->playerData->${player}->mapWidth = "996px";
-            $battle->playerData->${player}->mapHeight = "593px";
-            $battle->playerData->${player}->unitSize = "42px";
-            $battle->playerData->${player}->unitFontSize = "16px";
-            $battle->playerData->${player}->unitMargin = "-23px";
-        }
+        $battle->resize($small,$player);
         $doc->wargame = $battle->save();
         $doc = $this->wargame_model->setDoc($doc);
-
-        //        var_dump($doc);
         redirect("/wargame/play/");
     }
  /*   public function phase()
@@ -474,7 +447,6 @@ class Wargame extends CI_Controller
         }
         $wargame = urldecode($this->session->userdata("wargame"));
 //        $wargame = "MainWargame";
-        var_dump($wargame);
         $this->load->model("wargame/wargame_model");
         $doc = $this->wargame_model->getDoc(urldecode($wargame));
         $this->load->library("battle");

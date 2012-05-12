@@ -1,4 +1,4 @@
 <!doctype html>
 <html>
-<?php  Battle::playAs($game,$wargame);
+<?php echo "playing As"; Battle::playAs($game,$wargame);
 

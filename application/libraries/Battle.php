@@ -8,74 +8,20 @@
 define ("WARGAMES","/Documents and Settings/Owner/Desktop/");
 class Battle
 {
+       public function resize($size,$player){
 
+       }
     public static  function getBattle($name,$doc){
-        switch($name){
-            case "MartianCivilWar":
-//                @include_once("/home/davidrod/webwargaming/MartianCivilWar.php");
-                @include_once(WARGAMES."MCW/MartianCivilWar.php");
-                break;
-            case "NapOnMars":
-                @include_once(WARGAMES."NapOnMars/NapOnMars.php");
-                break;
-            case "BattleOfMoscow":
-                @include_once(WARGAMES."webwargaming/BattleOfMoscow.php");
-                break;
-            case "BattleForAllenCreek":
-                @include_once(WARGAMES."BfAC/BattleForAllenCreek.php");
-                break;
-            default:
-                throw(new Exception("Bad Class in getBattle '$name''"));
-        }
+        self::loadGame($name);
         return new $name($doc);
     }
     public static function getView($name){
-        switch($name){
-            case "MartianCivilWar":
-                @include_once(WARGAMES."MCW/MartianCivilWar.php");
-                MartianCivilWar::getView();
-//                @include_once(WARGAMES."webwargaming/view.php");
-                break;
-            case "NapOnMars":
-                @include_once(WARGAMES."NapOnMars/napOnMars.php");
-                NapOnMars::getView();
-//                @include_once("/Documents and Settings/Owner/Desktop/webwargaming/view.php");
-                break;
-           case "BattleOfMoscow":
-               @include_once(WARGAMES."webwargaming/BattleOfMoscow.php");
-                @include_once(WARGAMES."webwargaming/view.php");
-                break;
-            case "BattleForAllenCreek":
-                @include_once(WARGAMES."BfAC/BattleForAllenCreek.php");
-                @include_once(WARGAMES."BfAC/view.php");
-                break;
-            default:
-                throw(new Exception("Bad Class in getView '$name''"));
-        }
+        self::loadGame($name);
+        $name::getView();
     }
     public static function getHeader($name,$data){
-        switch($name){
-            case "MartianCivilWar":
-                @include_once(WARGAMES."MCW/MartianCivilWar.php");
-//                @include_once("/Documents and Settings/Owner/Desktop/webwargaming/header.php");
-                MartianCivilWar::getHeader($data);
-             break;
-            case "NapOnMars":
-                @include_once(WARGAMES."NapOnMars/NapOnMars.php");
-//                @include_once("/Documents and Settings/Owner/Desktop/webwargaming/header.php");
-                NapOnMars::getHeader($data);
-                break;
-            case "BattleOfMoscow":
-                @include_once(WARGAMES."webwargaming/BattleOfMoscow.php");
-                @include_once(WARGAMES."webwargaming/header.php");
-                break;
-            case "BattleForAllenCreek":
-                @include_once(WARGAMES."BfAC/BattleForAllenCreek.php");
-                @include_once(WARGAMES."BfAC/header.php");
-                break;
-            default:
-                throw(new Exception("Bad Class in getHeader '$name''"));
-        }
+        self::loadGame($name);
+        $name::getHeader($data);
 
     }
     public static function playAs($name,$wargame){
@@ -84,13 +30,28 @@ class Battle
                 @include_once(WARGAMES."MCW/MartianCivilWar.php");
                 MartianCivilWar::playAs($wargame);
                 break;
+            case "Pink":
+                @include_once(WARGAMES."pink/pink.php");
+                Pink::playAs($wargame);
+                break;
             case "NapOnMars":
-                @include_once(WARGAMES."NapOnMars/NapOnMars.php");
+                @include_once(WARGAMES."nappy/NapOnMars.php");
+                echo "Wargame is $wargame";
+                NapOnMars::playAs($wargame);
+//                @include_once("/Documents and Settings/Owner/Desktop/webwargaming/header.php");
+                break;
+            case "Waterloo":
+                @include_once(WARGAMES."NapOnMars/Waterloo.php");
+                echo "Wargame is $wargame";
+                Waterloo::playAs($wargame);
 //                @include_once("/Documents and Settings/Owner/Desktop/webwargaming/header.php");
                 break;
             case "BattleOfMoscow":
+                redirect("/wargame/play");
                 break;
             case "BattleForAllenCreek":
+                redirect("/wargame/play");
+
                 break;
             default:
                 throw(new Exception("Bad Class playAs '$name''"));
@@ -103,8 +64,14 @@ class Battle
             case "MartianCivilWar":
                 @include_once(WARGAMES."MCW/MartianCivilWar.php");
                 break;
+            case "Pink":
+                @include_once(WARGAMES."pink/pink.php");
+                break;
             case "NapOnMars":
-                @include_once(WARGAMES."NapOnMars/NapOnMars.php");
+                @include_once(WARGAMES."nappy/NapOnMars.php");
+                break;
+            case "Waterloo":
+                @include_once(WARGAMES."NapOnMars/Waterloo.php");
                 break;
             case "BattleOfMoscow":
                 @include_once(WARGAMES."webwargaming/BattleOfMoscow.php");

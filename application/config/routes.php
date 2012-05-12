@@ -38,7 +38,7 @@
 |
 */
 
-$route['default_controller'] = "lobby";
+$route['default_controller'] = "wargame";
 $route['404_override'] = '';
 
 

@@ -7,8 +7,11 @@
 ?>
 <!doctype html>
 <html>
-Attach to game:
+Join game:
+<ul>
 {lobbies}
-<a href="<?=site_url("wargame/changeWargame");?>/{name}/">{name}</a>
+<li>
+<a href="<?=site_url("wargame/changeWargame");?>/{id}/">{id} -> {name}</a>
+    </li>
 {/lobbies}
-
+    </ul>
