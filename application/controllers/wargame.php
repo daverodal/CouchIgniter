@@ -95,7 +95,7 @@ class Wargame extends CI_Controller
         $this->load->library('battle');
         $gamesAvail = $this->couchsag->get("/_design/newFilter/_view/getAvailGames");
         foreach($gamesAvail->rows as $row){
-            $games[] =  array("name"=>$row->value);
+            $games[] =  array("name"=>$row->value[0],'arg'=>$row->value[1]);
         }
         $units = $doc->wargame->force->units;
 //        var_dump($units[0]);
@@ -333,7 +333,7 @@ class Wargame extends CI_Controller
         $x = (int)$this->input->post('x',FALSE);
         $y = (int)$this->input->post('y',FALSE);
         $event = (int)$this->input->post('event',FALSE);
-        $id = (int)$this->input->post('id',FALSE);
+        $id = $this->input->post('id',FALSE);
 
         $this->load->model("wargame/wargame_model");
         $doc = $this->wargame_model->getDoc(urldecode($wargame));
@@ -411,7 +411,7 @@ class Wargame extends CI_Controller
         return compact('success');
     }*/
 
-   public function unitInit($game = "MartianCivilWar")
+   public function unitInit($game = "MartianCivilWar", $arg = false)
     {
         $user = $this->session->userdata("user");
         if (!$user) {
@@ -424,7 +424,7 @@ class Wargame extends CI_Controller
         $doc = $this->wargame_model->getDoc(urldecode($wargame));
         $this->load->library("battle");
 //        $game = "BattleOfMoscow";
-        $battle = $this->battle->getBattle($game,null);
+        $battle = $this->battle->getBattle($game,null, $arg);
 //       $battle = new BattleOfMoscow();
         $doc->wargame = $battle->save();
         $doc->chats = array();

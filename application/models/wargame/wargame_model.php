@@ -179,7 +179,11 @@ echo "HI";
 
         Battle::loadGame($gameName);
 //Battle::getHeader();
-        $playerData = $doc->wargame->mapData[$player];
+        if(isset($doc->wargame->mapViewer)){
+        $playerData = $doc->wargame->mapViewer[$player];
+        }else{
+            $playerData = $doc->wargame->mapData[$player];
+        }
         $mapGrid = new MapGrid($playerData);
         $mapUnits = array();
         $moveRules = $doc->wargame->moveRules;
@@ -189,6 +193,12 @@ echo "HI";
         $storm = $combatRules->storm;
         $attackingId = $doc->wargame->gameRules->attackingForceId;
         foreach($units as $unit){
+            if(is_object($unit->hexagon)){
+//                $unit->hexagon->parent = $unit->parent;
+            }else{
+                $unit->hexagon = new Hexagon($unit->hexagon);
+              }
+//            $unit->hexagon->parent = $unit->parent;
             $mapGrid->setHexagonXY( $unit->hexagon->x, $unit->hexagon->y);
             $mapUnit = new StdClass();
             $mapUnit->isReduced = $unit->isReduced;
@@ -207,6 +217,26 @@ echo "HI";
             $u->maxMove = $unit->maxMove;
             $u->forceId = $unit->forceId;
             $units[$i] = $u;
+        }
+        if($moveRules->moves){
+            foreach($moveRules->moves as $k => $move){
+                $hex = new Hexagon($k);
+                $mapGrid->setHexagonXY( $hex->getX(), $hex->getY());
+
+                $moveRules->moves->{$k}->pixX = $mapGrid->getPixelX();
+                $moveRules->moves->{$k}->pixY = $mapGrid->getPixelY();
+            }
+            if(false && $moveRules->path){
+                foreach($moveRules->path as $hexName){
+                    $hex = new Hexagon($hexName);
+                    $mapGrid->setHexagonXY($hex->x,$hex->y);
+
+                    $path = new stdClass();
+                    $path->pixX = $mapGrid->getPixelX();
+                    $path->pixY = $mapGrid->getPixelY();
+                    $moveRules->hexPath[] = $path;
+                }
+            }
         }
         $force->units = $units;
         $gameRules = $wargame->gameRules;

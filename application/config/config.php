@@ -16,7 +16,7 @@
 */
 $config['base_url']	= '';
 
-$config['gamePath'] = "/Documents and Settings/Owner/Desktop/webwargaming/";
+$config['gamePath'] = "/xampp/htdocs/webwargaming/";
 
 /*
 |--------------------------------------------------------------------------
