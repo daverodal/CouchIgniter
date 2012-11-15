@@ -57,7 +57,7 @@ class Wargame extends CI_Controller
         $gamesAvail = $this->couchsag->get("/_design/newFilter/_view/getAvailGames");
         $games = array();
         foreach($gamesAvail->rows as $row){
-        $games[] =  array("name"=>$row->value);
+        $games[] =  array("name"=>$row->value[0],'arg'=>$row->value[1]);
     }
 
         $this->parser->parse("wargame/wargameUnattached",compact("games"));

@@ -54,7 +54,7 @@
         #chats li span{
             color:#333;
         }
-        .unit {border:2px solid blue;}
+        .unit {border:3px solid blue;}
     </style>
     <?php Battle::getHeader($gameName, $playerData);?>
 </head>
