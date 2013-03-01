@@ -6,7 +6,7 @@ class Wargame_model extends CI_Model
     public function enterWargame($user, $wargame, $player = 0)
     {
         $doc = $this->couchsag->get($wargame);
-        var_dump($doc->wargame->playerData);//die("here");
+//        var_dump($doc->wargame->playerData);//die("here");
         if (!is_array($doc->wargame->players)) {
             $doc->wargame->players = array("","","");
         }
@@ -17,7 +17,7 @@ class Wargame_model extends CI_Model
             $doc->wargame->players[$index] = "";
             $doc->wargame->players[$player] = $user;
         }
-        var_dump($doc->wargame->playerData);
+//        var_dump($doc->wargame->playerData);
         $this->couchsag->update($doc->_id, $doc);
 
     }
@@ -64,20 +64,58 @@ class Wargame_model extends CI_Model
         $users = new StdClass();
         $users->map = <<<aHEREMAP
         function(doc) {
-            if(doc.docType == 'game' || doc.docType == 'wargame'){
+            if(doc.docType == 'users'){
                 var ret = 0;
 
-                if(doc.users){
-                    for(var i = 0;i < doc.users.length;i++){
-                    emit([doc.docType,doc._id,doc.users[i]],1);
-                    }
-                    if(doc.users.length == 0){
-                        emit([doc.docType,doc._id,null],0);
+                if(doc.userByEmail){
+                    for(var email in doc.userByEmail){
+                        emit(email,doc.userByEmail[email]);
                     }
                 }
             }
         }
 aHEREMAP;
+        $userById = new stdClass();
+        $userById->map = <<<byId
+        function(doc) {
+            if(doc.docType == 'users'){
+                var ret = 0;
+
+                if(doc.userByEmail){
+                    var aThing;
+                    for(var email in doc.userByEmail){
+                        aUser = doc.userByEmail[email];
+                        theUser = {};
+                        for(x in aUser){
+                            theUser[x] = aUser[x];
+                        }
+                        theUser.email = email;
+                        emit(doc.userByEmail[email].id,theUser);
+                    }
+                }
+            }
+        }
+byId;
+        $userByUsername = new stdClass();
+        $userByUsername->map = <<<byUsername
+        function(doc) {
+            if(doc.docType == 'users'){
+                var ret = 0;
+
+                if(doc.userByEmail){
+                    for(var email in doc.userByEmail){
+                        aUser = doc.userByEmail[email];
+                        theUser = {};
+                        for(x in aUser){
+                            theUser[x] = aUser[x];
+                        }
+                        theUser.email = email;
+                        emit(doc.userByEmail[email].username,theUser);
+                    }
+                }
+            }
+        }
+byUsername;
         $wargame = new StdClass();
         $wargame->map = <<<HEREMAP
         function(doc) {
@@ -108,7 +146,9 @@ HEREUPDATE;
 
         $updates->addchat = $update;
         $views->wargame = $wargame;
-        $views->users = $users;
+        $views->userByEmail = $users;
+        $views->userById = $userById;
+        $views->userByUsername = $userByUsername;
         var_dump($wargame);echo "HEE";
         $data = array("_id" => "_design/newFilter", "views" => $views, "filters" => $filters, "updates"=> $updates);
         try{
@@ -120,7 +160,12 @@ echo "HI";
             var_dump($this->couchsag->delete($doc->_id,$doc->_rev));
             echo "IH";
         }
-        $this->couchsag->create($data);
+        echo "create";
+        var_dump($data);
+        try{
+        echo $this->couchsag->create($data);
+        }catch(Exception $e){echo "<pre> EXC";var_dump($e);}
+        echo "created";
     }
 
     public function createWargame($name)
@@ -150,16 +195,22 @@ echo "HI";
     }
 
 
-    public function getChanges($wargame, $last_seq = '', $chatsIndex = 0,$user = 'observer'){
+    public function getChanges($wargame, $last_seq = 0, $chatsIndex = 0,$user = 'observer'){
         global $mode_name, $phase_name;
 
+        /*
+         * TODO: make this have a trip switch so it won't spin out of control if the socket is down
+         */
         do{
-            if ($last_seq) {
-                $seq = $this->couchsag->get("/_changes?since=$last_seq&feed=longpoll&filter=newFilter/namefind&name=$wargame");
-            } else {
-                $seq = $this->couchsag->get("/_changes");
-            }
-        }while(count($seq->results) == 0);
+            $retry = false;
+            try{
+                if ($last_seq) {
+                    $seq = $this->couchsag->get("/_changes?since=$last_seq&feed=longpoll&filter=newFilter/namefind&name=$wargame");
+                } else {
+                    $seq = $this->couchsag->get("/_changes");
+                }
+            }catch(Exception $e){$retry = true;}
+        }while($retry || $seq->last_seq <= $last_seq);
         $last_seq = $seq->last_seq;
 
         $doc = $this->couchsag->get($wargame);

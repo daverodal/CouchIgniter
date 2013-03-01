@@ -5,7 +5,7 @@
  * Time: 5:03 PM
  * Link: http://davidrodal.com
  * */
-define ("WARGAMES","/xampp/htdocs/");
+define ("WARGAMES","/Users/markarianr/Sites/");
 class Battle
 {
        public function resize($size,$player){
@@ -15,9 +15,9 @@ class Battle
         self::loadGame($name);
         return new $name($doc, $arg);
     }
-    public static function getView($name){
+    public static function getView($name,$mapUrl, $player = 0){
         self::loadGame($name);
-        $name::getView();
+        $name::getView($mapUrl,$player);
     }
     public static function getHeader($name,$data){
         self::loadGame($name);
@@ -66,7 +66,7 @@ class Battle
     public static function loadGame($name){
         switch($name){
             case "MartianCivilWar":
-                @include_once(WARGAMES."MartianCivilWar/MartianCivilWar.php");
+                include_once(WARGAMES."MartianCivilWar/MartianCivilWar.php");
                 break;
             case "MCW":
                 @include_once(WARGAMES."MCW/MartianCivilWar.php");
@@ -84,7 +84,7 @@ class Battle
                 include_once(WARGAMES."BattleOfMoscow/BattleOfMoscow.php");
                 break;
             case "BattleForAllenCreek":
-                include_once(WARGAMES."webwargaming/BattleForAllenCreek.php");
+                include_once(WARGAMES."BattleOfAllenCreek/BattleForAllenCreek.php");
                 break;
             default:
                 throw(new Exception("Bad Class in loadGame '$name'"));

@@ -73,6 +73,10 @@ class Wargame extends CI_Controller
         $this->load->model("wargame/wargame_model");
 
         if(!$wargame){
+            $users = $this->couchsag->get('/_design/newFilter/_view/userByEmail?startkey="juliet.schneider@gmail.com"&endkey="juliet.schneider@gmail.com"');
+            $userids = $this->couchsag->get('/_design/newFilter/_view/userById');
+
+
             $seq = $this->couchsag->get("/_design/newFilter/_view/getLobbies");
             foreach($seq->rows as $row){
                 $lobbies[] =  array("name"=>$row->value, "id"=>$row->id);
@@ -118,11 +122,12 @@ class Wargame extends CI_Controller
             $newUnits[] = $newUnit;
         }
         $units = $newUnits;
+        $mapUrl = $doc->wargame->mapData->mapUrl;
 //        $myCrt = new CombatResultsTable();
         //echo "Welcome $user";
         //echo $this->twig->render("wargame/wargameView.php",compact("wargame","lobbies"));
 //        $this->parser->parse("wargame/wargameView",array("things" => array(array("a"=>"a"),array("b"=>"b"),array("c"=>"c"))));
-        $this->parser->parse("wargame/wargameView",compact("units","playerData","games","gameName","wargame","lobbies","user"));
+        $this->parser->parse("wargame/wargameView",compact("player","mapUrl","units","playerData","games","gameName","wargame","lobbies","user"));
 
     }
 
@@ -151,12 +156,15 @@ class Wargame extends CI_Controller
     }
     function login()
     {
+        $this->load->model('users/users_model');
         $user = $this->session->userdata("user");
         $data = $this->input->post();
+
         if (!$user && $data) {
-            if($data['password'] == "2havefun")
+            if($this->users_model->isValidLogin($data['name'],md5($data['password'])))
             {
-            $user = $data['name'];
+                $user = $this->users_model->getUserByEmail($data['name']);
+            $user = $user->username;
             $this->session->set_userdata(array("user" => $user));
 //            $this->session->set_userdata(array("wargame" => "MainWargame"));
 //            $this->load->model('wargame/wargame_model');
