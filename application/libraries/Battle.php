@@ -5,7 +5,7 @@
  * Time: 5:03 PM
  * Link: http://davidrodal.com
  * */
-define ("WARGAMES","/xampp/htdocs/");
+define ("WARGAMES","/var/www/");
 class Battle
 {
        public function resize($size,$player){
@@ -84,7 +84,7 @@ class Battle
                 include_once(WARGAMES."BattleOfMoscow/BattleOfMoscow.php");
                 break;
             case "BattleForAllenCreek":
-                include_once(WARGAMES."webwargaming/BattleForAllenCreek.php");
+                include_once(WARGAMES."allenCreek/BattleForAllenCreek.php");
                 break;
             default:
                 throw(new Exception("Bad Class in loadGame '$name'"));
