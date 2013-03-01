@@ -20,6 +20,19 @@ class Wargame extends CI_Controller
 //        $seq = $this->couchsag->update($doc->_id,$doc);
 
     }
+
+	function nuke(){
+return;
+
+        $data = $this->couchsag->get("Splunge");
+        //$data = array("_id" => "Splunge", "docType" => "gamesAvail", "games" => array(array("BattleForAllenCreek")));
+	$data->games[] = array("MartianCivilWar");
+	//array_pop($data->games);
+        $this->couchsag->update("Splunge",$data);
+        $data = $this->couchsag->get("Splunge");
+var_dump($data);
+    }
+
     function index()
     {
         $user = $this->session->userdata("user");
