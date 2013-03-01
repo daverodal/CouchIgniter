@@ -5,6 +5,7 @@
  * Date: 1/29/13
  * Time: 2:53 PM
  * To change this template use File | Settings | File Templates.
+ * renamed to users.php
  */
 class Users extends CI_Controller
 {
