@@ -23,6 +23,8 @@ class Users extends CI_Controller
     function addUser()
     {
 
+	echo "No";
+	return;
         $this->load->helper(array('form', 'url'));
 
         $this->load->library('form_validation');
