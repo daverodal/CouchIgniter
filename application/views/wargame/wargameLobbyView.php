@@ -7,6 +7,12 @@
 ?>
 <!doctype html>
 <html>
+<head>
+    <script src="<?=base_url("js/jquery-1.9.0.min.js");?>"></script>
+    <script type="text/javascript">
+    </script>
+</head>
+<h3>You can <a href="<?=site_url("wargame/createWargame");?>">Create a new Wargame</a>  Or </h3>
 Join game:
 <ul>
 {lobbies}

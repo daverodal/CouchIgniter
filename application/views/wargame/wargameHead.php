@@ -1,11 +1,11 @@
 <head>
     <link rel="shortcut icon" href="/favicon.ico" type="image/icon">
-    <link href="<?=base_url("js/jquery-ui-1.8.20.custom.css");?>" rel="stylesheet" type="text/css"/>
-    <script src="<?=base_url("js/jquery.min.js");?>"></script>
-    <script src="<?=base_url("js/jquery-ui-1.8.20.custon.min.js");?>"></script>
-    <script src="<?=base_url("js/jquery-ui.min.js");?>"></script>
-    <script src="<?=base_url("js/jquery-ui.min.js");?>"></script>
-    <script src="<?=base_url("js/jquery-ui.min.js");?>"></script>
+<!--    <link href="--><?//=base_url("js/jquery-ui.css");?><!--" rel="stylesheet" type="text/css"/>-->
+    <script src="<?=base_url("js/jquery-1.9.0.min.js");?>"></script>
+    <script src="<?=base_url("js/jquery-ui-1.9.2.custom.min.js");?>"></script>
+<!--    <script src="http://code.jquery.com/jquery-1.8.3.js"></script>-->
+<!--    <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>-->
+
     <!--    <script src="--><?//=base_url("js/form.js");?><!--"></script>-->
     <script src="<?=base_url("js/sync.js");?>"></script>
     <style type="text/css">
@@ -30,11 +30,6 @@
         #city div {
             background: #ccf;
             height: 100px;
-        }
-
-        #clock {
-            font-size: 16px;
-            float: left;
         }
 
         #users {
