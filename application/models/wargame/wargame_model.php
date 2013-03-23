@@ -240,6 +240,7 @@ echo "HI";
         $moveRules = $doc->wargame->moveRules;
         $combatRules = $doc->wargame->combatRules;
         $moveRules->index = $combatRules->index;
+        $display = $doc->wargame->display;
         $units = $force->units;
         $storm = $combatRules->storm;
         $attackingId = $doc->wargame->gameRules->attackingForceId;
@@ -291,6 +292,7 @@ echo "HI";
         }
         $force->units = $units;
         $gameRules = $wargame->gameRules;
+        $gameRules->display = $display;
         $gameRules->phase_name = $phase_name;
         $gameRules->mode_name = $mode_name;
         $gameRules->exchangeAmount = $force->exchangeAmount;

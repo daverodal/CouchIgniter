@@ -12,6 +12,7 @@
     <script type="text/javascript">
     </script>
 </head>
+<body>
 <h3>You can <a href="<?=site_url("wargame/createWargame");?>">Create a new Wargame</a>  Or </h3>
 Join game:
 <ul>
@@ -21,3 +22,6 @@ Join game:
     </li>
 {/lobbies}
     </ul>
+<a href="<?=site_url("wargame/logout");?>">Logout</a>
+</body>
+</html>

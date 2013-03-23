@@ -5,7 +5,8 @@
  * Time: 5:03 PM
  * Link: http://davidrodal.com
  * */
-define ("WARGAMES","/var/www/");
+define ("WARGAMES","/Users/markarianr/Sites/");
+//define ("WARGAMES","/var/www/");
 class Battle
 {
        public function resize($size,$player){
