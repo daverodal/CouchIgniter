@@ -31,16 +31,16 @@ class Battle
                 @include_once(WARGAMES."MartianCivilWar/MartianCivilWar.php");
                 MartianCivilWar::playAs($wargame);
                 break;
-            case "MCW":
-                @include_once(WARGAMES."MCW/MartianCivilWar.php");
-                MCW::playAs($wargame);
+            case "OMCW":
+                @include_once(WARGAMES."MartianCivilWar/OrigMartianCivilWar.php");
+                OMCW::playAs($wargame);
                 break;
             case "Pink":
                 @include_once(WARGAMES."pink/pink.php");
                 Pink::playAs($wargame);
                 break;
             case "NapOnMars":
-                @include_once(WARGAMES."NapoleonOnMars/NapOnMars.php");
+                @include_once(WARGAMES."MartianCivilWar/NapOnMars.php");
                 echo "Wargame is $wargame";
                 NapOnMars::playAs($wargame);
 //                @include_once("/Documents and Settings/Owner/Desktop/webwargaming/header.php");
@@ -69,14 +69,14 @@ class Battle
             case "MartianCivilWar":
                 include_once(WARGAMES."MartianCivilWar/MartianCivilWar.php");
                 break;
-            case "MCW":
-                @include_once(WARGAMES."MCW/MartianCivilWar.php");
+            case "OMCW":
+                include_once(WARGAMES."MartianCivilWar/OrigMartianCivilWar.php");
                 break;
             case "Pink":
                 @include_once(WARGAMES."pink/pink.php");
                 break;
             case "NapOnMars":
-                @include_once(WARGAMES."NapoleonOnMars/NapOnMars.php");
+                @include_once(WARGAMES."MartianCivilWar/NapOnMars.php");
                 break;
             case "Waterloo":
                 @include_once(WARGAMES."NapOnMars/Waterloo.php");
@@ -85,7 +85,7 @@ class Battle
                 include_once(WARGAMES."BattleOfMoscow/BattleOfMoscow.php");
                 break;
             case "BattleForAllenCreek":
-                include_once(WARGAMES."allenCreek/BattleForAllenCreek.php");
+                include_once(WARGAMES."BattleOfAllenCreek/BattleForAllenCreek.php");
                 break;
             default:
                 throw(new Exception("Bad Class in loadGame '$name'"));

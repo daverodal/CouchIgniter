@@ -76,6 +76,18 @@ var_dump($data);
         $this->parser->parse("wargame/wargameUnattached",compact("games"));
 
     }
+    function deleteGame($gameName){
+        if($gameName){
+            try{
+
+                $doc = $this->couchsag->get($gameName);
+                if($doc && $doc->_id && $doc->_rev){
+                    $this->couchsag->delete($doc->_id,$doc->_rev);
+                }
+            }catch(Exception $e){}
+        }
+        redirect("/wargame/play");
+    }
     function play()
     {
         $user = $this->session->userdata("user");
@@ -90,9 +102,10 @@ var_dump($data);
             $userids = $this->couchsag->get('/_design/newFilter/_view/userById');
 
 
-            $seq = $this->couchsag->get("/_design/newFilter/_view/getLobbies");
+            $seq = $this->couchsag->get("/_design/newFilter/_view/getLobbies?startkey=[\"$user\"]&endkey=[\"$user\",\"zzzzzzzzzzzzzzzzzzzzzzzz\"]");
+            $lobbies = [];
             foreach($seq->rows as $row){
-                $lobbies[] =  array("name"=>$row->value, "id"=>$row->id);
+                $lobbies[] =  array("name"=>implode(" ",$row->value), "id"=>$row->id);
             }
             $this->parser->parse("wargame/wargameLobbyView",compact("lobbies"));
             return;

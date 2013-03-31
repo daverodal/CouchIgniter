@@ -56,7 +56,7 @@ class Wargame_model extends CI_Model
     {
         $views = new StdClass();
         $views->getLobbies = new StdClass;
-        $views->getLobbies->map = "function(doc){if(doc.docType == 'wargame'){emit(doc._id,doc.gameName);}}";
+        $views->getLobbies->map = "function(doc){if(doc.docType == 'wargame'){emit([doc.createUser,doc._id],[doc.gameName,doc.createDate]);}}";
         $views->getAvailGames = new StdClass;
         $views->getAvailGames->map = "function(doc){if(doc.docType == 'gamesAvail'){if(doc.games){for(var i in doc.games){emit(doc.games[i],doc.games[i]);}}}}";
         $filters = new StdClass();
@@ -170,7 +170,7 @@ echo "HI";
 
     public function createWargame($name)
     {
-        $data = array('docType' => "wargame", "_id" => $name, "name" => $name, "chats" => array());
+        $data = array('docType' => "wargame", "_id" => $name, "name" => $name, "chats" => array(),"createDate"=>date("r"),"createUser"=>$this->session->userdata("user"));
         $this->couchsag->create($data);
     }
     public function addChat($chat, $user, $wargame)
@@ -296,8 +296,20 @@ echo "HI";
         $gameRules->phase_name = $phase_name;
         $gameRules->mode_name = $mode_name;
         $gameRules->exchangeAmount = $force->exchangeAmount;
+        $newSpecialHexes = new stdClass();
+        if($doc->wargame->mapData->specialHexes){
+            $specialHexes = $doc->wargame->mapData->specialHexes;
+            foreach($specialHexes as $k => $v){
+                $hex = new Hexagon($k);
+                $mapGrid->setHexagonXY($hex->x,$hex->y);
+
+                $path = new stdClass();
+                $newSpecialHexes->{"x".$mapGrid->getPixelX()."y".$mapGrid->getPixelY()} = $v;
+            }
+        }
+        $specialHexes = $newSpecialHexes;
         $clock = "The turn is ".$gameRules->turn.". The Phase is ". $phase_name[$gameRules->phase].". The mode is ". $mode_name[$gameRules->mode];
-        return compact("combatRules",'force','seq', 'chats', 'chatsIndex', 'last_seq', 'users', 'games', 'clock', 'mapUnits','moveRules','gameRules');
+        return compact("specialHexes","combatRules",'force','seq', 'chats', 'chatsIndex', 'last_seq', 'users', 'games', 'clock', 'mapUnits','moveRules','gameRules');
     }
 
 }

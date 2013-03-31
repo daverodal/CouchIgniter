@@ -38,7 +38,7 @@ function Sync(baseUrl) {
                                 var lastlength = that.lengths[i];
                                 data[i].splice(0, lastlength);
                             }
-                            that.callbacks[i](data[i]);
+                            that.callbacks[i](data[i],data);
                             if (data[i + "Index"]) {
                                 fetchArgs[i + "Index"] = data[i + "Index"];
                             }

@@ -14,11 +14,12 @@
 </head>
 <body>
 <h3>You can <a href="<?=site_url("wargame/createWargame");?>">Create a new Wargame</a>  Or </h3>
-Join game:
+Game You have created:
 <ul>
 {lobbies}
 <li>
 <a href="<?=site_url("wargame/changeWargame");?>/{id}/">{id} -> {name}</a>
+    <a href="<?=site_url("wargame/deleteGame");?>/{id}/">delete</a>
     </li>
 {/lobbies}
     </ul>
