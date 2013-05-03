@@ -3,10 +3,46 @@
 class Wargame_model extends CI_Model
 {
 
-    public function enterWargame($user, $wargame, $player = 0)
-    {
+    public function enterHotseat($wargame){
+        $user = $this->session->userdata("user");
         $doc = $this->couchsag->get($wargame);
-//        var_dump($doc->wargame->playerData);//die("here");
+        if($user != $doc->createUser){
+            return false;
+        }
+        $doc->playerStatus = "hot seat";
+        foreach($doc->wargame->players as $k => $v){
+            if($v != $user){
+                $doc->wargame->players[$k] = "";
+            }
+        }
+//        $doc->wargame->players[1] = $user;
+        $this->couchsag->update($doc->_id, $doc);
+        return true;
+        }
+    public function enterMulti($wargame,$user, $other){
+        $doc = $this->couchsag->get($wargame);
+//        var_dump($doc->wargame->players);
+        $doc->playerStatus = "multi";
+        $doc->wargame->players = array("",$user,$other);
+        $this->couchsag->update($doc->_id, $doc);
+    }
+    public function enterWargame($user, $wargame)
+    {
+
+        $doc = $this->couchsag->get($wargame);
+        if($doc->playerStatus == "created"){
+            return;
+        }
+        if($doc->playerStatus == "multi"){
+            return;
+        }
+        if($doc->playerStatus == "hot seat"){
+            if($user == $doc->createUser){
+                $player = $doc->wargame->gameRules->attackingForceId;
+            }else{
+                $player = 0;
+            }
+        }
         if (!is_array($doc->wargame->players)) {
             $doc->wargame->players = array("","","");
         }
@@ -17,7 +53,6 @@ class Wargame_model extends CI_Model
             $doc->wargame->players[$index] = "";
             $doc->wargame->players[$player] = $user;
         }
-//        var_dump($doc->wargame->playerData);
         $this->couchsag->update($doc->_id, $doc);
 
     }
@@ -55,8 +90,10 @@ class Wargame_model extends CI_Model
     public function initDoc()
     {
         $views = new StdClass();
+        $views->getGamesImIn = new StdClass;
+        $views->getGamesImIn->map = "function(doc){if(doc.docType == 'wargame' && doc.playerStatus == 'multi'){for(var i in doc.wargame.players){if(doc.wargame.players[i] == '' || doc.wargame.players[i] == doc.createUser){continue;}emit([doc.wargame.players[i],doc.createUser, doc.gameName,doc.playerStatus, doc.wargame.gameRules.attackingForceId, doc._id],[doc.gameName,doc.createDate,doc.wargame.players]);}}}";
         $views->getLobbies = new StdClass;
-        $views->getLobbies->map = "function(doc){if(doc.docType == 'wargame'){emit([doc.createUser,doc._id],[doc.gameName,doc.createDate]);}}";
+        $views->getLobbies->map = "function(doc){if(doc.docType == 'wargame'){emit([doc.createUser,doc.gameName,doc.playerStatus, doc.wargame.gameRules.attackingForceId, doc._id],[doc.gameName,doc.createDate,doc.wargame.players]);}}";
         $views->getAvailGames = new StdClass;
         $views->getAvailGames->map = "function(doc){if(doc.docType == 'gamesAvail'){if(doc.games){for(var i in doc.games){emit(doc.games[i],doc.games[i]);}}}}";
         $filters = new StdClass();
@@ -170,7 +207,9 @@ echo "HI";
 
     public function createWargame($name)
     {
-        $data = array('docType' => "wargame", "_id" => $name, "name" => $name, "chats" => array(),"createDate"=>date("r"),"createUser"=>$this->session->userdata("user"));
+        date_default_timezone_set("America/New_York");
+
+        $data = array('docType' => "wargame", "_id" => $name, "name" => $name, "chats" => array(),"createDate"=>date("r"),"createUser"=>$this->session->userdata("user"),"playerStatus"=>"created");
         $this->couchsag->create($data);
     }
     public function addChat($chat, $user, $wargame)
@@ -308,8 +347,26 @@ echo "HI";
             }
         }
         $specialHexes = $newSpecialHexes;
+        $newSpecialHexesChanges = new stdClass();
+        if($doc->wargame->mapData->specialHexesChanges){
+            $specialHexesChanges = $doc->wargame->mapData->specialHexesChanges;
+            foreach($specialHexesChanges as $k => $v){
+                $hex = new Hexagon($k);
+                $mapGrid->setHexagonXY($hex->x,$hex->y);
+
+                $path = new stdClass();
+                $newSpecialHexesChanges->{"x".$mapGrid->getPixelX()."y".$mapGrid->getPixelY()} = $v;
+            }
+        }
+        $flashMessages = $gameRules->flashMessages;
+        if(count($flashMessages)){
+
+        }
+//        $flashMessages = array("Victory","Is","Mine");
+        $specialHexesChanges = $newSpecialHexesChanges;
+        $gameRules->playerStatus = $doc->playerStatus;
         $clock = "The turn is ".$gameRules->turn.". The Phase is ". $phase_name[$gameRules->phase].". The mode is ". $mode_name[$gameRules->mode];
-        return compact("specialHexes","combatRules",'force','seq', 'chats', 'chatsIndex', 'last_seq', 'users', 'games', 'clock', 'mapUnits','moveRules','gameRules');
+        return compact("flashMessages","specialHexes","specialHexesChanges","combatRules",'force','seq', 'chats', 'chatsIndex', 'last_seq', 'users', 'games', 'clock', 'mapUnits','moveRules','gameRules');
     }
 
 }

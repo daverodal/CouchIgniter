@@ -30,7 +30,6 @@ return;
 	//array_pop($data->games);
         $this->couchsag->update("Splunge",$data);
         $data = $this->couchsag->get("Splunge");
-var_dump($data);
     }
 
     function index()
@@ -77,12 +76,18 @@ var_dump($data);
 
     }
     function deleteGame($gameName){
+        $user = $this->session->userdata("user");
+        if (!$user) {
+            redirect("/wargame/login/");
+        }
         if($gameName){
             try{
 
                 $doc = $this->couchsag->get($gameName);
+                if($doc->createUser == $user){
                 if($doc && $doc->_id && $doc->_rev){
                     $this->couchsag->delete($doc->_id,$doc->_rev);
+                }
                 }
             }catch(Exception $e){}
         }
@@ -90,24 +95,74 @@ var_dump($data);
     }
     function play()
     {
+        $this->load->helper('date');
         $user = $this->session->userdata("user");
         if (!$user) {
             redirect("/wargame/login/");
         }
         $wargame = urldecode($this->session->userdata("wargame"));
         $this->load->model("wargame/wargame_model");
-
         if(!$wargame){
-            $users = $this->couchsag->get('/_design/newFilter/_view/userByEmail?startkey="juliet.schneider@gmail.com"&endkey="juliet.schneider@gmail.com"');
+            $users = $this->couchsag->get('/_design/newFilter/_view/userByEmail');
             $userids = $this->couchsag->get('/_design/newFilter/_view/userById');
 
+            //$seq = $this->couchsag->get("/_design/newFilter/_view/getLobbies?startkey=[\"$user\"]&endkey=[\"$user\",\"zzzzzzzzzzzzzzzzzzzzzzzz\"]");
 
             $seq = $this->couchsag->get("/_design/newFilter/_view/getLobbies?startkey=[\"$user\"]&endkey=[\"$user\",\"zzzzzzzzzzzzzzzzzzzzzzzz\"]");
             $lobbies = [];
+            date_default_timezone_set("America/New_York");
+            $odd = 0;
+
             foreach($seq->rows as $row){
-                $lobbies[] =  array("name"=>implode(" ",$row->value), "id"=>$row->id);
+                $keys = $row->key;
+                $creator = array_shift($keys);
+                $name = array_shift($keys);
+                $gameType = array_shift($keys);
+                $playerTurn = array_shift($keys);
+                $filename = array_shift($keys);
+//               $key = implode($keys,"  ");
+                $id = $row->id;
+                $dt = new DateTime($row->value[1]);
+                $thePlayers = $row->value[2];
+                $playerTurn = $thePlayers[$playerTurn];
+                $myTurn = "";
+                if($playerTurn == $user){
+                    $playerTurn = "Your";
+                    $myTurn = "myTurn";
+                }else{
+                    $playerTurn .= "'s";
+                }
+                array_shift($thePlayers);
+                $players = implode($thePlayers," ");
+                $row->value[1] = "created ".formatDateDiff($dt)." ago";
+                $odd ^= 1;
+                $lobbies[] =  array("odd"=>$odd ? "odd":"","name"=>$row->value[0], 'date'=>$row->value[1], "id"=>$id, "creator"=>$creator,"gameType"=>$gameType, "turn"=>$playerTurn, "players"=>$players,"myTurn"=>$myTurn);
             }
-            $this->parser->parse("wargame/wargameLobbyView",compact("lobbies"));
+            $seq = $this->couchsag->get("/_design/newFilter/_view/getGamesImIn?startkey=[\"$user\"]&endkey=[\"$user\",\"zzzzzzzzzzzzzzzzzzzzzzzz\"]");
+
+            $otherGames = array();
+            foreach($seq->rows as $row){
+                $keys = $row->key;
+                $you = array_shift($keys);
+                $creator = array_shift($keys);
+                $name = array_shift($keys);
+                $gameType = array_shift($keys);
+                $playerTurn = array_shift($keys);
+                $filename = array_shift($keys);
+                $id = $row->id;
+                $dt = new DateTime($row->value[1]);
+                $thePlayers = $row->value[2];
+                $playerTurn = $thePlayers[$playerTurn];
+                if($playerTurn == $user){
+                    $playerTurn = "Your";
+                }
+                array_shift($thePlayers);
+                $players = implode($thePlayers," ");
+                $row->value[1] = "created ".formatDateDiff($dt)." ago";
+                $otherGames[] =  array("name"=>$row->value[0], 'date'=>$row->value[1], "id"=>$id, "creator"=>$creator,"gameType"=>$gameType, "turn"=>$playerTurn, "players"=>$players);
+            }
+            $myName = $user;
+            $this->parser->parse("wargame/wargameLobbyView",compact("lobbies","otherGames","myName"));
             return;
 
         }
@@ -116,6 +171,9 @@ var_dump($data);
         $gameName = $doc->gameName;
         if(!$gameName){
             redirect("/wargame/unattachedGame/");
+        }
+        if($doc->playerStatus && $doc->playerStatus == "created"){
+            redirect("/wargame/playAs");
         }
         $players = $doc->wargame->players;
         $player = array_search($user,$players);
@@ -202,7 +260,7 @@ var_dump($data);
 
     }
 
-    function changeWargame($newWargame = "MainWargame", $player = "0"){
+    function changeWargame($newWargame = false){
         $user = $this->session->userdata("user");
         if (!$user) {
             redirect("/wargame/login/");
@@ -210,18 +268,39 @@ var_dump($data);
         $wargame = $this->session->userdata("wargame");
 
         $this->load->model("wargame/wargame_model");
+        if($newWargame == false){
+            $newWargame = $wargame;
+        }
         $this->wargame_model->leaveWargame($user,$wargame);
-        $this->wargame_model->enterWargame($user,$newWargame,$player);
-
-//        $this->session->set_userdata(array("player" => $player));
-//        $this->session->set_userdata(array("mapWidth" => "783px"));
-//        $this->session->set_userdata(array("mapHeight" => "638px"));
-//        $this->session->set_userdata(array("unitSize" => "48px"));
+        $this->wargame_model->enterWargame($user,$newWargame);
 
         $this->session->set_userdata(array("wargame" => $newWargame));
         redirect("/wargame/");
     }
 
+    public function enterHotseat($newWargame){
+        $user = $this->session->userdata("user");
+        if (!$user) {
+            redirect("/wargame/login/");
+        }
+        $wargame = $this->session->userdata("wargame");
+        $this->load->model("wargame/wargame_model");
+        $ret = $this->wargame_model->enterHotseat($newWargame);
+        if($ret){
+            redirect("wargame/changeWargame/$newWargame");
+        }
+    }
+
+    public function enterMulti($newWargame,$other){
+        $user = $this->session->userdata("user");
+        if (!$user) {
+            redirect("/wargame/login/");
+        }
+        $wargame = $this->session->userdata("wargame");
+        $this->load->model("wargame/wargame_model");
+        $this->wargame_model->enterMulti($newWargame,$user,$other);
+        redirect("wargame/changeWargame/$newWargame");
+    }
     public function initDoc(){
         $user = $this->session->userdata("user");
         if (!$user) {
@@ -246,6 +325,7 @@ var_dump($data);
         $this->load->library("battle");
 
         $ret = $this->wargame_model->getChanges($wargame, $last_seq,$chatsIndex,$user);
+        $this->session->set_flashdata('anitem','avalue');
         echo json_encode($ret);
     }
 
@@ -374,12 +454,12 @@ var_dump($data);
         $this->load->library("battle");
         $game = $doc->gameName;
         $battle = $this->battle->getBattle($game,$doc->wargame);
-//        $battle = $this->_getBattle($game,$doc->wargame);
 
-//        $battle = new BattleForAllenCreek($doc->wargame);
-        $battle->poke($event,$id,$x,$y, $user);
-        $doc->wargame = $battle->save();
-        $this->wargame_model->setDoc($doc);
+        $doSave = $battle->poke($event,$id,$x,$y, $user,$doc->playerStatus == "hot seat", $doc->name);
+        if($doSave){
+            $doc->wargame = $battle->save();
+            $this->wargame_model->setDoc($doc);
+        }
 
         return compact('success');
     }
