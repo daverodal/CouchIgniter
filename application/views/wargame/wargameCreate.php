@@ -7,6 +7,7 @@
  */
  
 ?>
+<?= $message?>
 <form method="POST">
-Chat room name? <input name="wargame">
+Name of new game? <input name="wargame">
 </form>

@@ -5,26 +5,38 @@ class Wargame_model extends CI_Model
 
     public function enterHotseat($wargame){
         $user = $this->session->userdata("user");
+        try{
         $doc = $this->couchsag->get($wargame);
-        if($user != $doc->createUser){
+        }catch(Exception $e){return false;}
+        if(!doc || $user != $doc->createUser){
             return false;
         }
         $doc->playerStatus = "hot seat";
-        foreach($doc->wargame->players as $k => $v){
-            if($v != $user){
-                $doc->wargame->players[$k] = "";
-            }
-        }
+        $doc->wargame->players[1] = $doc->wargame->players[2] = $user;
+//        foreach($doc->wargame->players as $k => $v){
+//            if($v != $user){
+//                $doc->wargame->players[$k] = "";
+//            }
+//        }
 //        $doc->wargame->players[1] = $user;
+        $doc->wargame->gameRules->turnChange = true;
         $this->couchsag->update($doc->_id, $doc);
         return true;
         }
-    public function enterMulti($wargame,$user, $other){
-        $doc = $this->couchsag->get($wargame);
+    public function enterMulti($wargame,$playerOne, $playerTwo){
+        $user = $this->session->userdata("user");
+        try{
+            $doc = $this->couchsag->get($wargame);
+        }catch(Exception $e){return false;}
+        if(!doc || $user != $doc->createUser){
+            return false;
+        }
 //        var_dump($doc->wargame->players);
         $doc->playerStatus = "multi";
-        $doc->wargame->players = array("",$user,$other);
+        $doc->wargame->players = array("",$playerOne,$playerTwo);
+        $doc->wargame->gameRules->turnChange = true;
         $this->couchsag->update($doc->_id, $doc);
+        return true;
     }
     public function enterWargame($user, $wargame)
     {
@@ -37,22 +49,23 @@ class Wargame_model extends CI_Model
             return;
         }
         if($doc->playerStatus == "hot seat"){
+            return;
             if($user == $doc->createUser){
                 $player = $doc->wargame->gameRules->attackingForceId;
             }else{
                 $player = 0;
             }
         }
-        if (!is_array($doc->wargame->players)) {
-            $doc->wargame->players = array("","","");
-        }
-        if (!in_array($user, $doc->wargame->players)) {
-            $doc->wargame->players[$player] = $user;
-        }else{
-            $index = array_search($user, $doc->wargame->players);
-            $doc->wargame->players[$index] = "";
-            $doc->wargame->players[$player] = $user;
-        }
+//        if (!is_array($doc->wargame->players)) {
+//            $doc->wargame->players = array("","","");
+//        }
+//        if (!in_array($user, $doc->wargame->players)) {
+//            $doc->wargame->players[$player] = $user;
+//        }else{
+//            $index = array_search($user, $doc->wargame->players);
+//            $doc->wargame->players[$index] = "";
+//            $doc->wargame->players[$player] = $user;
+//        }
         $this->couchsag->update($doc->_id, $doc);
 
     }
@@ -98,6 +111,33 @@ class Wargame_model extends CI_Model
         $views->getAvailGames->map = "function(doc){if(doc.docType == 'gamesAvail'){if(doc.games){for(var i in doc.games){emit(doc.games[i],doc.games[i]);}}}}";
         $filters = new StdClass();
         $filters->namefind = "function(doc,req){if(!req.query.name){return false;} var names = req.query.name;names = names.split(',');for(var i = 0;i < names.length;i++){if(doc._id == names[i]){return true;}}return false;}";
+        $filters->lobbyChanges = <<<LobbyChanges
+        function(doc,req){
+
+            if(!req.query.name){
+                return false;
+            }
+            var player = req.query.name;
+            if(doc.docType != "wargame"){
+                return false;
+            }
+            if(doc.playerStatus == "created" && doc.createUser == req.query.name){
+                return true;
+            }
+            if(typeof(doc.wargame) == 'undefined'){
+                return false;
+            }
+
+            if(doc.createUser != player && doc.wargame.players[1] != player && doc.wargame.players[2] != player){
+                return false;
+            }
+            if(doc.wargame.gameRules.turnChange){
+                return true;
+            }
+            return false;
+       }
+LobbyChanges;
+
         $users = new StdClass();
         $users->map = <<<aHEREMAP
         function(doc) {
@@ -210,7 +250,10 @@ echo "HI";
         date_default_timezone_set("America/New_York");
 
         $data = array('docType' => "wargame", "_id" => $name, "name" => $name, "chats" => array(),"createDate"=>date("r"),"createUser"=>$this->session->userdata("user"),"playerStatus"=>"created");
+        try{
         $this->couchsag->create($data);
+        }catch(Exception $e){return $e->getMessage();}
+        return true;
     }
     public function addChat($chat, $user, $wargame)
     {
@@ -224,7 +267,9 @@ echo "HI";
     }
     public function getDoc($wargame)
     {
+        try{
         $doc = $this->couchsag->get($wargame);
+        }catch(Exception $e){return false;}
         return $doc;
     }
     public function setDoc($doc)
@@ -233,7 +278,19 @@ echo "HI";
         return $success;
     }
 
-
+    public function getLobbyChanges($user, $last_seq = 0, $chatsIndex = 0){
+        do{
+            $retry = false;
+            try{
+                if ($last_seq) {
+                    $seq = $this->couchsag->get("/_changes?since=$last_seq&feed=longpoll&filter=newFilter/lobbyChanges&name=$user");
+                } else {
+                    $seq = $this->couchsag->get("/_changes");
+                }
+            }catch(Exception $e){$retry = true;}
+        }while($retry || $seq->last_seq <= $last_seq);
+        return $seq;
+    }
     public function getChanges($wargame, $last_seq = 0, $chatsIndex = 0,$user = 'observer'){
         global $mode_name, $phase_name;
 

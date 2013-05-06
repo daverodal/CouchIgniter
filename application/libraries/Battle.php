@@ -55,7 +55,7 @@ class Battle
                 redirect("/wargame/play");
                 break;
             case "BattleForAllenCreek":
-                @include_once(WARGAMES . "MartianCivilWar/BattleForAllenCreek.php");
+                @include_once(WARGAMES . "BattleForAllanCreek/BattleForAllenCreek.php");
                 BattleForAllenCreek::playAs($wargame);
 
                 break;
