@@ -293,10 +293,15 @@ echo "HI";
     }
     public function getChanges($wargame, $last_seq = 0, $chatsIndex = 0,$user = 'observer'){
         global $mode_name, $phase_name;
+        $time = false;
+        if($_GET['timeTravel']){
+            $time = $_GET['timeTravel'];
+        }
 
         /*
          * TODO: make this have a trip switch so it won't spin out of control if the socket is down
          */
+        if(!$time){
         do{
             $retry = false;
             try{
@@ -308,8 +313,31 @@ echo "HI";
             }catch(Exception $e){$retry = true;}
         }while($retry || $seq->last_seq <= $last_seq);
         $last_seq = $seq->last_seq;
+        }
 
-        $doc = $this->couchsag->get($wargame);
+
+//        $time = $this->session->userdata("time");
+//        $time = $last_seq;
+        $match = "";
+//        $time = 65;
+//        $time = false;
+        if($time){
+            $doc = $this->couchsag->get($wargame."?revs_info=true");
+            $revs = $doc->_revs_info;
+            foreach($revs as $k => $v){
+                if(preg_match("/^$time-/",$v->rev)){
+                    $match = "rev=".$v->rev;
+//                    var_dump($match);
+                    break;
+                }
+            }
+
+        }
+        $doc = $this->couchsag->get($wargame."?$match");
+        $click = $doc->_rev;
+        $matches = array();
+        preg_match("/^([0-9]+)-/",$click,$matches);
+        $click = $matches[1];
         $games = $doc->games;
         $chats = array_slice($doc->chats, $chatsIndex);
         $chatsIndex = count($doc->chats);
@@ -324,6 +352,7 @@ echo "HI";
         $wargame = $doc->wargame;
         $gameName = $doc->gameName;
 
+//        $revs = $doc->_revs_info;
         Battle::loadGame($gameName);
 //Battle::getHeader();
         if(isset($doc->wargame->mapViewer)){
@@ -415,6 +444,8 @@ echo "HI";
                 $newSpecialHexesChanges->{"x".$mapGrid->getPixelX()."y".$mapGrid->getPixelY()} = $v;
             }
         }
+        $vp = $doc->wargame->victory->victoryPoints;
+//        echo "Victory ";var_dump($vp);
         $flashMessages = $gameRules->flashMessages;
         if(count($flashMessages)){
 
@@ -423,7 +454,7 @@ echo "HI";
         $specialHexesChanges = $newSpecialHexesChanges;
         $gameRules->playerStatus = $doc->playerStatus;
         $clock = "The turn is ".$gameRules->turn.". The Phase is ". $phase_name[$gameRules->phase].". The mode is ". $mode_name[$gameRules->mode];
-        return compact("flashMessages","specialHexes","specialHexesChanges","combatRules",'force','seq', 'chats', 'chatsIndex', 'last_seq', 'users', 'games', 'clock', 'mapUnits','moveRules','gameRules');
+        return compact("click","revs","vp","flashMessages","specialHexes","specialHexesChanges","combatRules",'force','seq', 'chats', 'chatsIndex', 'last_seq', 'users', 'games', 'clock', 'mapUnits','moveRules','gameRules');
     }
 
 }

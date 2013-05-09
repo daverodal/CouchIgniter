@@ -3,6 +3,7 @@ function Sync(baseUrl) {
     this.id = "Sync";
     this.callbacks = Object;
     this.lengths = {};
+    this.timeTravel = false;
     this.fetchTimes = [];
     this.animate = false;
     this.register = function (name, callback) {
@@ -17,8 +18,12 @@ function Sync(baseUrl) {
             theArgs = args;
         }
         that = this;
-        $.ajax(
-            {url:this.baseUrl + "/" + last_seq,
+        var travel = "";
+        if(this.timeTravel){
+            travel = "?timeTravel="+last_seq;
+        }
+        this.current = $.ajax(
+            {url:this.baseUrl + "/" + last_seq+travel,
                 type:"POST",
                 data:theArgs,
                 success:function (data, textstatus) {
@@ -47,7 +52,9 @@ function Sync(baseUrl) {
                     last_seq = data.last_seq;
                     var msg = '<span title="' + last_seq + '">Working</span>';
                     $("#comlink").html(msg);
-                    that.fetch(last_seq, fetchArgs);
+                    if(!that.timeTravel){
+                        that.fetch(last_seq, fetchArgs);
+                    }
                 },
                 complete:function (jq, textstatus) {
                     var now = ((new Date()).getTime()) / 1000;

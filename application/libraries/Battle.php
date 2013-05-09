@@ -9,12 +9,19 @@ define ("WARGAMES","/Users/markarianr/Sites/");
 //define ("WARGAMES","/var/www/");
 class Battle
 {
+    private static $theBattle;
        public function resize($size,$player){
 
        }
-    public static  function getBattle($name,$doc, $arg = false){
+    public static  function getBattle($name = false,$doc = null, $arg = false){
+
+        if(self::$theBattle){
+            return self::$theBattle;
+        }
         self::loadGame($name);
-        return new $name($doc, $arg);
+        $thisBattle = new $name($doc, $arg);
+        self::$theBattle = $thisBattle;
+        return self::$theBattle;;
     }
     public static function getView($name,$mapUrl, $player = 0){
         self::loadGame($name);

@@ -463,98 +463,12 @@ return;
         $this->wargame_model->addChat($chat,$user,urldecode($wargame));
         return compact('success');
     }
- /*   public function unit($unit = null)
-    {
-        $user = $this->session->userdata("user");
-        if (!$user) {
-            redirect("/wargame/login/");
-        }
-        $player = $this->session->userdata("player");
 
-        $wargame = urldecode($this->session->userdata("wargame"));
-        $chat = $this->input->post('chat',TRUE);
-        $this->load->model("wargame/wargame_model");
-        $doc = $this->wargame_model->getDoc(urldecode($wargame));
-        if($doc->wargame->gameRules->attackingForceId !== (int)$player){
-             echo "Nope $player";
-            return "nope";
-        }
-        $battle = new BattleForAllenCreek($doc->wargame);
-
-        	$battle->gameRules->processEvent(SELECT_COUNTER_EVENT, $unit, $battle->force->getUnitHexagon($unit));
-        $units = $battle->force->units;
-        $combats = array();
-        foreach($units as $unitId => $unit){
-            if($unit->combatNumber){
-                $combats[$unit->combatNumber]['combatIndex'] = $unit->combatIndex;
-                $combats[$unit->combatNumber]['units'][] = $unitId;
-            }
-        }
-        $doc->wargame = $battle->save();
-        $succ = $this->wargame_model->setDoc($doc);
-        return compact('success');
-    }*/
     public function save()
     {
-//        $user = $this->session->userdata("user");
-//        if (!$user) {
-//            redirect("/wargame/login/");
-//        }
-//        $player = $this->session->userdata("player");
-//        $wargame = urldecode($this->session->userdata("wargame"));
-//        $chat = $this->input->post('chat',TRUE);
-//        $this->load->model("wargame/wargame_model");
-//        $doc = $this->wargame_model->getDoc(urldecode($wargame));
-//        $battle = new BattleForAllenCreek($doc->wargame);
-//
-//        $battle->gameRules->processEvent(SELECT_COUNTER_EVENT, $unit, $battle->force->getUnitHexagon($unit));
-//        $units = $battle->force->units;
-//        $combats = array();
-//        foreach($units as $unitId => $unit){
-//            if($unit->combatNumber){
-//                $combats[$unit->combatNumber]['combatIndex'] = $unit->combatIndex;
-//                $combats[$unit->combatNumber]['units'][] = $unitId;
-//            }
-//        }
-//        $doc->wargame = $battle->save();
-//        $succ = $this->wargame_model->setDoc($doc);
-//        return compact('success');
+
     }
-/*    public function map()
-    {
-        $user = $this->session->userdata("user");
-        if (!$user) {
-            redirect("/wargame/login/");
-        }
-        $player = $this->session->userdata("player");
-        $wargame = urldecode($this->session->userdata("wargame"));
-        $x = (int)$this->input->post('x',FALSE);
-        $y = (int)$this->input->post('y',FALSE);
-        $this->load->model("wargame/wargame_model");
-        $doc = $this->wargame_model->getDoc(urldecode($wargame));
-        if($doc->wargame->gameRules->attackingForceId !== (int)$player){
-            echo "Nope $player";
-            return "nope";
-        }
 
-        $battle = new BattleForAllenCreek($doc->wargame);
-        $mapGrid = new MapGrid($battle->mapData);
-        $mapGrid->setPixels($x, $y);
-        $battle->gameRules->processEvent(SELECT_MAP_EVENT, MAP, $mapGrid->getHexagon() );
-        $units = $battle->force->units;
-        $combats = array();
-        foreach($units as $unitId => $unit){
-            if($unit->combatNumber){
-                $combats[$unit->combatNumber]['combatIndex'] = $unit->combatIndex;
-                $combats[$unit->combatNumber]['units'][] = $unitId;
-            }
-        }
-        $doc->wargame = $battle->save();
-        $doc->wargame->combats = $combats;
-        $doc = $this->wargame_model->setDoc($doc);
-
-        return compact('success');
-    }*/
 
     public function poke()
     {
@@ -572,6 +486,7 @@ return;
         $id = $this->input->post('id',FALSE);
 
         $this->load->model("wargame/wargame_model");
+        /*  @var  Wargame_model */
         $doc = $this->wargame_model->getDoc(urldecode($wargame));
         $this->load->library("battle");
         $game = $doc->gameName;
@@ -608,43 +523,6 @@ return;
         $doc = $this->wargame_model->setDoc($doc);
         redirect("/wargame/play/");
     }
- /*   public function phase()
-    {
-        $user = $this->session->userdata("user");
-        if (!$user) {
-            redirect("/wargame/login/");
-        }
-        $player = $this->session->userdata("player");
-        $wargame = urldecode($this->session->userdata("wargame"));
-        $x = $this->input->post('x',FALSE);
-        $y = $this->input->post('y',FALSE);
-        $this->load->model("wargame/wargame_model");
-        $doc = $this->wargame_model->getDoc(urldecode($wargame));
-        if($doc->wargame->gameRules->attackingForceId !== (int)$player){
-            var_dump($doc->wargame->gameRules->attackingForceId);
-            var_dump($player);
-            echo "Nope $player";
-            return "nope";
-        }
-        $battle = new BattleForAllenCreek($doc->wargame);
-        $mapGrid = new MapGrid($battle->mapData);
-        $mapGrid->setPixels($x, $y);
-//        echo "HIeeI $x $y ";var_dump($mapGrid->getHexagon()->number);echo "Hexed";
-        $battle->gameRules->processEvent(SELECT_BUTTON_EVENT, "next_phase", 0,0 );
-
-        //        $myBattle = $battle->save();
-        //        $jBattle = json_encode($myBattle);
-        //        //    $jBattle = preg_replace("/{/","{\n",$jBattle);
-        //        //    $jBattle = preg_replace("/}/","\n}",$jBattle);
-        //        file_put_contents("afile.out", $jBattle);
-
-        $doc->wargame = $battle->save();
-        //        var_dump($doc->wargame);
-        $doc = $this->wargame_model->setDoc($doc);
-
-        //        var_dump($doc);
-        return compact('success');
-    }*/
 
    public function unitInit($game = "MartianCivilWar", $arg = false)
     {
@@ -653,29 +531,20 @@ return;
             redirect("/wargame/login/");
         }
         $wargame = urldecode($this->session->userdata("wargame"));
-//        $wargame = "MainWargame";
         $chat = $this->input->post('chat',TRUE);
         $this->load->model("wargame/wargame_model");
         $doc = $this->wargame_model->getDoc(urldecode($wargame));
        if($user != $doc->createUser){
            redirect("wargame/play");
        }
+
         $this->load->library("battle");
-//        $game = "BattleOfMoscow";
         $battle = $this->battle->getBattle($game,null, $arg);
-//       $battle = new BattleOfMoscow();
         $doc->wargame = $battle->save();
         $doc->chats = array();
         $doc->gameName = $game;
         $doc = $this->wargame_model->setDoc($doc);
         redirect("wargame/playAs/$game");
-
-        //        	$battle->gameRules->processEvent(SELECT_COUNTER_EVENT, $unit, $battle->force->getUnitHexagon($umit));
-        //        $myBattle = $battle->save();
-        //        $jBattle = json_encode($myBattle);
-        //        //    $jBattle = preg_replace("/{/","{\n",$jBattle);
-        //        //    $jBattle = preg_replace("/}/","\n}",$jBattle);
-        //        file_put_contents("afile.out", $jBattle);
 
     }
     function playAs($game = false){
