@@ -23,9 +23,9 @@ class Battle
         self::$theBattle = $thisBattle;
         return self::$theBattle;;
     }
-    public static function getView($name,$mapUrl, $player = 0){
+    public static function getView($name,$mapUrl, $player = 0, $arg = false){
         self::loadGame($name);
-        $name::getView($mapUrl,$player);
+        $name::getView($mapUrl,$player, $arg);
     }
     public static function getHeader($name,$data){
         self::loadGame($name);
@@ -37,6 +37,10 @@ class Battle
             case "MartianCivilWar":
                 @include_once(WARGAMES . "MartianCivilWar/MartianCivilWar.php");
                 MartianCivilWar::playAs($wargame);
+                break;
+            case "Tutorial":
+                @include_once(WARGAMES . "MartianCivilWar/Tutorial.php");
+                Tutorial::playAs($wargame);
                 break;
             case "OMCW":
                 @include_once(WARGAMES . "MartianCivilWar/OrigMartianCivilWar.php");
@@ -62,7 +66,7 @@ class Battle
                 redirect("/wargame/play");
                 break;
             case "BattleForAllenCreek":
-                @include_once(WARGAMES . "BattleForAllanCreek/BattleForAllenCreek.php");
+                @include_once(WARGAMES . "MartianCivilWar/BattleForAllenCreek.php");
                 BattleForAllenCreek::playAs($wargame);
 
                 break;
@@ -76,6 +80,9 @@ class Battle
         switch($name){
             case "MartianCivilWar":
                 include_once(WARGAMES . "MartianCivilWar/MartianCivilWar.php");
+                break;
+            case "Tutorial":
+                include_once(WARGAMES . "MartianCivilWar/Tutorial.php");
                 break;
             case "OMCW":
                 include_once(WARGAMES . "MartianCivilWar/OrigMartianCivilWar.php");

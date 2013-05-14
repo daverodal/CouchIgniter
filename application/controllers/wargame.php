@@ -210,11 +210,12 @@ return;
         }
         $units = $newUnits;
         $mapUrl = $doc->wargame->mapData->mapUrl;
+        $arg = $doc->wargame->arg;
 //        $myCrt = new CombatResultsTable();
         //echo "Welcome $user";
         //echo $this->twig->render("wargame/wargameView.php",compact("wargame","lobbies"));
 //        $this->parser->parse("wargame/wargameView",array("things" => array(array("a"=>"a"),array("b"=>"b"),array("c"=>"c"))));
-        $this->parser->parse("wargame/wargameView",compact("player","mapUrl","units","playerData","games","gameName","wargame","lobbies","user"));
+        $this->parser->parse("wargame/wargameView",compact("arg","player","mapUrl","units","playerData","games","gameName","wargame","lobbies","user"));
 
     }
 

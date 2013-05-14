@@ -125,10 +125,12 @@
         text-shadow:0px 0px 3px orange,0px 0px 3px orange,0px 0px 3px orange,0px 0px 3px orange;
     }
     body{
-        background: url("<?=base_url("js/civil-war-public-domain.jpg")?>") #aaa;
+        background: url("<?=base_url("js/vikinglander.jpg")?>") #333;
         background-repeat: no-repeat;
         color:#666;
         background-position: center;
+        height:100%;
+
     }
     .odd{
         background:rgba(204,204,204,.6);

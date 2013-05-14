@@ -2,6 +2,6 @@
 <html>
     <?=
 $this->load->view("wargame/wargameHead.php",compact($playerData));
-    Battle::getView($gameName,$mapUrl,$player);
+    Battle::getView($gameName,$mapUrl,$player,$arg);
 
 
