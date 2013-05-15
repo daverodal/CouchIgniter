@@ -66,7 +66,7 @@ class Users_model extends CI_Model
             echo "users doc found, leaving untouched\n";
         }
 
-
+        $doc = false;
         try{
             echo "is gamesAvail doc presesnt?\n";
             $doc = $this->couchsag->get("gamesAvail");
