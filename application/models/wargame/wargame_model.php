@@ -102,13 +102,23 @@ class Wargame_model extends CI_Model
 
     public function initDoc()
     {
+        echo "<pre>";
         $views = new StdClass();
         $views->getGamesImIn = new StdClass;
-        $views->getGamesImIn->map = "function(doc){if(doc.docType == 'wargame' && doc.playerStatus == 'multi'){for(var i in doc.wargame.players){if(doc.wargame.players[i] == '' || doc.wargame.players[i] == doc.createUser){continue;}emit([doc.wargame.players[i],doc.createUser, doc.gameName,doc.playerStatus, doc.wargame.gameRules.attackingForceId, doc._id],[doc.gameName,doc.createDate,doc.wargame.players]);}}}";
+        $views->getGamesImIn->map = "function(doc){/*comment */
+            if(doc.docType == 'wargame' && doc.playerStatus == 'multi'){
+                for(var i in doc.wargame.players){
+                    if(doc.wargame.players[i] == '' || doc.wargame.players[i] == doc.createUser){
+                        continue;
+                    }
+                    emit([doc.wargame.players[i],doc.createUser, doc.gameName,doc.playerStatus, doc.wargame.gameRules.attackingForceId, doc._id],[doc.gameName,doc.createDate,doc.wargame.players]);
+                }
+            }
+        }";
         $views->getLobbies = new StdClass;
         $views->getLobbies->map = "function(doc){if(doc.docType == 'wargame'){emit([doc.createUser,doc.gameName,doc.playerStatus, doc.wargame.gameRules.attackingForceId, doc._id],[doc.gameName,doc.createDate,doc.wargame.players]);}}";
-        $views->getAvailGames = new StdClass;
-        $views->getAvailGames->map = "function(doc){if(doc.docType == 'gamesAvail'){if(doc.games){for(var i in doc.games){emit(doc.games[i],doc.games[i]);}}}}";
+//        $views->getAvailGames = new StdClass;
+//        $views->getAvailGames->map = "function(doc){if(doc.docType == 'gamesAvail'){if(doc.games){for(var i in doc.games){emit(doc.games[i],doc.games[i]);}}}}";
         $filters = new StdClass();
         $filters->namefind = "function(doc,req){if(!req.query.name){return false;} var names = req.query.name;names = names.split(',');for(var i = 0;i < names.length;i++){if(doc._id == names[i]){return true;}}return false;}";
         $filters->lobbyChanges = <<<LobbyChanges
@@ -221,28 +231,33 @@ HEREUPDATE;
 
         $updates = new StdClass();
 
-        $updates->addchat = $update;
-        $views->wargame = $wargame;
-        $views->userByEmail = $users;
-        $views->userById = $userById;
-        $views->userByUsername = $userByUsername;
-        var_dump($wargame);echo "HEE";
+//        $updates->addchat = $update;
+//        $views->wargame = $wargame;
+//        $views->userByEmail = $users;
+//        $views->userById = $userById;
+//        $views->userByUsername = $userByUsername;
+
+//        $this->couchsag->sag->setDatabase('users');
+
+
         $data = array("_id" => "_design/newFilter", "views" => $views, "filters" => $filters, "updates"=> $updates);
         try{
-        $doc = $this->couchsag->get("_design/newFilter");
+            $doc = $this->couchsag->get("_design/newFilter");
         }catch(Exception $e){};
         if($doc){
-            var_dump($doc);
-echo "HI";
-            var_dump($this->couchsag->delete($doc->_id,$doc->_rev));
-            echo "IH";
+            echo "Doc Found deleting: _design/newFilter\n";
+            $deldoc = $this->couchsag->delete($doc->_id,$doc->_rev);
+            if($deldoc->body){
+                var_dump($deldoc->body);
+                echo "Deleted\n";
+            }
         }
-        echo "create";
-        var_dump($data);
+        echo "creating";
         try{
-        echo $this->couchsag->create($data);
+            $this->couchsag->create($data);
+            echo "created";
         }catch(Exception $e){echo "<pre> EXC";var_dump($e);}
-        echo "created";
+        echo "returning";
     }
 
     public function createWargame($name)

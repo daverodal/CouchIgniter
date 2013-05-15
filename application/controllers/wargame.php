@@ -66,7 +66,9 @@ return;
 
 
         $seq = $this->couchsag->get("/_design/newFilter/_view/getLobbies");
+        $this->couchsag->sag->setDatabase('users');
         $gamesAvail = $this->couchsag->get("/_design/newFilter/_view/getAvailGames");
+        $this->couchsag->sag->setDatabase('mydatabase');
         $games = array();
         foreach($gamesAvail->rows as $row){
         $games[] =  array("name"=>$row->value[0],'arg'=>$row->value[1]);
@@ -103,13 +105,12 @@ return;
         $wargame = urldecode($this->session->userdata("wargame"));
         $this->load->model("wargame/wargame_model");
         if(!$wargame){
-            $users = $this->couchsag->get('/_design/newFilter/_view/userByEmail');
-            $userids = $this->couchsag->get('/_design/newFilter/_view/userById');
+//            $users = $this->couchsag->get('/_design/newFilter/_view/userByEmail');
+//            $userids = $this->couchsag->get('/_design/newFilter/_view/userById');
 
 //            var_dump($poll);
 //            echo $this->wargame_model->getLobbyChanges(false,$poll);
             //$seq = $this->couchsag->get("/_design/newFilter/_view/getLobbies?startkey=[\"$user\"]&endkey=[\"$user\",\"zzzzzzzzzzzzzzzzzzzzzzzz\"]");
-
             $seq = $this->couchsag->get("/_design/newFilter/_view/getLobbies?startkey=[\"$user\"]&endkey=[\"$user\",\"zzzzzzzzzzzzzzzzzzzzzzzz\"]");
             $lobbies = [];
             date_default_timezone_set("America/New_York");
@@ -184,7 +185,9 @@ return;
             $player = 0;
         }
         $this->load->library('battle');
+        $this->couchsag->sag->setDatabase('users');
         $gamesAvail = $this->couchsag->get("/_design/newFilter/_view/getAvailGames");
+        $this->couchsag->sag->setDatabase('mydatabase');
         foreach($gamesAvail->rows as $row){
             $games[] =  array("name"=>$row->value[0],'arg'=>$row->value[1]);
         }
@@ -211,10 +214,6 @@ return;
         $units = $newUnits;
         $mapUrl = $doc->wargame->mapData->mapUrl;
         $arg = $doc->wargame->arg;
-//        $myCrt = new CombatResultsTable();
-        //echo "Welcome $user";
-        //echo $this->twig->render("wargame/wargameView.php",compact("wargame","lobbies"));
-//        $this->parser->parse("wargame/wargameView",array("things" => array(array("a"=>"a"),array("b"=>"b"),array("c"=>"c"))));
         $this->parser->parse("wargame/wargameView",compact("arg","player","mapUrl","units","playerData","games","gameName","wargame","lobbies","user"));
 
     }
