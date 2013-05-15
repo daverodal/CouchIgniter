@@ -66,6 +66,20 @@ class Users_model extends CI_Model
             echo "users doc found, leaving untouched\n";
         }
 
+
+        try{
+            echo "is gamesAvail doc presesnt?\n";
+            $doc = $this->couchsag->get("users");
+        }catch(Exception $e){};
+        if(!$doc){
+            $data = array("_id" => "gamesAvail", "docType" => "gamesAvail", "games" => array(array("BattleForAllenCreek"),array("MartianCivilWar")));
+            echo "createing users\n";
+            $this->couchsag->create($data);
+            echo "Created them\n";
+        }else{
+            echo "users doc found, leaving untouched\n";
+        }
+
         $users = new StdClass();
         $users->map = <<<aHEREMAP
         function(doc) {
