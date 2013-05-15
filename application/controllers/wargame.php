@@ -489,6 +489,11 @@ return;
         /*  @var  Wargame_model */
 //        file_put_contents("/tmp/perflog","\nGetting poke ".microtime(),FILE_APPEND);
         $doc = $this->wargame_model->getDoc(urldecode($wargame));
+        $ter = false;
+        if($doc->wargame->terrainName){
+            $ter = $this->wargame_model->getDoc($doc->wargame->terrainName);
+            $doc->wargame->terrain = $ter->terrain;
+        }
 //        file_put_contents("/tmp/perflog","\nGotten poke ".microtime(),FILE_APPEND);
 
         $this->load->library("battle");
@@ -496,10 +501,17 @@ return;
         $battle = $this->battle->getBattle($game,$doc->wargame);
         $doSave = $battle->poke($event,$id,$x,$y, $user,$doc->playerStatus == "hot seat", $doc->name);
         if($doSave){
+            echo "saving";
             $doc->wargame = $battle->save();
-//            file_put_contents("/tmp/perflog","\nsaving poke ".microtime(),FILE_APPEND);
 
             $this->wargame_model->setDoc($doc);
+            echo "Saved";
+
+//            file_put_contents("/tmp/perflog","\nsaving poke ".microtime(),FILE_APPEND);
+
+//            $ter = $this->wargame_model->getDoc("terrain-MartianCivilWar");
+//            $ter->terrain = $doc->wargame->terrain;
+//            $this->wargame_model->setDoc($ter);
 //            file_put_contents("/tmp/perflog","\nsaving poked ".microtime(),FILE_APPEND);
 
         }
@@ -548,6 +560,21 @@ return;
         $this->load->library("battle");
         $battle = $this->battle->getBattle($game,null, $arg);
         $doc->wargame = $battle->save();
+        if($doc->wargame->genTerrain){
+            try{
+                $ter = $this->wargame_model->getDoc($doc->wargame->terrainName);
+            }catch(Exception $e){};
+            if(!$ter){
+                $data = array("_id" => $doc->wargame->terrainName, "docType" => "terrain", "terrain" =>$doc->wargame->terrain);
+                $this->couchsag->create($data);
+            }else{
+//                $ter->terrain = $doc->wargame->terrain;
+//                $this->wargame_model->setDoc($ter);
+            }
+            unset($doc->wargame->terrain);
+            $doc->wargame->genTerrain = false;
+
+        }
         $doc->chats = array();
         $doc->gameName = $game;
         $doc = $this->wargame_model->setDoc($doc);

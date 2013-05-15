@@ -73,7 +73,7 @@ class Users_model extends CI_Model
         }catch(Exception $e){};
         if(!$doc){
             $data = array("_id" => "gamesAvail", "docType" => "gamesAvail", "games" => array(array("BattleForAllenCreek"),array("MartianCivilWar")));
-            echo "createing users\n";
+            echo "createing gamesAvail\n";
             $this->couchsag->create($data);
             echo "Created them\n";
         }else{

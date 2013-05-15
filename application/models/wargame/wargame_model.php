@@ -289,6 +289,7 @@ HEREUPDATE;
     }
     public function setDoc($doc)
     {
+//        $coe = json_encode($doc);
         $success = $this->couchsag->update($doc->_id, $doc);
         return $success;
     }
