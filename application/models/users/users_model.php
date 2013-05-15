@@ -69,7 +69,7 @@ class Users_model extends CI_Model
 
         try{
             echo "is gamesAvail doc presesnt?\n";
-            $doc = $this->couchsag->get("users");
+            $doc = $this->couchsag->get("gamesAvail");
         }catch(Exception $e){};
         if(!$doc){
             $data = array("_id" => "gamesAvail", "docType" => "gamesAvail", "games" => array(array("BattleForAllenCreek"),array("MartianCivilWar")));
