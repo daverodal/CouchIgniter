@@ -333,7 +333,9 @@ echo "HI";
             }
 
         }
+        file_put_contents("/tmp/perflog","\nGetting ".microtime(),FILE_APPEND);
         $doc = $this->couchsag->get($wargame."?$match");
+        file_put_contents("/tmp/perflog","\nGotten ".microtime(),FILE_APPEND);
         $click = $doc->_rev;
         $matches = array();
         preg_match("/^([0-9]+)-/",$click,$matches);

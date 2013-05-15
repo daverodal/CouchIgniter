@@ -488,14 +488,21 @@ return;
 
         $this->load->model("wargame/wargame_model");
         /*  @var  Wargame_model */
+        file_put_contents("/tmp/perflog","\nGetting poke ".microtime(),FILE_APPEND);
         $doc = $this->wargame_model->getDoc(urldecode($wargame));
+        file_put_contents("/tmp/perflog","\nGotten poke ".microtime(),FILE_APPEND);
+
         $this->load->library("battle");
         $game = $doc->gameName;
         $battle = $this->battle->getBattle($game,$doc->wargame);
         $doSave = $battle->poke($event,$id,$x,$y, $user,$doc->playerStatus == "hot seat", $doc->name);
         if($doSave){
             $doc->wargame = $battle->save();
+            file_put_contents("/tmp/perflog","\nsaving poke ".microtime(),FILE_APPEND);
+
             $this->wargame_model->setDoc($doc);
+            file_put_contents("/tmp/perflog","\nsaving poked ".microtime(),FILE_APPEND);
+
         }
 
         return compact('success');
