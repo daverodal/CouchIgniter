@@ -162,6 +162,7 @@ byUsername;
 
     }
     public function addUser($email, $password, $username){
+        $this->_setDB();
         $strikes = 0;
         while($strikes < 3){
             $usersDoc = $this->couchsag->get("users");
