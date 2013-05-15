@@ -77,7 +77,8 @@ class Users_model extends CI_Model
             $this->couchsag->create($data);
             echo "Created them\n";
         }else{
-            echo "users doc found, leaving untouched\n";
+            var_dump($doc);
+            echo "gamesAvail doc found, leaving untouched\n";
         }
 
         $users = new StdClass();
