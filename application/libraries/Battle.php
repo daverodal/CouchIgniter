@@ -38,6 +38,10 @@ class Battle
                 @include_once(WARGAMES . "MartianCivilWar/MartianCivilWar.php");
                 MartianCivilWar::playAs($wargame);
                 break;
+            case "Napoleon":
+                @include_once(WARGAMES . "MartianCivilWar/Napoleon.php");
+                Napoleon::playAs($wargame);
+                break;
             case "Tutorial":
                 @include_once(WARGAMES . "MartianCivilWar/Tutorial.php");
                 Tutorial::playAs($wargame);
@@ -80,6 +84,9 @@ class Battle
         switch($name){
             case "MartianCivilWar":
                 include_once(WARGAMES . "MartianCivilWar/MartianCivilWar.php");
+                break;
+            case "Napoleon":
+                include_once(WARGAMES . "MartianCivilWar/Napoleon.php");
                 break;
             case "Tutorial":
                 include_once(WARGAMES . "MartianCivilWar/Tutorial.php");

@@ -290,6 +290,7 @@ HEREUPDATE;
     public function setDoc($doc)
     {
 //        $coe = json_encode($doc);
+//        echo "Str ".strlen($coe);
         $success = $this->couchsag->update($doc->_id, $doc);
         return $success;
     }
@@ -405,21 +406,29 @@ HEREUPDATE;
             $mapUnit->strength = $unit->strength ;
             $mapUnits[] = $mapUnit;
         }
+        $turn = $doc->wargame->gameRules->turn;
         foreach($units as $i => $unit){
             $u = new StdClass();
             $u->status = $unit->status;
             $u->moveAmountUsed = $unit->moveAmountUsed;
             $u->maxMove = $unit->maxMove;
             $u->forceId = $unit->forceId;
+            if($unit->reinforceTurn > $turn){
+                $u->reinforceTurn = $unit->reinforceTurn;
+            }
             $units[$i] = $u;
         }
         if($moveRules->moves){
             foreach($moveRules->moves as $k => $move){
                 $hex = new Hexagon($k);
                 $mapGrid->setHexagonXY( $hex->getX(), $hex->getY());
-
+                $n = new stdClass();
                 $moveRules->moves->{$k}->pixX = $mapGrid->getPixelX();
                 $moveRules->moves->{$k}->pixY = $mapGrid->getPixelY();
+                unset($moveRules->moves->$k->isValid);
+
+//                unset($moveRules->moves->$k->isOccupied);
+
             }
             if(false && $moveRules->path){
                 foreach($moveRules->path as $hexName){

@@ -72,6 +72,7 @@ return;
         $games = array();
         foreach($gamesAvail->rows as $row){
         $games[] =  array("name"=>$row->value[0],'arg'=>$row->value[1]);
+//           var_dump($games);die('heh');
     }
 
         $this->parser->parse("wargame/wargameUnattached",compact("games"));
@@ -495,17 +496,16 @@ return;
             $doc->wargame->terrain = $ter->terrain;
         }
 //        file_put_contents("/tmp/perflog","\nGotten poke ".microtime(),FILE_APPEND);
-
         $this->load->library("battle");
         $game = $doc->gameName;
+        try{
         $battle = $this->battle->getBattle($game,$doc->wargame);
         $doSave = $battle->poke($event,$id,$x,$y, $user,$doc->playerStatus == "hot seat", $doc->name);
+        $success = false;
         if($doSave){
-            echo "saving";
             $doc->wargame = $battle->save();
-
             $this->wargame_model->setDoc($doc);
-            echo "Saved";
+            $success = true;
 
 //            file_put_contents("/tmp/perflog","\nsaving poke ".microtime(),FILE_APPEND);
 
@@ -515,8 +515,12 @@ return;
 //            file_put_contents("/tmp/perflog","\nsaving poked ".microtime(),FILE_APPEND);
 
         }
-
-        return compact('success');
+        }catch(Exception $e){$success = $e->getMessage();            header("HTTP/1.1 404 Not Found");
+        }
+        if(!$success){
+            header("HTTP/1.1 404 Not Found");
+}
+        echo json_encode(compact('success'));
     }
 
     public function resize($small = true)
@@ -568,8 +572,13 @@ return;
                 $data = array("_id" => $doc->wargame->terrainName, "docType" => "terrain", "terrain" =>$doc->wargame->terrain);
                 $this->couchsag->create($data);
             }else{
+                $data = array("_id" => $doc->wargame->terrainName, "docType" => "terrain", "terrain" =>$doc->wargame->terrain);
+/* totall throw the old one away */
 //                $ter->terrain = $doc->wargame->terrain;
-//                $this->wargame_model->setDoc($ter);
+//                $this->couchsag->update($data['_id'],$data);
+                $this->couchsag->delete($doc->wargame->terrainName,$ter->_rev);
+                $this->couchsag->create($data);
+
             }
             unset($doc->wargame->terrain);
             $doc->wargame->genTerrain = false;

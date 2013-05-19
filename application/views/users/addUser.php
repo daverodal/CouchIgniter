@@ -3,7 +3,7 @@
     <title>My Form</title>
 </head>
 <body>
-
+<a href="./">back</a>
 <?php echo validation_errors(); ?>
 <?php if($save_errors){echo $save_errors;}?>
 <?php echo form_open('users/addUser'); ?>

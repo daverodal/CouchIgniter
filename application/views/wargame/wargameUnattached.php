@@ -8,6 +8,6 @@
 <html>
 Attach to game:
 {games}
-<a href="<?=site_url("wargame/unitInit");?>/{name}/">{name}</a>
+<a href="<?=site_url("wargame/unitInit");?>/{name}/{arg}">{name}:{arg}</a>
 {/games}
 

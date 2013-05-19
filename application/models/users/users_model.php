@@ -58,7 +58,7 @@ class Users_model extends CI_Model
             $doc = $this->couchsag->get("users");
         }catch(Exception $e){};
         if(!$doc){
-            $data = array("_id" => "users", "docType" => "users", "userByEmail" => new stdClass(), "userById"=> new stdClass(), "userId"=> 1);
+            $data = array("_id" => "users", "docType" => "users", "userByEmail" => new stdClass(), "userId"=> 1);
             echo "createing users\n";
                 $this->couchsag->create($data);
             echo "Created them\n";
@@ -198,6 +198,9 @@ byUsername;
                 $user->username = $username;
                 $user->password = $password;
                 $usersDoc->userByEmail->$email = $user;
+                if(isset($usersDoc->userById)){
+                    unset($usersDoc->userById);
+                }
                 $ret = $this->couchsag->update($usersDoc->_id, $usersDoc);
                 if($ret && $ret->ok){
                     return false;
@@ -222,4 +225,41 @@ byUsername;
         $this->_restoreDB();
         return false;
     }
+    public function addGame($game){
+        $this->_setDB();
+        $doc = $this->couchsag->get("gamesAvail");
+        if($doc->docType == "gamesAvail"){
+            $doc->games[] = $game;
+        }
+        $ret = $this->couchsag->update($doc->_id, $doc);
+        $this->_restoreDB();
+    }
+    public function deleteGame($killGame){
+        if(count($killGame) == 0){
+            return false;
+        }
+        $this->_setDB();
+        $doc = $this->couchsag->get("gamesAvail");
+        $games = $doc->games;
+        $newGames = array();
+        foreach($games as $key => $game){
+            if(count(array_diff($game,$killGame)) == 0){
+                continue;
+            }
+            $newGames[] = $game;
+
+        }
+        if($doc->docType == "gamesAvail"){
+            $doc->games = $newGames;
+        }
+        $ret = $this->couchsag->update($doc->_id, $doc);
+        $this->_restoreDB();
+    }
+    public function getAvailGames(){
+        $this->_setDB();
+        $seq = $this->couchsag->get("/_design/newFilter/_view/getAvailGames");
+        $this->_restoreDB();
+        return $seq->rows;
+    }
+
 }

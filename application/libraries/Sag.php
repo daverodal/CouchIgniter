@@ -85,7 +85,7 @@ class Sag {
     $this->port = $port;
 
     //sets to the default by ... default
-    $this->setHTTPAdapter();
+    $this->setHTTPAdapter(true);
   }
 
   /**
