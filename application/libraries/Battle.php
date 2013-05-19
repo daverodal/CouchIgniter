@@ -25,45 +25,45 @@ class Battle
     }
     public static function getView($name,$mapUrl, $player = 0, $arg = false){
         self::loadGame($name);
-        $name::getView($mapUrl,$player, $arg);
+        $name::getView($name, $mapUrl,$player, $arg);
     }
     public static function getHeader($name,$data){
         self::loadGame($name);
-        $name::getHeader($data);
+        $name::getHeader($name,$data);
 
     }
     public static function playAs($name,$wargame){
         switch($name){
             case "MartianCivilWar":
                 @include_once(WARGAMES . "MartianCivilWar/MartianCivilWar.php");
-                MartianCivilWar::playAs($wargame);
+                MartianCivilWar::playAs($name,$wargame);
                 break;
             case "Napoleon":
                 @include_once(WARGAMES . "MartianCivilWar/Napoleon.php");
-                Napoleon::playAs($wargame);
+                Napoleon::playAs($name,$wargame);
                 break;
             case "Tutorial":
                 @include_once(WARGAMES . "MartianCivilWar/Tutorial.php");
-                Tutorial::playAs($wargame);
+                Tutorial::playAs($name,$wargame);
                 break;
             case "OMCW":
                 @include_once(WARGAMES . "MartianCivilWar/OrigMartianCivilWar.php");
-                OMCW::playAs($wargame);
+                OMCW::playAs($name,$wargame);
                 break;
             case "Pink":
                 @include_once(WARGAMES."pink/pink.php");
-                Pink::playAs($wargame);
+                Pink::playAs($name,$wargame);
                 break;
             case "NapOnMars":
                 @include_once(WARGAMES . "MartianCivilWar/NapOnMars.php");
                 echo "Wargame is $wargame";
-                NapOnMars::playAs($wargame);
+                NapOnMars::playAs($name, $wargame);
 //                @include_once("/Documents and Settings/Owner/Desktop/webwargaming/header.php");
                 break;
             case "Waterloo":
                 @include_once(WARGAMES."NapOnMars/Waterloo.php");
                 echo "Wargame is $wargame";
-                Waterloo::playAs($wargame);
+                Waterloo::playAs($name, $wargame);
 //                @include_once("/Documents and Settings/Owner/Desktop/webwargaming/header.php");
                 break;
             case "BattleOfMoscow":
@@ -71,7 +71,7 @@ class Battle
                 break;
             case "BattleForAllenCreek":
                 @include_once(WARGAMES . "MartianCivilWar/BattleForAllenCreek.php");
-                BattleForAllenCreek::playAs($wargame);
+                BattleForAllenCreek::playAs($name, $wargame);
 
                 break;
             default:

@@ -248,7 +248,6 @@ HEREUPDATE;
             echo "Doc Found deleting: _design/newFilter\n";
             $deldoc = $this->couchsag->delete($doc->_id,$doc->_rev);
             if($deldoc->body){
-                var_dump($deldoc->body);
                 echo "Deleted\n";
             }
         }
@@ -383,10 +382,10 @@ HEREUPDATE;
         $mapUnits = array();
         $moveRules = $doc->wargame->moveRules;
         $combatRules = $doc->wargame->combatRules;
-        $moveRules->index = $combatRules->index;
+//        $moveRules->index = $combatRules->index;
         $display = $doc->wargame->display;
         $units = $force->units;
-        $storm = $combatRules->storm;
+//        $storm = $combatRules->storm;
         $attackingId = $doc->wargame->gameRules->attackingForceId;
         foreach($units as $unit){
             if(is_object($unit->hexagon)){

@@ -498,6 +498,7 @@ return;
 //        file_put_contents("/tmp/perflog","\nGotten poke ".microtime(),FILE_APPEND);
         $this->load->library("battle");
         $game = $doc->gameName;
+        $emsg = false;
         try{
         $battle = $this->battle->getBattle($game,$doc->wargame);
         $doSave = $battle->poke($event,$id,$x,$y, $user,$doc->playerStatus == "hot seat", $doc->name);
@@ -515,12 +516,14 @@ return;
 //            file_put_contents("/tmp/perflog","\nsaving poked ".microtime(),FILE_APPEND);
 
         }
-        }catch(Exception $e){$success = $e->getMessage();            header("HTTP/1.1 404 Not Found");
+        }catch(Exception $e){
+            $emsg = $e->getMessage()." \nFile: ".$e->getFile()." \nLine: ".$e->getLine()." \nCode: ".$e->getCode();
+            $success = false;
         }
         if(!$success){
             header("HTTP/1.1 404 Not Found");
 }
-        echo json_encode(compact('success'));
+        echo json_encode(compact('success',"emsg"));
     }
 
     public function resize($small = true)
