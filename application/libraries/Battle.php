@@ -14,7 +14,7 @@ class Battle
 
        }
     public static  function getBattle($name = false,$doc = null, $arg = false){
-
+        try{
         if(self::$theBattle){
             return self::$theBattle;
         }
@@ -22,65 +22,33 @@ class Battle
         $thisBattle = new $name($doc, $arg);
         self::$theBattle = $thisBattle;
         return self::$theBattle;;
+
+        }catch(Exception $e){echo $e->getMessage()." ".$e->getFile()." ".$e->getLine();}
     }
     public static function getView($name,$mapUrl, $player = 0, $arg = false){
+        try{
         self::loadGame($name);
         $name::getView($name, $mapUrl,$player, $arg);
+        }catch(Exception $e){echo $e->getMessage()." ".$e->getFile()." ".$e->getLine();}
     }
     public static function getHeader($name,$data){
+        try{
         self::loadGame($name);
         $name::getHeader($name,$data);
+        }catch(Exception $e){echo $e->getMessage()." ".$e->getFile()." ".$e->getLine();}
 
     }
     public static function playAs($name,$wargame){
-        switch($name){
-            case "MartianCivilWar":
-                @include_once(WARGAMES . "MartianCivilWar/MartianCivilWar.php");
-                MartianCivilWar::playAs($name,$wargame);
-                break;
-            case "Napoleon":
-                @include_once(WARGAMES . "MartianCivilWar/Napoleon.php");
-                Napoleon::playAs($name,$wargame);
-                break;
-            case "Tutorial":
-                @include_once(WARGAMES . "MartianCivilWar/Tutorial.php");
-                Tutorial::playAs($name,$wargame);
-                break;
-            case "OMCW":
-                @include_once(WARGAMES . "MartianCivilWar/OrigMartianCivilWar.php");
-                OMCW::playAs($name,$wargame);
-                break;
-            case "Pink":
-                @include_once(WARGAMES."pink/pink.php");
-                Pink::playAs($name,$wargame);
-                break;
-            case "NapOnMars":
-                @include_once(WARGAMES . "MartianCivilWar/NapOnMars.php");
-                echo "Wargame is $wargame";
-                NapOnMars::playAs($name, $wargame);
-//                @include_once("/Documents and Settings/Owner/Desktop/webwargaming/header.php");
-                break;
-            case "Waterloo":
-                @include_once(WARGAMES."NapOnMars/Waterloo.php");
-                echo "Wargame is $wargame";
-                Waterloo::playAs($name, $wargame);
-//                @include_once("/Documents and Settings/Owner/Desktop/webwargaming/header.php");
-                break;
-            case "BattleOfMoscow":
-                redirect("/wargame/play");
-                break;
-            case "BattleForAllenCreek":
-                @include_once(WARGAMES . "MartianCivilWar/BattleForAllenCreek.php");
-                BattleForAllenCreek::playAs($name, $wargame);
+        try{
+            self::loadGame($name);
+            $name::playAs($name,$wargame);
 
-                break;
-            default:
-                throw(new Exception("Bad Class playAs '$name''"));
-        }
+        }catch(Exception $e){echo $e->getMessage()." ".$e->getFile()." ".$e->getLine();}
 
     }
 
     public static function loadGame($name){
+        try{
         switch($name){
             case "MartianCivilWar":
                 include_once(WARGAMES . "MartianCivilWar/MartianCivilWar.php");
@@ -112,6 +80,8 @@ class Battle
             default:
                 throw(new Exception("Bad Class in loadGame '$name'"));
         }
-    }
+    }catch(Exception $e){echo $e->getMessage()." ".$e->getFile()." ".$e->getLine();}
+
+}
 
 }
