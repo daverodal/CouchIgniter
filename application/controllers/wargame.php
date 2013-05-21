@@ -471,6 +471,30 @@ return;
     }
 
 
+    public function unitTest(){
+        while(true){
+            $now = explode(" ",microtime());
+            $now[0] = preg_replace("/^0/","",$now[0]);
+            $now = $now[1].$now[0];
+            echo "Reading ".$now."\n";
+            $then = $now;
+            $data = $this->couchsag->get("Mcw");
+            $now = explode(" ",microtime());
+            $now[0] = preg_replace("/^0/","",$now[0]);
+            $now = $now[1].$now[0];
+            echo "rev ".$data->_rev."\n";
+            echo "readit writing $now  \n";
+            echo "Diff ".($now - $then)."\n";
+            $then = $now;
+            $this->couchsag->update("Mcw",$data);
+            $now = explode(" ",microtime());
+            $now[0] = preg_replace("/^0/","",$now[0]);
+            $now = $now[1].$now[0];
+            echo "rev ".$data->_rev."\n";
+            echo "written ".$now."\n\n\n";
+            echo "Diff ".($now - $then)."\n";
+        }
+    }
     public function poke()
     {
         $user = $this->session->userdata("user");
