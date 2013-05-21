@@ -493,6 +493,7 @@ return;
 //            echo "rev ".$data->_rev."\n";
 //            echo "written ".$now."\n";
             echo "Diff ".($now - $then)."\n\n\n";
+            sleep(1);
         }
     }
     public function poke()
