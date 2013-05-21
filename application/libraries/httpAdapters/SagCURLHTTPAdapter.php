@@ -10,6 +10,7 @@
 require_once('SagHTTPAdapter.php');
 
 class SagCURLHTTPAdapter extends SagHTTPAdapter {
+    private $initCnt;
   private $ch;
 
   public function __construct($host, $port) {
@@ -20,9 +21,13 @@ class SagCURLHTTPAdapter extends SagHTTPAdapter {
     parent::__construct($host, $port);
 
     $this->ch = curl_init();
+      $initCnt = 0;
   }
 
   public function procPacket($method, $url, $data = null, $headers = array()) {
+      if($initCnt % 10 ==0){
+          $this->ch =curl_init();
+      }
     // the base cURL options
     $opts = array(
       CURLOPT_URL => "{$this->proto}://{$this->host}:{$this->port}{$url}",
