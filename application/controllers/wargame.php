@@ -472,6 +472,7 @@ return;
 
 
     public function unitTest(){
+        return;
         while(true){
             $now = explode(" ",microtime());
             $now[0] = preg_replace("/^0/","",$now[0]);

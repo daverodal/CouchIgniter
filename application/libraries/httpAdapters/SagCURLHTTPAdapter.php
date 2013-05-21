@@ -27,7 +27,7 @@ class SagCURLHTTPAdapter extends SagHTTPAdapter {
   public function procPacket($method, $url, $data = null, $headers = array()) {
 
       if(($this->initCnt % 10) ==0){
-          echo "curlinig ".$this->initCnt;
+//          echo "curlinig ".$this->initCnt;
           $this->ch =curl_init();
       }
       $this->initCnt++;
@@ -90,19 +90,19 @@ class SagCURLHTTPAdapter extends SagHTTPAdapter {
 
     curl_setopt_array($this->ch, $opts);
 
-      $now = explode(" ",microtime());
-      $now[0] = preg_replace("/^0/","",$now[0]);
-      $now = $now[1].$now[0];
-//            echo "Reading ".$now."\n";
-      $then = $now;
+//      $now = explode(" ",microtime());
+//      $now[0] = preg_replace("/^0/","",$now[0]);
+//      $now = $now[1].$now[0];
+////            echo "Reading ".$now."\n";
+//      $then = $now;
 
       $chResponse = curl_exec($this->ch);
-      $now = explode(" ",microtime());
-      $now[0] = preg_replace("/^0/","",$now[0]);
-      $now = $now[1].$now[0];
-//            echo "rev ".$data->_rev."\n";
-//            echo "readit writing $now  \n";
-      echo "sagDiff ".($now - $then)."\n";
+//      $now = explode(" ",microtime());
+//      $now[0] = preg_replace("/^0/","",$now[0]);
+//      $now = $now[1].$now[0];
+////            echo "rev ".$data->_rev."\n";
+////            echo "readit writing $now  \n";
+//      echo "sagDiff ".($now - $then)."\n";
 
 
       if($chResponse !== false) {
