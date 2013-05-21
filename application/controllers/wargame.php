@@ -491,8 +491,8 @@ return;
             $now[0] = preg_replace("/^0/","",$now[0]);
             $now = $now[1].$now[0];
             echo "rev ".$data->_rev."\n";
-            echo "written ".$now."\n\n\n";
-            echo "Diff ".($now - $then)."\n";
+            echo "written ".$now."\n";
+            echo "Diff ".($now - $then)."\n\n\n";
         }
     }
     public function poke()
