@@ -82,9 +82,22 @@ class SagCURLHTTPAdapter extends SagHTTPAdapter {
 
     curl_setopt_array($this->ch, $opts);
 
-    $chResponse = curl_exec($this->ch);
+      $now = explode(" ",microtime());
+      $now[0] = preg_replace("/^0/","",$now[0]);
+      $now = $now[1].$now[0];
+//            echo "Reading ".$now."\n";
+      $then = $now;
 
-    if($chResponse !== false) {
+      $chResponse = curl_exec($this->ch);
+      $now = explode(" ",microtime());
+      $now[0] = preg_replace("/^0/","",$now[0]);
+      $now = $now[1].$now[0];
+//            echo "rev ".$data->_rev."\n";
+//            echo "readit writing $now  \n";
+      echo "sagDiff ".($now - $then)."\n";
+
+
+      if($chResponse !== false) {
       // prepare the response object
       $response = new stdClass();
       $response->headers = new stdClass();
