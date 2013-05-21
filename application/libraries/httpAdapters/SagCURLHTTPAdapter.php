@@ -25,9 +25,12 @@ class SagCURLHTTPAdapter extends SagHTTPAdapter {
   }
 
   public function procPacket($method, $url, $data = null, $headers = array()) {
-      if($initCnt % 10 ==0){
+
+      if(($this->initCnt % 10) ==0){
+          echo "curlinig ".$this->initCnt;
           $this->ch =curl_init();
       }
+      $this->initCnt++;
     // the base cURL options
     $opts = array(
       CURLOPT_URL => "{$this->proto}://{$this->host}:{$this->port}{$url}",
