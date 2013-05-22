@@ -85,7 +85,7 @@ class Sag {
     $this->port = $port;
 
     //sets to the default by ... default
-    $this->setHTTPAdapter(Sag::$HTTP_CURL);
+    $this->setHTTPAdapter(Sag::$HTTP_NATIVE_SOCKETS);
   }
 
   /**
@@ -259,7 +259,7 @@ class Sag {
       $prevResponse = $this->cache->get($url);
 
       if($prevResponse) {
-        $response = $this->procPacket('GET', $url, null, array('If-None-Match' => $prevResponse->headers->Etag));
+        $response = $this->procPacket('GET', $url, null, array('If-None-Match' => $prevResponse->headers->ETag));
 
         if($response->headers->_HTTP->status == 304) {
           return $prevResponse; //cache hit
