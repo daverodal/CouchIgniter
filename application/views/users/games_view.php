@@ -12,7 +12,7 @@
 <ul>
 <?php foreach($games as $game){?>
     <li>
-        <? $delUrl = "deleteGame/?";
+        <?php $delUrl = "deleteGame/?";
             foreach($game->value as $arg){
                 $delUrl .= "killgames[]=".$arg."&";
             echo $arg." ";
