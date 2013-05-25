@@ -448,6 +448,7 @@ HEREUPDATE;
         $gameRules->mode_name = $mode_name;
         $gameRules->exchangeAmount = $force->exchangeAmount;
         $newSpecialHexes = new stdClass();
+        $phaseClicks = $gameRules->phaseClicks;
         if($doc->wargame->mapData->specialHexes){
             $specialHexes = $doc->wargame->mapData->specialHexes;
             foreach($specialHexes as $k => $v){
@@ -480,7 +481,7 @@ HEREUPDATE;
         $specialHexesChanges = $newSpecialHexesChanges;
         $gameRules->playerStatus = $doc->playerStatus;
         $clock = "The turn is ".$gameRules->turn.". The Phase is ". $phase_name[$gameRules->phase].". The mode is ". $mode_name[$gameRules->mode];
-        return compact("click","revs","vp","flashMessages","specialHexes","specialHexesChanges","combatRules",'force','seq', 'chats', 'chatsIndex', 'last_seq', 'users', 'games', 'clock', 'mapUnits','moveRules','gameRules');
+        return compact("phaseClicks","click","revs","vp","flashMessages","specialHexes","specialHexesChanges","combatRules",'force','seq', 'chats', 'chatsIndex', 'last_seq', 'users', 'games', 'clock', 'mapUnits','moveRules','gameRules');
     }
 
 }

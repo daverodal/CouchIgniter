@@ -5,8 +5,11 @@
  * Time: 5:03 PM
  * Link: http://davidrodal.com
  * */
-define ("WARGAMES","/Users/markarianr/Sites/");
-//define ("WARGAMES","/var/www/");
+if($_SERVER['SERVER_NAME'] == 'localhost'){
+    define ("WARGAMES","/xampp/htdocs/");
+}else{
+    define ("WARGAMES","/var/www/");
+}
 class Battle
 {
     private static $theBattle;

@@ -525,9 +525,13 @@ return;
         $this->load->library("battle");
         $game = $doc->gameName;
         $emsg = false;
+        $click = $doc->_rev;
+        $matches = array();
+        preg_match("/^([0-9]+)-/",$click,$matches);
+        $click = $matches[1];
         try{
         $battle = $this->battle->getBattle($game,$doc->wargame);
-        $doSave = $battle->poke($event,$id,$x,$y, $user,$doc->playerStatus == "hot seat", $doc->name);
+        $doSave = $battle->poke($event,$id,$x,$y, $user, $click);
         $success = false;
         if($doSave){
             $doc->wargame = $battle->save();
@@ -593,6 +597,11 @@ return;
         $this->load->library("battle");
         $battle = $this->battle->getBattle($game,null, $arg);
         $doc->wargame = $battle->save();
+        $click = $doc->_rev;
+        $matches = array();
+        preg_match("/^([0-9]+)-/",$click,$matches);
+        $click = $matches[1];
+        $doc->wargame->gameRules->phaseClicks[] = $click+1;
         if($doc->wargame->genTerrain){
             try{
                 $ter = $this->wargame_model->getDoc($doc->wargame->terrainName);
