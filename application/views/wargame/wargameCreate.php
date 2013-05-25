@@ -11,3 +11,6 @@
 <form method="POST">
 Name of new game? <input name="wargame">
 </form>
+<br>
+<a href="<?=site_url("wargame/logout");?>">Logout</a><br>
+<a href="<?=site_url("wargame/leaveGame");?>">back to lobby</a>
