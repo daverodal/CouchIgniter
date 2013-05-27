@@ -5,7 +5,7 @@
  * Time: 5:03 PM
  * Link: http://davidrodal.com
  * */
-if(strpos('__FILE__',"/var/www") === false){
+if(strpos(__FILE__,"/var/www") === false){
     define ("WARGAMES","/xampp/htdocs/");
 }else{
     define ("WARGAMES","/var/www/");
