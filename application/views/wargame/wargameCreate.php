@@ -1,3 +1,23 @@
+<html>
+<head>
+    <style type="text/css">
+    body{
+        background:url("<?=base_url("js/britishTank.jpg")?>") #333 no-repeat;
+        background-size: 100%;
+        background-color: #F5F1DE
+    }
+        fieldset{
+            width:400px;
+            background:rgba(255,255,255,.3);
+        }
+        legend{
+            font-size:20px
+        }
+        a{
+            color:black;
+        }
+    </style>
+</head>
 <?php
 /**
  * User: drodal
@@ -7,10 +27,14 @@
  */
  
 ?>
+<body>
 <?= $message?>
+<fieldset><legend>What would you like to name your new game?</legend>
 <form method="POST">
-Name of new game? <input name="wargame">
-</form>
+ <input name="wargame">
+</form></fieldset>
 <br>
 <a href="<?=site_url("wargame/logout");?>">Logout</a><br>
 <a href="<?=site_url("wargame/leaveGame");?>">back to lobby</a>
+</body>
+</html>

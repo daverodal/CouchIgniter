@@ -5,7 +5,7 @@
  * Time: 5:03 PM
  * Link: http://davidrodal.com
  * */
-if($_SERVER['SERVER_NAME'] == 'localhost'){
+if(strpos('__FILE__',"/var/www") === false){
     define ("WARGAMES","/xampp/htdocs/");
 }else{
     define ("WARGAMES","/var/www/");
@@ -70,6 +70,9 @@ class Battle
                 break;
             case "NapOnMars":
                 @include_once(WARGAMES . "MartianCivilWar/NapOnMars.php");
+                break;
+            case "Jagersdorf":
+                @include_once(WARGAMES . "MartianCivilWar/Jagersdorf.php");
                 break;
             case "Waterloo":
                 @include_once(WARGAMES."NapOnMars/Waterloo.php");
