@@ -4,13 +4,12 @@
  * you more advanced features, like SSL supports, with the cost of an
  * additional dependency that your shared hosting environment might now have. 
  *
- * @version 0.7.1
+ * @version 0.8.0
  * @package HTTP
  */
 require_once('SagHTTPAdapter.php');
 
 class SagCURLHTTPAdapter extends SagHTTPAdapter {
-    private $initCnt;
   private $ch;
 
   public function __construct($host, $port) {
@@ -21,16 +20,9 @@ class SagCURLHTTPAdapter extends SagHTTPAdapter {
     parent::__construct($host, $port);
 
     $this->ch = curl_init();
-      $initCnt = 0;
   }
 
-  public function procPacket($method, $url, $data = null, $headers = array()) {
-
-      if(($this->initCnt % 10) ==0){
-//          echo "curlinig ".$this->initCnt;
-          $this->ch =curl_init();
-      }
-      $this->initCnt++;
+  public function procPacket($method, $url, $data = null, $headers = array(), $specialHost = null, $specialPort = null) {
     // the base cURL options
     $opts = array(
       CURLOPT_URL => "{$this->proto}://{$this->host}:{$this->port}{$url}",
@@ -38,6 +30,7 @@ class SagCURLHTTPAdapter extends SagHTTPAdapter {
       CURLOPT_FOLLOWLOCATION => true,
       CURLOPT_HEADER => true,
       CURLOPT_RETURNTRANSFER => true,
+      CURLOPT_NOBODY => false,
       CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
       CURLOPT_CUSTOMREQUEST => $method
     );
@@ -90,22 +83,9 @@ class SagCURLHTTPAdapter extends SagHTTPAdapter {
 
     curl_setopt_array($this->ch, $opts);
 
-//      $now = explode(" ",microtime());
-//      $now[0] = preg_replace("/^0/","",$now[0]);
-//      $now = $now[1].$now[0];
-////            echo "Reading ".$now."\n";
-//      $then = $now;
+    $chResponse = curl_exec($this->ch);
 
-      $chResponse = curl_exec($this->ch);
-//      $now = explode(" ",microtime());
-//      $now[0] = preg_replace("/^0/","",$now[0]);
-//      $now = $now[1].$now[0];
-////            echo "rev ".$data->_rev."\n";
-////            echo "readit writing $now  \n";
-//      echo "sagDiff ".($now - $then)."\n";
-
-
-      if($chResponse !== false) {
+    if($chResponse !== false) {
       // prepare the response object
       $response = new stdClass();
       $response->headers = new stdClass();
@@ -113,18 +93,7 @@ class SagCURLHTTPAdapter extends SagHTTPAdapter {
       $response->body = '';
 
       // split headers and body
-      list($continue, $headers, $response->body) = explode("\r\n\r\n", $chResponse);
-
-      /*
-       * It doesn't always happen, but it seems that we will sometimes get a
-       * Continue header that will screw parsing up.
-       */
-      if(!$response->body) {
-        $response->body = $headers;
-        $headers = $continue;
-      }
-
-      unset($continue);
+      list($headers, $response->body) = explode("\r\n\r\n", $chResponse);
 
       // split up the headers
       $headers = explode("\r\n", $headers);
@@ -142,6 +111,7 @@ class SagCURLHTTPAdapter extends SagHTTPAdapter {
         }
         else {
           $line = explode(':', $headers[$i], 2);
+          $line[0] = strtolower($line[0]);
           $response->headers->$line[0] = ltrim($line[1]);
 
           if($line[0] == 'Set-Cookie') {

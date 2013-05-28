@@ -5,7 +5,7 @@
  *
  * This is also the original socket code that was used in Sag.
  *
- * @version 0.7.1
+ * @version 0.8.0
  * @package HTTP
  */
 require_once('SagHTTPAdapter.php');
@@ -36,7 +36,18 @@ class SagNativeHTTPAdapter extends SagHTTPAdapter {
     throw new SagException('Sag::$HTTP_NATIVE_SOCKETS does not support SSL.');
   }
 
-  public function procPacket($method, $url, $data = null, $headers = array()) {
+  public function procPacket($method, $url, $data = null, $headers = array(), $specialHost = null, $specialPort = null) {
+    if(is_string($specialHost) || is_string($specialPort)) {
+      $host = ($specialHost) ? $specialHost : $this->host;
+      $port = ($specialPort) ? $specialPort : $this->port;
+
+      $headers['Host'] = "$host:$port";
+    }
+    else {
+      $host = $this->host;
+      $port = $this->port;
+    }
+
     //Start building the request packet.
     $buff = "$method $url HTTP/1.1\r\n";
 
@@ -46,7 +57,7 @@ class SagNativeHTTPAdapter extends SagHTTPAdapter {
 
     $buff .= "\r\n$data"; //it's okay if $data isn't set
 
-    if(($data && $method !== "PUT") || ($method === "PUT")) {
+    if($data && $method !== "PUT") {
       $buff .= "\r\n\r\n";
     }
 
@@ -69,10 +80,10 @@ class SagNativeHTTPAdapter extends SagHTTPAdapter {
         try {
           //these calls should throw on error
           if($this->socketOpenTimeout) {
-            $sock = fsockopen($this->host, $this->port, $sockErrNo, $sockErrStr, $this->socketOpenTimeout);
+            $sock = fsockopen($host, $port, $sockErrNo, $sockErrStr, $this->socketOpenTimeout);
           }
           else {
-            $sock = fsockopen($this->host, $this->port, $sockErrNo, $sockErrStr);
+            $sock = fsockopen($host, $port, $sockErrNo, $sockErrStr);
           }
 
           /*
@@ -92,7 +103,7 @@ class SagNativeHTTPAdapter extends SagHTTPAdapter {
     }
 
     if(!$sock) {
-      throw new SagException("Error connecting to {$this->host}:{$this->port} - $sockErrStr ($sockErrNo).");
+      throw new SagException("Error connecting to {$host}:{$port} - $sockErrStr ($sockErrNo).");
     }
 
     // Send the packet.
@@ -124,11 +135,11 @@ class SagNativeHTTPAdapter extends SagHTTPAdapter {
           !$isHeader &&
           $method != 'HEAD' &&
           (
-            isset($response->headers->{'Transfer-Encoding'}) == 'chunked' ||
-            !isset($response->headers->{'Content-Length'}) ||
+            isset($response->headers->{'transfer-encoding'}) == 'chunked' ||
+            !isset($response->headers->{'content-length'}) ||
             (
-              isset($response->headers->{'Content-Length'}) &&
-              strlen($response->body) < $response->headers->{'Content-Length'}
+              isset($response->headers->{'content-length'}) &&
+              strlen($response->body) < $response->headers->{'content-length'}
             )
           )
         )
@@ -140,7 +151,22 @@ class SagNativeHTTPAdapter extends SagHTTPAdapter {
         throw new SagException('Connection timed out while reading.');
       }
 
-      $line = fgets($sock);
+      /*
+       * We cannot be promised that all responses will have a newline - ie.,
+       * attachments. So when we're not dealing with headers (which will always
+       * have newlines) or chunked encoding (which is just special), we should
+       * give fgets() a length to read or else it will keep listening for bytes
+       * until the socket times out.
+       *
+       * And we can't use a ternary because fgets() wants an int or undefined.
+       */
+      if(!$isHeader && $response->headers->{'transfer-encoding'} !== 'chunked') {
+        //the +1 is because fgets() reads (length - 1) bytes
+        $line = fgets($sock, $response->headers->{'content-length'} - strlen($response->body) + 1);
+      }
+      else {
+        $line = fgets($sock);
+      }
 
       if(!$line && !$sockInfo['feof'] && !$sockInfo['timed_out']) {
         throw new SagException('Unexpectedly failed to retrieve a line from the socket before the end of the file.');
@@ -176,20 +202,41 @@ class SagNativeHTTPAdapter extends SagHTTPAdapter {
           }
           else {
             $line = explode(':', $line, 2);
-            $response->headers->$line[0] = ltrim($line[1]);
+            $line[0] = strtolower($line[0]);
+            $response->headers->$line[0] = $line[1] = ltrim($line[1]);
 
-            if($line[0] == 'Set-Cookie') {
-              $response->cookies = new stdClass();
+            switch($line[0]) {
+              case 'set-cookie':
+                $response->cookies = new stdClass();
 
-              foreach(explode('; ', $line[1]) as $cookie) {
-                $crumbs = explode('=', $cookie);
-                $response->cookies->{trim($crumbs[0])} = trim($crumbs[1]);
-              } 
+                foreach(explode('; ', $line[1]) as $cookie) {
+                  $crumbs = explode('=', $cookie);
+                  $response->cookies->{trim($crumbs[0])} = trim($crumbs[1]);
+                } 
+
+                break;
+
+              case 'location':
+                //only follow Location header on 3xx status codes
+                if($response->headers->_HTTP->status >= 300 && $response->headers->_HTTP->status < 400) {
+                  $line[1] = parse_url($line[1]);
+
+                  return $this->procPacket(
+                    $method,
+                    $line[1]['path'],
+                    $data,
+                    $headers,
+                    $line[1]['host'],
+                    $line[1]['port']
+                  );
+                }
+
+                break;
             }
           }
         }
       }
-      else if($response->headers->{'Transfer-Encoding'}) {
+      else if($response->headers->{'transfer-encoding'}) {
         /*
          * Parse the response's body, which is being sent in chunks. Welcome to
          * HTTP/1.1 land.
@@ -254,7 +301,7 @@ class SagNativeHTTPAdapter extends SagHTTPAdapter {
     }
 
     // HTTP/1.1 assumes persisted connections, but proxies might close them.
-    if(strtolower($response->headers->Connection) != 'close') {
+    if(strtolower($response->headers->connection) != 'close') {
       $this->connPool[] = $sock;
     }
 

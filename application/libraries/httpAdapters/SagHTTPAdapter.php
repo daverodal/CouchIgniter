@@ -4,7 +4,7 @@
  * allowing for different drivers to be used thereby controling your project's
  * dependencies.
  *
- * @version 0.7.1
+ * @version 0.8.0
  * @package HTTP
  */
 abstract class SagHTTPAdapter {
@@ -37,8 +37,8 @@ abstract class SagHTTPAdapter {
     //Make sure we got the complete response.
     if(
       $method != 'HEAD' &&
-      isset($response->headers->{'Content-Length'}) &&
-      strlen($response->body) != $response->headers->{'Content-Length'}
+      isset($response->headers->{'content-length'}) &&
+      strlen($response->body) != $response->headers->{'content-length'}
     ) {
       throw new SagException('Unexpected end of packet.');
     }
@@ -114,10 +114,14 @@ abstract class SagHTTPAdapter {
    * in the packet's body.
    * @param array $headers An associative array of headers where the keys are
    * the header names.
+   * @param mixed $specialHost Uses the provided host for this packet only -
+   * does not change the adapter's global host setting.
+   * @param mixed $specialPort Uses the provided port for this packet only -
+   * does not change the adapter's global port setting.
    * @returns stdClass The response object created by makeResponse().
    * @see makeResponse()
    */
-  abstract public function procPacket($method, $url, $data = null, $headers = array());
+  abstract public function procPacket($method, $url, $data = null, $headers = array(), $specialHost = null, $specialPort = null);
 
   /**
    * Whether to use HTTPS or not.

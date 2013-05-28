@@ -25,7 +25,7 @@ require_once("SagException.php");
  * storage).
  *
  * @package Cache 
- * @version 0.7.1
+ * @version 0.8.0
  */
 abstract class SagCache {
   private $maxSize;                                     //in bytes
@@ -153,8 +153,8 @@ abstract class SagCache {
       isset($item) && 
       is_object($item) && 
       isset($item->headers) &&
-      is_string($item->headers->ETag) &&
-      !empty($item->headers->ETag) &&
+      is_string($item->headers->etag) &&
+      !empty($item->headers->etag) &&
       isset($item->body) &&
       is_object($item->body)
     );
