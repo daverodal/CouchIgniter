@@ -16,6 +16,7 @@
         margin:40px;
         padding:20px;
         float:left;
+        box-shadow: 10px 10px 10px rgba(20,20,20,.7);
     }
     input{
         margin-left:15px;
