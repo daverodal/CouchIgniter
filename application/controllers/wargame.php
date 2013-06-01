@@ -546,6 +546,9 @@ return;
 //            file_put_contents("/tmp/perflog","\nsaving poked ".microtime(),FILE_APPEND);
 
         }
+        if($doSave === 0){
+            $success = true;
+        }
         }catch(Exception $e){
             $emsg = $e->getMessage()." \nFile: ".$e->getFile()." \nLine: ".$e->getLine()." \nCode: ".$e->getCode();
             $success = false;
