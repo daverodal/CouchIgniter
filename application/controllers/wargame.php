@@ -345,6 +345,24 @@ return;
         $this->wargame_model->enterMulti($wargame,$playerOne,$playerTwo);
         redirect("wargame/changeWargame/$wargame");
     }
+    public function testDB($name = "aaa"){
+        $user = $this->session->userdata("user");
+        if (!$user) {
+            redirect("/wargame/login/");
+        }
+        $this->load->model("wargame/wargame_model");
+        $cnt = 100;
+        while($cnt--){
+        $doc = $this->wargame_model->getDoc($name);
+        if($doc){
+            $before = microtime();
+            $this->wargame_model->setDoc($doc);
+            echo microtime() - $before;
+            echo "<br>\n";
+        }
+        }
+        echo "WE";
+    }
     public function initDoc(){
         $user = $this->session->userdata("user");
         if (!$user) {
@@ -367,7 +385,7 @@ return;
         $this->load->model("wargame/wargame_model");
         $chatsIndex = $this->input->post('chatsIndex');
         $this->load->library("battle");
-
+        /* @var Wargame_Model $this->wargame_model */
         $ret = $this->wargame_model->getChanges($wargame, $last_seq,$chatsIndex,$user);
         echo json_encode($ret);
     }
