@@ -353,9 +353,10 @@ return;
         $this->load->model("wargame/wargame_model");
         $cnt = 300;
         while($cnt--){
-        $doc = $this->wargame_model->getDoc($name);
-        if($doc){
             $before = microtime();
+
+            $doc = $this->wargame_model->getDoc($name);
+        if($doc){
             $this->wargame_model->setDoc($doc);
             echo microtime() - $before;
             echo "<br>\n";
