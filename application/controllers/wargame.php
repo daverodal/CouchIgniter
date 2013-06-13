@@ -358,7 +358,11 @@ return;
             $doc = $this->wargame_model->getDoc($name);
         if($doc){
             $this->wargame_model->setDoc($doc);
-            echo microtime() - $before;
+            $after = microtime();
+            echo $after - $before;
+            if($after - $before > .1){
+                echo " BAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD";
+            }
             echo "<br>\n";
         }
         }
