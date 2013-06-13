@@ -351,7 +351,7 @@ return;
             redirect("/wargame/login/");
         }
         $this->load->model("wargame/wargame_model");
-        $cnt = 100;
+        $cnt = 300;
         while($cnt--){
         $doc = $this->wargame_model->getDoc($name);
         if($doc){
