@@ -353,12 +353,12 @@ return;
         $this->load->model("wargame/wargame_model");
         $cnt = 300;
         while($cnt--){
-            $before = microtime();
+            $before = microtime(true);
 
             $doc = $this->wargame_model->getDoc($name);
         if($doc){
             $this->wargame_model->setDoc($doc);
-            $after = microtime();
+            $after = microtime(true);
             echo $after - $before;
             if($after - $before > .1){
                 echo " BAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD";
