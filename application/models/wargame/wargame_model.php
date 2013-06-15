@@ -358,7 +358,7 @@ HEREUPDATE;
             $num = $doc->wargame->force->units;
             $doc->wargame->force->units = array();
             for($i = 0;$i< $num;$i++){
-                $unit = $this->couchsag->get("id".$i);
+                $unit = $this->couchsag->get("$wargame-id".$i);
                 $doc->wargame->force->units[] =  $unit;
             }
         }

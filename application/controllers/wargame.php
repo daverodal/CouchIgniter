@@ -197,7 +197,7 @@ return;
             $num = $units;
             $units = array();
             for($i = 0;$i< $num;$i++){
-                $units[] =  $this->couchsag->get("id".$i);
+                $units[] =  $this->couchsag->get("$wargame-id".$i);
             }
         }
 //        var_dump($units[0]);
@@ -555,7 +555,7 @@ return;
             $num = $doc->wargame->force->units;
             $doc->wargame->force->units = array();
             for($i = 0;$i< $num;$i++){
-                $doc->wargame->force->units[] =  $this->couchsag->get("id".$i);
+                $doc->wargame->force->units[] =  $this->couchsag->get("$wargame-id".$i);
 
             }
         }
@@ -577,7 +577,7 @@ return;
             foreach($doc->wargame->force->units as $unit){
                 $num++;
                 if($unit->dirty){
-                    $unit->_id = "id".$unit->id;
+                    $unit->_id = "$wargame-id".$unit->id;
                     $this->couchsag->update($unit->_id, $unit);
                 }
 
@@ -681,15 +681,13 @@ return;
         foreach($doc->wargame->force->units as $unit){
             echo "around ";
             if($unit->dirty){
-                echo "$num ";
                 $num++;
-                $unit->_id = "id".$unit->id;
+                $unit->_id = "$wargame-id".$unit->id;
                 try{
                     $dead = $this->couchsag->get($unit->_id);
                     $this->couchsag->delete($dead->_id, $dead->_rev);
 
                 }catch(Exception $e){echo "tee ";}
-                echo "more ";
                 $this->couchsag->update($unit->_id, $unit);
             }
         }
