@@ -353,7 +353,15 @@ HEREUPDATE;
 
         }
 //        file_put_contents("/tmp/perflog","\nGetting ".microtime(),FILE_APPEND);
-        $doc = $this->couchsag->get($wargame."?$match");
+        $doc = $this->couchsag->get($wargame);
+        if(is_numeric($doc->wargame->force->units)){
+            $num = $doc->wargame->force->units;
+            $doc->wargame->force->units = array();
+            for($i = 0;$i< $num;$i++){
+                $unit = $this->couchsag->get("id".$i);
+                $doc->wargame->force->units[] =  $unit;
+            }
+        }
 //        file_put_contents("/tmp/perflog","\nGotten ".microtime(),FILE_APPEND);
         $click = $doc->_rev;
         $matches = array();

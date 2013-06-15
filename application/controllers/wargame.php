@@ -193,6 +193,13 @@ return;
             $games[] =  array("name"=>$row->value[0],'arg'=>$row->value[1]);
         }
         $units = $doc->wargame->force->units;
+        if(is_numeric($units)){
+            $num = $units;
+            $units = array();
+            for($i = 0;$i< $num;$i++){
+                $units[] =  $this->couchsag->get("id".$i);
+            }
+        }
 //        var_dump($units[0]);
 //        $units = array($units[0]);
 //        $units = array("hi",'hell');
@@ -544,6 +551,14 @@ return;
             $ter = $this->wargame_model->getDoc($doc->wargame->terrainName);
             $doc->wargame->terrain = $ter->terrain;
         }
+        if(is_numeric($doc->wargame->force->units)){
+            $num = $doc->wargame->force->units;
+            $doc->wargame->force->units = array();
+            for($i = 0;$i< $num;$i++){
+                $doc->wargame->force->units[] =  $this->couchsag->get("id".$i);
+
+            }
+        }
 //        file_put_contents("/tmp/perflog","\nGotten poke ".microtime(),FILE_APPEND);
         $this->load->library("battle");
         $game = $doc->gameName;
@@ -558,6 +573,16 @@ return;
         $success = false;
         if($doSave){
             $doc->wargame = $battle->save();
+            $num = 0;
+            foreach($doc->wargame->force->units as $unit){
+                $num++;
+                if($unit->dirty){
+                    $unit->_id = "id".$unit->id;
+                    $this->couchsag->update($unit->_id, $unit);
+                }
+
+            }
+            $doc->wargame->force->units = $num;
             $this->wargame_model->setDoc($doc);
             $success = true;
 
@@ -648,8 +673,28 @@ return;
             $doc->wargame->genTerrain = false;
 
         }
+        echo "hehehe";
         $doc->chats = array();
         $doc->gameName = $game;
+        $num = 0;
+        echo "HEY";
+        foreach($doc->wargame->force->units as $unit){
+            echo "around ";
+            if($unit->dirty){
+                echo "$num ";
+                $num++;
+                $unit->_id = "id".$unit->id;
+                try{
+                    $dead = $this->couchsag->get($unit->_id);
+                    $this->couchsag->delete($dead->_id, $dead->_rev);
+
+                }catch(Exception $e){echo "tee ";}
+                echo "more ";
+                $this->couchsag->update($unit->_id, $unit);
+            }
+        }
+
+        $doc->wargame->force->units = $num;
         $doc = $this->wargame_model->setDoc($doc);
         redirect("wargame/playAs/$game");
 
