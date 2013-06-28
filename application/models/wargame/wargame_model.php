@@ -484,6 +484,18 @@ HEREUPDATE;
                 $newSpecialHexesChanges->{"x".$mapGrid->getPixelX()."y".$mapGrid->getPixelY()} = $v;
             }
         }
+        $newSpecialHexesVictory = new stdClass();
+
+        if($doc->wargame->mapData->specialHexesVictory){
+            $specialHexesVictory = $doc->wargame->mapData->specialHexesVictory;
+            foreach($specialHexesVictory as $k => $v){
+                $hex = new Hexagon($k);
+                $mapGrid->setHexagonXY($hex->x,$hex->y);
+
+                $path = new stdClass();
+                $newSpecialHexesVictory->{"x".$mapGrid->getPixelX()."y".$mapGrid->getPixelY()} = $v;
+            }
+        }
         $vp = $doc->wargame->victory->victoryPoints;
 //        echo "Victory ";var_dump($vp);
         $flashMessages = $gameRules->flashMessages;
@@ -492,9 +504,10 @@ HEREUPDATE;
         }
 //        $flashMessages = array("Victory","Is","Mine");
         $specialHexesChanges = $newSpecialHexesChanges;
+        $specialHexesVictory = $newSpecialHexesVictory;
         $gameRules->playerStatus = $doc->playerStatus;
         $clock = "The turn is ".$gameRules->turn.". The Phase is ". $phase_name[$gameRules->phase].". The mode is ". $mode_name[$gameRules->mode];
-        return compact("phaseClicks","click","revs","vp","flashMessages","specialHexes","specialHexesChanges","combatRules",'force','seq', 'chats', 'chatsIndex', 'last_seq', 'users', 'games', 'clock', 'mapUnits','moveRules','gameRules');
+        return compact("phaseClicks","click","revs","vp","flashMessages","specialHexesVictory","specialHexes","specialHexesChanges","combatRules",'force','seq', 'chats', 'chatsIndex', 'last_seq', 'users', 'games', 'clock', 'mapUnits','moveRules','gameRules');
     }
 
 }
