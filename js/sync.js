@@ -26,6 +26,9 @@ function Sync(baseUrl) {
             {url:this.baseUrl + "/" + last_seq+travel,
                 type:"POST",
                 data:theArgs,
+                error:function(one, two, three){
+                    $.get.abort();
+                },
                 success:function (data, textstatus) {
                     var now = ((new Date()).getTime()) / 1000;
                     that.fetchTimes.push(now);
