@@ -1,7 +1,7 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 /**
  * Created by JetBrains PhpStorm.
- * User: drodal
+ * User: david rodal
  * Date: 10/17/11
  * Time: 5:00 PM
  * To change this template use File | Settings | File Templates.
