@@ -415,6 +415,7 @@ HEREUPDATE;
             $mapUnit->moveAmountUsed = $unit->moveAmountUsed;
             $mapUnit->maxMove = $unit->maxMove;
             $mapUnit->strength = $unit->strength ;
+            $mapUnit->supplied = $unit->supplied;
             $mapUnits[] = $mapUnit;
         }
         $turn = $doc->wargame->gameRules->turn;
@@ -454,6 +455,7 @@ HEREUPDATE;
                 }
             }
         }
+        $force->units = $units;
         $force->units = $units;
         $gameRules = $wargame->gameRules;
         $gameRules->display = $display;
