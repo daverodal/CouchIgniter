@@ -118,7 +118,11 @@ class Wargame_model extends CI_Model
         $views->getLobbies = new StdClass;
         $views->getLobbies->map = "function(doc){
             if(doc.docType == 'wargame'){
-                emit([doc.createUser,doc.gameName,doc.playerStatus, doc.wargame.gameRules.attackingForceId, doc._id],[doc.gameName,doc.createDate,doc.wargame.players,doc.wargame.mapData.mapUrl]);
+               var gameName = doc.gameName;
+	        	if(doc.wargame.arg){
+		            gameName += '-'+doc.wargame.arg;
+                }
+                emit([doc.createUser,gameName,doc.playerStatus, doc.wargame.gameRules.attackingForceId, doc._id],[doc.gameName,doc.createDate,doc.wargame.players,doc.wargame.mapData.mapUrl]);
             }}";
 //        $views->getAvailGames = new StdClass;
 //        $views->getAvailGames->map = "function(doc){if(doc.docType == 'gamesAvail'){if(doc.games){for(var i in doc.games){emit(doc.games[i],doc.games[i]);}}}}";
