@@ -262,6 +262,7 @@ return;
                 $user = $this->users_model->getUserByEmail($data['name']);
             $user = $user->username;
             $this->session->set_userdata(array("user" => $user));
+		$this->users_model->userLoggedIn($user);
 //            $this->session->set_userdata(array("wargame" => "MainWargame"));
 //            $this->load->model('wargame/wargame_model');
 //            $this->wargame_model->enterWargame($user, "MainWargame");

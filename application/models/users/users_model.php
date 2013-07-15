@@ -255,11 +255,29 @@ byUsername;
         $ret = $this->couchsag->update($doc->_id, $doc);
         $this->_restoreDB();
     }
+	public function userLoggedIn($user){
+		$this->_setDB();
+		$doc = $this->couchsag->get("userLogins");
+		$gnu = new stdClass();
+		$gnu->name = $user;
+		$gnu->time = date("Y-m-d H:i:s");
+		$doc->logins[] = $gnu;
+		$this->couchsag->update($doc->_id, $doc);
+		$this->_restoreDB();
+	}
     public function getAvailGames(){
         $this->_setDB();
         $seq = $this->couchsag->get("/_design/newFilter/_view/getAvailGames");
         $this->_restoreDB();
         return $seq->rows;
+    }
+
+    public function getLogins(){
+        $this->_setDB();
+        $logins = $this->couchsag->get("userLogins");
+        $this->_restoreDB();
+        return $logins;
+
     }
 
 }

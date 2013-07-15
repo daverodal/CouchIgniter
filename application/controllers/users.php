@@ -112,4 +112,11 @@ class Users extends CI_Controller
         $this->load->view('users/games_view',compact("games"));
 //        var_dump($this->users_model->getUsersByEmail());
     }
+    function logins(){
+        echo "hi";
+        $this->load->model('users/users_model');
+        $logins = $this->users_model->getLogins();
+        $logins = $logins->logins;
+        $this->load->view('users/users_logins',compact("logins"));
+    }
 }
