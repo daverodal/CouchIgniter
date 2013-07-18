@@ -66,6 +66,20 @@ class Users_model extends CI_Model
             echo "users doc found, leaving untouched\n";
         }
 
+
+        try{
+            echo "is userLogins doc presesnt?\n";
+            $doc = $this->couchsag->get("userLogins");
+        }catch(Exception $e){};
+        if(!$doc){
+            $data = array("_id" => "userLogins", "docType" => "userLogins", "logins" => array());
+            echo "createing userLogins\n";
+            $this->couchsag->create($data);
+            echo "Created them\n";
+        }else{
+            echo "userLogins doc found, leaving untouched\n";
+        }
+
         $doc = false;
         try{
             echo "is gamesAvail doc presesnt?\n";
