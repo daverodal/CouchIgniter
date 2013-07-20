@@ -9,7 +9,7 @@ if(strpos(__FILE__,"/var/www") === false){
     if(strpos(__FILE__,"/Users/david_rodal") !== false){
         define ("WARGAMES","/Users/david_rodal/MampRoot/Game/");
     }else{
-        define ("WARGAMES","/xampp/htdocs/");
+        define ("WARGAMES","/xampp/htdocs/MartianCivilWar/");
     }
 }else{
     define ("WARGAMES","/var/www/MartianCivilWar");
