@@ -6,6 +6,13 @@
 
 class Wargame extends CI_Controller
 {
+    /*
+     * Ugh, declaring models used as public properties, really grinds my gears.....
+     */
+    /* @var Battle $battle */
+    public $battle;
+    /* @var Couchsag $couchsag */
+    public $couchsag;
     /* @var Wargame_model $wargame_model */
 
     function test(){
@@ -71,8 +78,7 @@ return;
         $this->couchsag->sag->setDatabase('mydatabase');
         $games = array();
         foreach($gamesAvail->rows as $row){
-        $games[] =  array("name"=>$row->value[0],'arg'=>$row->value[1]);
-//           var_dump($games);die('heh');
+        $games[] =  array("name"=>$row->value[0],'arg'=>$row->value[1],'argTwo'=>$row->value[2]);
     }
 
         $this->parser->parse("wargame/wargameUnattached",compact("games"));
@@ -635,7 +641,7 @@ return;
         redirect("/wargame/play/");
     }
 
-   public function unitInit($game = "MartianCivilWar", $arg = false)
+   public function unitInit($game = "MartianCivilWar", $arg = false, $argTwo = false)
     {
         $user = $this->session->userdata("user");
         if (!$user) {
@@ -650,7 +656,8 @@ return;
        }
 
         $this->load->library("battle");
-        $battle = $this->battle->getBattle($game,null, $arg);
+
+        $battle = $this->battle->getBattle($game,null,false, false);
         $doc->wargame = $battle->save();
         $click = $doc->_rev;
         $matches = array();

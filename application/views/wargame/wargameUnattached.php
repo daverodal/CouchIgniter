@@ -45,7 +45,7 @@
 Attach to game:
     <ul>
 {games}
-<li></li><a href="<?=site_url("wargame/unitInit");?>/{name}/{arg}">{name}:{arg}</a></li>
+<li></li><a href="<?=site_url("wargame/unitInit");?>/{name}/{arg}/{argTwo}">{name}:{arg}:{argTwo}</a></li>
 {/games}
     </ul>
 <br><br><br>

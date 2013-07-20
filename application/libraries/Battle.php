@@ -6,9 +6,13 @@
  * Link: http://davidrodal.com
  * */
 if(strpos(__FILE__,"/var/www") === false){
-    define ("WARGAMES","/xampp/htdocs/");
+    if(strpos(__FILE__,"/Users/david_rodal") !== false){
+        define ("WARGAMES","/Users/david_rodal/MampRoot/Game/");
+    }else{
+        define ("WARGAMES","/xampp/htdocs/");
+    }
 }else{
-    define ("WARGAMES","/var/www/");
+    define ("WARGAMES","/var/www/MartianCivilWar");
 }
 class Battle
 {
@@ -16,22 +20,22 @@ class Battle
        public function resize($size,$player){
 
        }
-    public static  function getBattle($name = false,$doc = null, $arg = false){
+    public static  function getBattle($name = false,$doc = null, $arg = false, $argTwo = false){
         try{
         if(self::$theBattle){
             return self::$theBattle;
         }
         self::loadGame($name);
-        $thisBattle = new $name($doc, $arg);
+        $thisBattle = new $name($doc, $arg, $argTwo);
         self::$theBattle = $thisBattle;
         return self::$theBattle;;
 
         }catch(Exception $e){echo $e->getMessage()." ".$e->getFile()." ".$e->getLine();}
     }
-    public static function getView($name,$mapUrl, $player = 0, $arg = false){
+    public static function getView($name,$mapUrl, $player = 0, $arg = false, $argTwo = false){
         try{
         self::loadGame($name);
-        $name::getView($name, $mapUrl,$player, $arg);
+        $name::getView($name, $mapUrl,$player, $arg, $argTwo);
         }catch(Exception $e){echo $e->getMessage()." ".$e->getFile()." ".$e->getLine();}
     }
     public static function getHeader($name,$data){
@@ -54,31 +58,31 @@ class Battle
         try{
         switch($name){
             case "MartianCivilWar":
-                include_once(WARGAMES . "MartianCivilWar/MartianCivilWar.php");
+                require_once(WARGAMES . "MartianCivilWar.php");
                 break;
             case "Napoleon":
-                include_once(WARGAMES . "MartianCivilWar/Napoleon.php");
+                include_once(WARGAMES . "Napoleon.php");
                 break;
             case "Tutorial":
-                include_once(WARGAMES . "MartianCivilWar/Tutorial.php");
+                include_once(WARGAMES . "Tutorial.php");
                 break;
             case "OMCW":
-                include_once(WARGAMES . "MartianCivilWar/OrigMartianCivilWar.php");
+                include_once(WARGAMES . "OrigMartianCivilWar.php");
                 break;
             case "Pink":
-                @include_once(WARGAMES."pink/pink.php");
+                @include_once(WARGAMES."pink.php");
                 break;
             case "NapOnMars":
-                @include_once(WARGAMES . "MartianCivilWar/NapOnMars.php");
+                @require_once(WARGAMES . "NapOnMars.php");
                 break;
             case "Jagersdorf":
-                @include_once(WARGAMES . "MartianCivilWar/Jagersdorf.php");
+                @include_once(WARGAMES . "Jagersdorf.php");
                 break;
             case "Waterloo":
-                @include_once(WARGAMES."NapOnMars/Waterloo.php");
+                @include_once(WARGAMES."Waterloo.php");
                 break;
             case "BattleOfMoscow":
-                include_once(WARGAMES."BattleOfMoscow/BattleOfMoscow.php");
+                include_once(WARGAMES."BattleOfMoscow.php");
                 break;
             case "BattleForAllenCreek":
                 include_once(WARGAMES . "BattleOfAllenCreek/BattleForAllenCreek.php");
