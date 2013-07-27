@@ -657,7 +657,7 @@ return;
 
         $this->load->library("battle");
 
-        $battle = $this->battle->getBattle($game,null,false, false);
+        $battle = $this->battle->getBattle($game,null,$arg, $argTwo);
         $doc->wargame = $battle->save();
         $click = $doc->_rev;
         $matches = array();
