@@ -12,7 +12,7 @@ if(strpos(__FILE__,"/var/www") === false){
         define ("WARGAMES","/xampp/htdocs/MartianCivilWar/");
     }
 }else{
-    define ("WARGAMES","/var/www/MartianCivilWar");
+    define ("WARGAMES","/var/www/MartianCivilWar/");
 }
 class Battle
 {
