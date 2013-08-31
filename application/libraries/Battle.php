@@ -28,7 +28,7 @@ class Battle
         self::loadGame($name);
         $thisBattle = new $name($doc, $arg, $argTwo);
         self::$theBattle = $thisBattle;
-        return self::$theBattle;;
+        return self::$theBattle;
 
         }catch(Exception $e){echo $e->getMessage()." ".$e->getFile()." ".$e->getLine();}
     }
@@ -86,6 +86,9 @@ class Battle
                 break;
             case "BattleForAllenCreek":
                 include_once(WARGAMES . "BattleOfAllenCreek/BattleForAllenCreek.php");
+                break;
+            case "NapoleonsTrainingAcademy":
+                include_once(WARGAMES . "NapoleonsTrainingAcademy.php");
                 break;
             default:
                 throw(new Exception("Bad Class in loadGame '$name'"));
