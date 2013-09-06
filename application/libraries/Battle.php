@@ -90,6 +90,9 @@ class Battle
             case "NapoleonsTrainingAcademy":
                 include_once(WARGAMES . "NapoleonsTrainingAcademy.php");
                 break;
+            case "HotWar":
+                require_once(WARGAMES . "HotWar.php");
+                break;
             default:
                 throw(new Exception("Bad Class in loadGame '$name'"));
         }
