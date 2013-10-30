@@ -344,11 +344,20 @@ return;
                 unset($val->value);
                 $users[$k] = (array)$val;
             }
+
+            $this->load->model("wargame/wargame_model");
+            $doc = $this->wargame_model->getDoc(urldecode($wargame));
+            if(!$doc || $doc->createUser != $user){
+                redirect("wargame/play");
+            }
+            $this->load->library("battle");
+            $game = $doc->gameName;
+
             $path = site_url("wargame/enterMulti");
             $me = $user;
             $others = $users;
-//            $users = [['a'=>'b'],['a'=>'d']];
-            $this->parser->parse("wargame/wargameMulti",compact("users","wargame","me","path","others"));
+
+            $this->parser->parse("wargame/wargameMulti",compact("game","users","wargame","me","path","others"));
             return;
         }
 

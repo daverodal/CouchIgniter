@@ -82,6 +82,10 @@ class Couchsag
         try {
             $body = $this->sag->get($id)->body;
         } catch (Exception $e) {
+
+            if($e->getCode() == 404){
+                throw $e;
+            }
             if ($e->getCode() == 402)
                 return false;
             var_dump($e->getMessage());

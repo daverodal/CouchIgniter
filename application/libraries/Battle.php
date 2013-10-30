@@ -54,6 +54,15 @@ class Battle
 
     }
 
+    public static function playMulti($name,$wargame){
+        try{
+            self::loadGame($name);
+            $name::playMulti($name,$wargame);
+
+        }catch(Exception $e){echo $e->getMessage()." ".$e->getFile()." ".$e->getLine();}
+
+    }
+
     public static function loadGame($name){
         try{
         switch($name){
