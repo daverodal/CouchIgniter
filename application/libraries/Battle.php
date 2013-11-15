@@ -14,6 +14,8 @@ if(strpos(__FILE__,"/var/www") === false){
 }else{
     define ("WARGAMES","/var/www/MartianCivilWar/");
 }
+set_include_path(WARGAMES . "/stdIncludes" . PATH_SEPARATOR . WARGAMES . PATH_SEPARATOR .  get_include_path());
+
 class Battle
 {
     private static $theBattle;
@@ -97,7 +99,7 @@ class Battle
                 include_once(WARGAMES . "BattleOfAllenCreek/BattleForAllenCreek.php");
                 break;
             case "NapoleonsTrainingAcademy":
-                include_once(WARGAMES . "NapoleonsTrainingAcademy.php");
+                include_once(WARGAMES . "NTA/NapoleonsTrainingAcademy.php");
                 break;
             case "HotWar":
                 require_once(WARGAMES . "HotWar.php");
