@@ -83,17 +83,17 @@ class Users_model extends CI_Model
 
         $doc = false;
         try{
-            echo "is gamesAvail doc presesnt?\n";
-            $doc = $this->couchsag->get("gamesAvail");
+            echo "is gnuGamesAvail doc presesnt?\n";
+            $doc = $this->couchsag->get("gnuGamesAvail");
         }catch(Exception $e){};
         if(!$doc){
-            $data = array("_id" => "gamesAvail", "docType" => "gamesAvail", "games" => array(array("BattleForAllenCreek"),array("MartianCivilWar")));
-            echo "createing gamesAvail\n";
+            $data = array("_id" => "gnuGamesAvail", "docType" => "gnuGamesAvail", "games" => array(array("BattleForAllenCreek"),array("MartianCivilWar")));
+            echo "createing gnuGamesAvail\n";
             $this->couchsag->create($data);
             echo "Created them\n";
         }else{
             var_dump($doc);
-            echo "gamesAvail doc found, leaving untouched\n";
+            echo "gnuGamesAvail doc found, leaving untouched\n";
         }
 
         $users = new StdClass();
@@ -152,7 +152,18 @@ byId;
         }
 byUsername;
         $getAvailGames = new stdClass();
-        $getAvailGames->map = "function(doc){if(doc.docType == 'gamesAvail'){if(doc.games){for(var i in doc.games){emit(doc.games[i],doc.games[i]);}}}}";
+        $getAvailGames->map = <<<gamesAvail
+            function(doc){
+                if(doc.docType == 'gnuGamesAvail'){
+                    if(doc.games){
+                        for(var i in doc.games){
+                            emit(i,doc.games[i]);
+                        }
+                    }
+                }
+            }
+
+gamesAvail;
 
 
         $views['userByEmail'] = $users;
@@ -242,8 +253,8 @@ byUsername;
     }
     public function addGame($game){
         $this->_setDB();
-        $doc = $this->couchsag->get("gamesAvail");
-        if($doc->docType == "gamesAvail"){
+        $doc = $this->couchsag->get("gnuGamesAvail");
+        if($doc->docType == "gnuGamesAvail"){
             $doc->games[] = $game;
         }
         $ret = $this->couchsag->update($doc->_id, $doc);
@@ -254,7 +265,7 @@ byUsername;
             return false;
         }
         $this->_setDB();
-        $doc = $this->couchsag->get("gamesAvail");
+        $doc = $this->couchsag->get("gnuGamesAvail");
         $games = $doc->games;
         $newGames = array();
         foreach($games as $key => $game){
@@ -264,7 +275,7 @@ byUsername;
             $newGames[] = $game;
 
         }
-        if($doc->docType == "gamesAvail"){
+        if($doc->docType == "gnuGamesAvail"){
             $doc->games = $newGames;
         }
         $ret = $this->couchsag->update($doc->_id, $doc);

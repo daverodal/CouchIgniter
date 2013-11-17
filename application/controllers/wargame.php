@@ -71,13 +71,12 @@ return;
             redirect("/wargame/play/");
         }
 
+        $this->load->model('users/users_model');
+        $gamesAvail = $this->users_model->getAvailGames();
 
         $seq = $this->couchsag->get("/_design/newFilter/_view/getLobbies");
-        $this->couchsag->sag->setDatabase('users');
-        $gamesAvail = $this->couchsag->get("/_design/newFilter/_view/getAvailGames");
-        $this->couchsag->sag->setDatabase('mydatabase');
         $games = array();
-        foreach($gamesAvail->rows as $row){
+        foreach($gamesAvail as $row){
         $games[] =  array("name"=>$row->value[0],'arg'=>$row->value[1],'argTwo'=>$row->value[2]);
     }
 
@@ -192,12 +191,6 @@ return;
             $player = 0;
         }
         $this->load->library('battle');
-        $this->couchsag->sag->setDatabase('users');
-        $gamesAvail = $this->couchsag->get("/_design/newFilter/_view/getAvailGames");
-        $this->couchsag->sag->setDatabase('mydatabase');
-        foreach($gamesAvail->rows as $row){
-            $games[] =  array("name"=>$row->value[0],'arg'=>$row->value[1]);
-        }
         $units = $doc->wargame->force->units;
         /* single unit docs */
 //        if(is_numeric($units)){
@@ -229,7 +222,7 @@ return;
         $units = $newUnits;
         $mapUrl = $doc->wargame->mapData->mapUrl;
         $arg = $doc->wargame->arg;
-        $this->parser->parse("wargame/wargameView",compact("arg","player","mapUrl","units","playerData","games","gameName","wargame","lobbies","user"));
+        $this->parser->parse("wargame/wargameView",compact("arg","player","mapUrl","units","playerData","gameName","wargame","lobbies","user"));
 
     }
 
