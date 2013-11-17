@@ -475,7 +475,7 @@ HEREUPDATE;
                 $mapGrid->setHexagonXY($hex->x,$hex->y);
 
                 $path = new stdClass();
-                $newSpecialHexes->{"x".$mapGrid->getPixelX()."y".$mapGrid->getPixelY()} = $v;
+                $newSpecialHexes->{"x".intval($mapGrid->getPixelX())."y".intval($mapGrid->getPixelY())} = $v;
             }
         }
         $specialHexes = $newSpecialHexes;
@@ -487,7 +487,7 @@ HEREUPDATE;
                 $mapGrid->setHexagonXY($hex->x,$hex->y);
 
                 $path = new stdClass();
-                $newSpecialHexesChanges->{"x".$mapGrid->getPixelX()."y".$mapGrid->getPixelY()} = $v;
+                $newSpecialHexesChanges->{"x".intval($mapGrid->getPixelX())."y".intval($mapGrid->getPixelY())} = $v;
             }
         }
         $newSpecialHexesVictory = new stdClass();

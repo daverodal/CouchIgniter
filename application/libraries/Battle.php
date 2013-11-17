@@ -87,7 +87,7 @@ class Battle
                 @require_once(WARGAMES . "NapOnMars.php");
                 break;
             case "Jagersdorf":
-                @include_once(WARGAMES . "Jagersdorf.php");
+                @include_once(WARGAMES . "Jagersdorf/Jagersdorf.php");
                 break;
             case "Waterloo":
                 @include_once(WARGAMES."Waterloo.php");

@@ -148,7 +148,9 @@ class SagNativeHTTPAdapter extends SagHTTPAdapter {
       $sockInfo = stream_get_meta_data($sock);
 
       if($sockInfo['timed_out']) {
-        throw new SagException('Connection timed out while reading.');
+//        echo "Timed out do it atain";
+//          continue;
+//          throw new SagException('Connection timed out while reading.');
       }
 
       /*
@@ -167,8 +169,10 @@ class SagNativeHTTPAdapter extends SagHTTPAdapter {
       else {
         $line = fgets($sock);
       }
+      $sockInfo = stream_get_meta_data($sock);
 
       if(!$line && !$sockInfo['feof'] && !$sockInfo['timed_out']) {
+          var_dump($sockInfo);
         throw new SagException('Unexpectedly failed to retrieve a line from the socket before the end of the file.');
       }
 

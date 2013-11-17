@@ -27,7 +27,7 @@ function Sync(baseUrl) {
                 type:"POST",
                 data:theArgs,
                 error:function(one, two, three){
-                    $.get.abort();
+                    one.abort();
                 },
                 success:function (data, textstatus) {
                     var now = ((new Date()).getTime()) / 1000;
