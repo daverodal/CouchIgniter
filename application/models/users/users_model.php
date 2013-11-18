@@ -150,9 +150,13 @@ byId;
                 }
             }
         }
+
 byUsername;
         $getAvailGames = new stdClass();
-        $getAvailGames->map = <<<gamesAvail
+        $getAvailGames->map = "function(doc){if(doc.docType == 'gamesAvail'){if(doc.games){for(var i in doc.games){emit(doc.games[i],doc.games[i]);}}}}";
+
+        $gnuGetAvailGames = new stdClass();
+        $gnuGetAvailGames->map = <<<gamesAvail
             function(doc){
                 if(doc.docType == 'gnuGamesAvail'){
                     if(doc.games){
@@ -170,6 +174,7 @@ gamesAvail;
         $views['userById'] = $userById;
         $views['userByUsername'] = $userByUsername;
         $views['getAvailGames'] = $getAvailGames;
+        $views['gnuGetAvailGames'] = $gnuGetAvailGames;
 
 //        $data = array("_id" => "_design/newFilter", "views" => $views, "filters" => $filters, "updates"=> $updates);
         $data = array("_id" => "_design/newFilter", "views" => $views);
@@ -293,8 +298,9 @@ gamesAvail;
 	}
     public function getAvailGames(){
         $this->_setDB();
-        $seq = $this->couchsag->get("/_design/newFilter/_view/getAvailGames");
+        $seq = $this->couchsag->get("/_design/newFilter/_view/gnuGetAvailGames");
         $this->_restoreDB();
+        var_dump($seq->rows);
         return $seq->rows;
     }
 
