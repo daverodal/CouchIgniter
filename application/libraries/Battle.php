@@ -69,22 +69,22 @@ class Battle
         try{
         switch($name){
             case "MartianCivilWar":
-                require_once(WARGAMES . "MartianCivilWar.php");
+                require_once(WARGAMES . "TMCW/MartianCivilWar.php");
                 break;
             case "Napoleon":
-                include_once(WARGAMES . "Napoleon.php");
+                include_once(WARGAMES . "NAPOLEON/Napoleon.php");
                 break;
             case "Tutorial":
-                include_once(WARGAMES . "Tutorial.php");
+                include_once(WARGAMES . "Tutorial/Tutorial.php");
                 break;
             case "OMCW":
-                include_once(WARGAMES . "OrigMartianCivilWar.php");
+                include_once(WARGAMES . "OMCW/OrigMartianCivilWar.php");
                 break;
             case "Pink":
                 @include_once(WARGAMES."pink.php");
                 break;
             case "NapOnMars":
-                @require_once(WARGAMES . "NapOnMars.php");
+                @require_once(WARGAMES . "NOM/NapOnMars.php");
                 break;
             case "Jagersdorf":
                 @include_once(WARGAMES . "Jagersdorf/Jagersdorf.php");
@@ -102,7 +102,7 @@ class Battle
                 include_once(WARGAMES . "NTA/NapoleonsTrainingAcademy.php");
                 break;
             case "HotWar":
-                require_once(WARGAMES . "HotWar.php");
+                require_once(WARGAMES . "HotWar/HotWar.php");
                 break;
             default:
                 throw(new Exception("Bad Class in loadGame '$name'"));
