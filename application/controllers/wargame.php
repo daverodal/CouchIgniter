@@ -76,11 +76,14 @@ return;
 
         $seq = $this->couchsag->get("/_design/newFilter/_view/getLobbies");
         $games = array();
-        foreach($gamesAvail as $row){
-        $games[] =  array("name"=>$row->value[0],'arg'=>$row->value[1],'argTwo'=>$row->value[2]);
+        foreach($gamesAvail as $gameAvail){
+
+            $games[] = $gameAvail;
     }
 
-        $this->parser->parse("wargame/wargameUnattached",compact("games"));
+        $nest = [];
+
+        $this->load->view("wargame/wargameUnattached",compact("games","nest"));
 
     }
     function deleteGame($gameName){
@@ -236,19 +239,6 @@ return;
         redirect("/wargame/");
     }
 
-    function _getBattle($name,$warGame){
-        switch($name){
-            case "BattleOfMoscow":
-            @include_once("/Documents and Settings/Owner/Desktop/webwargaming/BattleOfMoscow.php");
-            break;
-            case "BattleForAllenCreek":
-            @include_once("/Documents and Settings/Owner/Desktop/BfAC/BattleForAllenCreek.php");
-            break;
-            default:
-                throw(new Exception("Bad Class Dude!"));
-        }
-        return new $name($warGame);
-    }
     function login()
     {
         $this->load->model('users/users_model');
@@ -643,7 +633,7 @@ return;
         redirect("/wargame/play/");
     }
 
-   public function unitInit($game = "MartianCivilWar", $arg = false, $argTwo = false)
+   public function unitInit($game = "MartianCivilWar", $arg = false)
     {
         $user = $this->session->userdata("user");
         if (!$user) {
@@ -659,7 +649,8 @@ return;
 
         $this->load->library("battle");
 
-        $battle = $this->battle->getBattle($game,null,$arg, $argTwo);
+        $this->load->model('users/users_model');
+        $battle = $this->battle->getBattle($game,null,$arg);
         $doc->wargame = $battle->save();
         $click = $doc->_rev;
         $matches = array();
@@ -745,7 +736,7 @@ return;
                 $this->session->set_userdata(array("wargame" => $wargame));
                 redirect("/wargame/play");
             }
-            $message = "$ret $wargame";
+            $message = "Name $wargame already used, please enter new name";
 //            redirect("/wargame/unitInit");
         }
         $this->load->view("wargame/wargameCreate",compact("message"));

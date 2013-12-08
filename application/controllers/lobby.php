@@ -117,7 +117,6 @@ echo $seq;
 
         while (true) {
             $date = date("h:i:s A");
-            echo "HI";
             $doc = $this->couchsag->get("MainLobby");
             $doc->clock = $date;
             $success = $this->couchsag->update($doc->_id, $doc);

@@ -32,11 +32,16 @@
             color:#333;
         }
         ul{
-            margin-left:100px;
             list-style-type: none;
         }
         li{
             margin:5px 0;
+        }
+        .gameDesc{
+            width:auto;
+        }
+        li.game{
+            border-bottom:1px solid #333;
         }
     </style>
 </head>
@@ -44,9 +49,18 @@
 <div>
 Attach to game:
     <ul>
-{games}
-<li></li><a href="<?=site_url("wargame/unitInit");?>/{name}/{arg}/{argTwo}">{name}:{arg}:{argTwo}</a></li>
-{/games}
+<?php
+foreach($games as $game){
+echo "<li class='game''> ". $game->name;
+    echo "<ul>";
+    foreach($game->scenarios as $key => $value){
+            $href = site_url("wargame/unitInit")."/".$game->key."/".$key;
+            echo "<li><a href='$href'>$key: {$value->description}</a></li>";
+    }
+    echo "</ul>";
+}
+
+?>
     </ul>
 <br><br><br>
     Or

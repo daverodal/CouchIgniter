@@ -130,8 +130,7 @@ class Couchsag
             return $this->sag->post($id, $data);
         } catch (Exception $e) {
 
-            var_dump($e->getMessage());
-            die("CouchException create");
+          throw $e;
         }
     }
 

@@ -256,33 +256,26 @@ gamesAvail;
         $this->_restoreDB();
         return false;
     }
-    public function addGame($game){
+    public function addGame($games){
         $this->_setDB();
         $doc = $this->couchsag->get("gnuGamesAvail");
         if($doc->docType == "gnuGamesAvail"){
-            $doc->games[] = $game;
+            foreach($games as $name => $game)
+            $doc->games->$name = $game;
         }
         $ret = $this->couchsag->update($doc->_id, $doc);
         $this->_restoreDB();
     }
     public function deleteGame($killGame){
-        if(count($killGame) == 0){
+        if(!$killGame){
             return false;
         }
         $this->_setDB();
         $doc = $this->couchsag->get("gnuGamesAvail");
-        $games = $doc->games;
-        $newGames = array();
-        foreach($games as $key => $game){
-            if(count(array_diff($game,$killGame)) == 0){
-                continue;
-            }
-            $newGames[] = $game;
-
+        if(!$doc->docType == "gnuGamesAvail"){
+            return false;
         }
-        if($doc->docType == "gnuGamesAvail"){
-            $doc->games = $newGames;
-        }
+        unset($doc->games->$killGame);
         $ret = $this->couchsag->update($doc->_id, $doc);
         $this->_restoreDB();
     }
@@ -300,8 +293,24 @@ gamesAvail;
         $this->_setDB();
         $seq = $this->couchsag->get("/_design/newFilter/_view/gnuGetAvailGames");
         $this->_restoreDB();
-        var_dump($seq->rows);
-        return $seq->rows;
+        $rows = $seq->rows;
+        $games = [];
+        foreach($rows as $row){
+            $game = $row->value;
+            $game->key = $row->key;
+            $games[] = $game;
+        }
+
+        return $games;
+    }
+    public function getGame($gameName){
+        $games = $this->getAvailGames();
+        foreach($games as $game){
+            if($gameName == $game->key){
+                return $game;
+            }
+        }
+        return false;
     }
 
     public function getLogins(){

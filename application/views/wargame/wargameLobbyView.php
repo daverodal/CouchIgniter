@@ -97,7 +97,7 @@
         font-weight:bold;
         font-size:18px;
         color:white;
-        text-shadow:0px 0px 3px orange,0px 0px 3px orange,0px 0px 3px orange,0px 0px 3px orange,0px 0px 3px orange,0px 0px 3px orange;
+        text-shadow:0px 0px 3px black,0px 0px 3px black,0px 0px 3px black,0px 0px 3px black,0px 0px 3px black,0px 0px 3px black;
     }
     .colOne{
         width:150px;
@@ -122,40 +122,111 @@
     }
     .myTurn{
         color:white;
-        text-shadow:0px 0px 3px orange,0px 0px 3px orange,0px 0px 3px orange,0px 0px 3px orange;
+        text-shadow:0px 0px 3px black,0px 0px 3px black,0px 0px 3px black,0px 0px 3px black;
     }
     body{
-        background: url("<?=base_url("js/vikinglander.jpg")?>") #333;
+        background: url("<?=base_url("js/armoredKnight.jpg")?>") #fff;
         background-repeat: no-repeat;
         color:#666;
-        background-position: center;
+        background-position: center top;
         height:100%;
 
     }
     .odd{
-        background:rgba(204,204,204,.6);
-        color:white;
+        background:rgba(66,66,66,.4);
     }
     a{
-        color:inherit;
+        color:black;
+        font-size:120%;
+    }
+    #logout{
+        color:white;
+        text-shadow:0 0 3px #c00,
+        0 0 3px #c00,
+        0 0 3px #c00,
+        0 0 3px #c00,
+        0 0 3px #c00,
+        0 0 3px #c00,
+        0 0 3px #c00,
+        0 0 3px #c00,
+        0 0 3px #c00,
+        0 0 3px #c00,
+        0 0 3px #c00,
+        0 0 3px #c00,
+        0 0 3px #c00,
+        0 0 3px #c00,
+        0 0 3px #c00,
+        0 0 3px #c00,
+        0 0 3px #c00,
+        0 0 3px #c00,
+        0 0 3px #c00,
+        0 0 3px #c00,
+        0 0 3px #c00,
+        0 0 3px #c00,
+        0 0 3px #c00,
+        0 0 3px #c00,
+        0 0 3px #c00,
+        0 0 3px #c00,
+        0 0 3px #c00,
+        0 0 3px #c00,
+        0 0 3px #c00,
+        0 0 3px #c00,
+        0 0 3px #c00;
+        text-decoration: none;
+        }
+    #create{
+        color:white;
+        text-shadow:0 0 3px #0c0,
+        0 0 3px #0c0,
+        0 0 3px #0c0,
+        0 0 3px #0c0,
+        0 0 3px #0c0,
+        0 0 3px #0c0,
+        0 0 3px #0c0,
+        0 0 3px #0c0,
+        0 0 3px #0c0,
+        0 0 3px #0c0,
+        0 0 3px #0c0,
+        0 0 3px #0c0,
+        0 0 3px #0c0,
+        0 0 3px #0c0,
+        0 0 3px #0c0;
+        text-decoration: none;
+        border-bottom: 3px solid #afa;
+        font-family: sans-serif;
+        font-style:italic;
+    }
+    ul{
+        padding:5px 10px;
+        border-radius:10px;
+        background:rgba(33,33,33,.5);
+        color:white;
+    }
+    ul a{
+        color:white;
+    }
+    ul li:hover{
+        background:rgba(0,0,0,.5);
     }
     div{
-        color:white;
+        color:black;
         min-width:900px;
-        float:left;
+        /*float:left;*/
         /*max-width:1000px;*/
         /*margin-top: 50px;*/
         border-radius:20px;
         border:5px solid gray;
         padding:    15px 30px 15px 15px;
-        background: rgba(112,66,20,.5);
+        background: rgba(160,160,160,.15);
+        width:80%;
+        margin:0 auto;
     }
 </style>
 </head>
 <body>
 <div>
 <h2>Welcome {myName}</h2>
-<h3>You can <a href="<?=site_url("wargame/createWargame");?>">Create a new Wargame</a> </h3>
+<h3>You can <a id="create" href="<?=site_url("wargame/createWargame");?>">Create a new Wargame</a> </h3>
 Or play an existing game:<br>
 <br>    Games you created:
     <ul id="myGames">
@@ -177,7 +248,7 @@ Games you were invited to:
 <!--    </li>-->
 <!--    {/otherGames}-->
 </ul>
-<a href="<?=site_url("wargame/logout");?>">Logout</a>
+<a id="logout" href="<?=site_url("wargame/logout");?>">Logout</a>
     </div>
 </body>
 </html>

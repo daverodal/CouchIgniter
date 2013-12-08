@@ -273,7 +273,7 @@ HEREUPDATE;
         $data = array('docType' => "wargame", "_id" => $name, "name" => $name, "chats" => array(),"createDate"=>date("r"),"createUser"=>$this->session->userdata("user"),"playerStatus"=>"created");
         try{
         $this->couchsag->create($data);
-        }catch(Exception $e){return $e->getMessage();}
+        }catch(Exception $e){ ;return $e->getMessage();}
         return true;
     }
     public function addChat($chat, $user, $wargame)

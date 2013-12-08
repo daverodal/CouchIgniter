@@ -139,7 +139,6 @@ class Game extends CI_Controller
             redirect("/game/login");
         }
         $saved = false;
-        echo "HI";
         if ($_POST) {
             $data = $this->input->post();
             while (!$saved) {
@@ -183,10 +182,7 @@ class Game extends CI_Controller
     {
 
         $startdate = time();
-        echo "B4";
         $doc = $this->couchsag->get("TheGame");
-        var_dump($doc);
-        echo "after";
         $battleResults = new stdClass();
         foreach ($doc->users as $user) {
             $battleResults->$user = new stdClass();

@@ -89,10 +89,15 @@ class Users extends CI_Controller
         $this->_isLoggedIn();
 //        var_dump($_GET);
         $this->load->model('users/users_model');
-        if($_GET['newgame']){
-            $games = $this->users_model->addGame($_GET['newgame']);
+        if($_GET['dir']){
+            $this->load->library("battle");
+            $info = $this->battle->getInit($_GET['dir']);
+            echo "<pre>";
+            var_dump($info);
+            $games = $this->users_model->addGame($info);
             redirect('users/games');
         }
+
         $this->load->view('users/addGame_view',compact("games"));
 //        $this->load->view('users/games_view',compact("games"));
 //        var_dump($this->users_model->getUsersByEmail());
@@ -100,7 +105,8 @@ class Users extends CI_Controller
     function deleteGame(){
         $this->_isLoggedIn();
         $this->load->model('users/users_model');
-        $games = $this->users_model->deleteGame($_GET['killgames']);
+        var_dump($_GET);
+        $games = $this->users_model->deleteGame($_GET['killGame']);
         redirect('users/games');
 //        $this->load->view('users/games_view',compact("games"));
 //        var_dump($this->users_model->getUsersByEmail());
@@ -113,7 +119,6 @@ class Users extends CI_Controller
 //        var_dump($this->users_model->getUsersByEmail());
     }
     function logins(){
-        echo "hi";
         $this->load->model('users/users_model');
         $logins = $this->users_model->getLogins();
         $logins = $logins->logins;

@@ -10,13 +10,16 @@
 <body>
 <a href='<?=site_url()?>/users/addGame'>add</a>
 <ul>
-<?php foreach($games as $game){?>
+<?php foreach($games as $key => $game){?>
     <li>
-        <?php $delUrl = "deleteGame/?";
-            foreach($game->value as $arg){
-                $delUrl .= "killgames[]=".$arg."&";
-            echo $arg." ";
-        }
+
+        <?php
+            if($game->name){
+                echo $game->name;
+            }
+            $delUrl = "deleteGame/?";
+                $delUrl .= "killGame=".$game->key;
+
         echo " <a href='$delUrl'>delete</a>";
         ?>
     </li>
