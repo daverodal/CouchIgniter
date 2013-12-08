@@ -90,6 +90,7 @@ class Users_model extends CI_Model
             $data = array("_id" => "gnuGamesAvail", "docType" => "gnuGamesAvail", "games" => new stdClass());
             echo "createing gnuGamesAvail\n";
             $this->couchsag->create($data);
+            var_dump($data);
             echo "Created them\n";
         }else{
             var_dump($doc);
