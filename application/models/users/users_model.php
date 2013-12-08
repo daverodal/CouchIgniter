@@ -86,7 +86,7 @@ class Users_model extends CI_Model
             echo "is gnuGamesAvail doc presesnt?\n";
             $doc = $this->couchsag->get("gnuGamesAvail");
         }catch(Exception $e){};
-        if(!$doc){
+        if(true || !$doc){
             $data = array("_id" => "gnuGamesAvail", "docType" => "gnuGamesAvail", "games" => new stdClass());
             echo "createing gnuGamesAvail\n";
             $this->couchsag->create($data);
