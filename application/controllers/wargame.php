@@ -427,6 +427,7 @@ return;
         foreach($seq->rows as $row){
             $keys = $row->key;
             $creator = array_shift($keys);
+            $gameName = array_shift($keys);
             $name = array_shift($keys);
             $gameType = array_shift($keys);
             $playerTurn = array_shift($keys);
@@ -447,7 +448,7 @@ return;
             $players = implode($thePlayers," ");
             $row->value[1] = "created ".formatDateDiff($dt)." ago";
             $odd ^= 1;
-            $lobbies[] =  array("odd"=>$odd ? "odd":"","name"=>$name, 'date'=>$row->value[1], "id"=>$id, "creator"=>$creator,"gameType"=>$gameType, "turn"=>$playerTurn, "players"=>$players,"myTurn"=>$myTurn);
+            $lobbies[] =  array("odd"=>$odd ? "odd":"","gameName"=>$gameName, "name"=>$name, 'date'=>$row->value[1], "id"=>$id, "creator"=>$creator,"gameType"=>$gameType, "turn"=>$playerTurn, "players"=>$players,"myTurn"=>$myTurn);
         }
         $seq = $this->couchsag->get("/_design/newFilter/_view/getGamesImIn?startkey=[\"$user\"]&endkey=[\"$user\",\"zzzzzzzzzzzzzzzzzzzzzzzz\"]");
 
@@ -732,12 +733,15 @@ return;
         if($wargame){
             $this->load->model("wargame/wargame_model");
             $ret = $this->wargame_model->createWargame($wargame);
-            if($ret === true){
-                $this->session->set_userdata(array("wargame" => $wargame));
+            if(is_object($ret) === true){
+                $this->session->set_userdata(array("wargame" => $ret->body->id));
                 redirect("/wargame/play");
             }
             $message = "Name $wargame already used, please enter new name";
 //            redirect("/wargame/unitInit");
+        }
+        if($this->input->post()){
+            $message = "Please in put a name (need not be unique)";
         }
         $this->load->view("wargame/wargameCreate",compact("message"));
     }

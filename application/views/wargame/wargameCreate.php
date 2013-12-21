@@ -29,9 +29,10 @@
 ?>
 <body>
 <?= $message?>
-<fieldset><legend>What would you like to name your new game?</legend>
+<fieldset><legend>What would you like to name your new game? May use spaces or any character you like, need not be unique</legend>
 <form method="POST">
  <input name="wargame">
+    <input type="submit" value="GO GO GO!">
 </form></fieldset>
 <br>
 <a href="<?=site_url("wargame/logout");?>">Logout</a><br>

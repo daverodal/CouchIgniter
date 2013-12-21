@@ -122,7 +122,7 @@ class Wargame_model extends CI_Model
 	        	if(doc.wargame.arg){
 		            gameName += '-'+doc.wargame.arg;
                 }
-                emit([doc.createUser,gameName,doc.playerStatus, doc.wargame.gameRules.attackingForceId, doc._id],[doc.gameName,doc.createDate,doc.wargame.players,doc.wargame.mapData.mapUrl]);
+                emit([doc.createUser,gameName,doc.name,doc.playerStatus, doc.wargame.gameRules.attackingForceId, doc._id],[doc.gameName,doc.createDate,doc.wargame.players,doc.wargame.mapData.mapUrl]);
             }}";
 //        $views->getAvailGames = new StdClass;
 //        $views->getAvailGames->map = "function(doc){if(doc.docType == 'gamesAvail'){if(doc.games){for(var i in doc.games){emit(doc.games[i],doc.games[i]);}}}}";
@@ -258,23 +258,27 @@ HEREUPDATE;
                 echo "Deleted\n";
             }
         }
-        echo "creating";
         try{
             $this->couchsag->create($data);
-            echo "created";
         }catch(Exception $e){echo "<pre> EXC";var_dump($e);}
-        echo "returning";
     }
 
     public function createWargame($name)
     {
         date_default_timezone_set("America/New_York");
-
-        $data = array('docType' => "wargame", "_id" => $name, "name" => $name, "chats" => array(),"createDate"=>date("r"),"createUser"=>$this->session->userdata("user"),"playerStatus"=>"created");
+//        $data = array('docType' => "wargame", "_id" => $name, "name" => $name, "chats" => array(),"createDate"=>date("r"),"createUser"=>$this->session->userdata("user"),"playerStatus"=>"created");
+//        $data = array('docType' => "wargame", "name" => $name, "chats" => array(),"createDate"=>date("r"),"createUser"=>$this->session->userdata("user"),"playerStatus"=>"created");
         try{
-        $this->couchsag->create($data);
+            $data = new stdClass();
+            $data->docType = "wargame";
+            $data->name = $name;
+            $data->chats =  array();
+            $data->createDate = date("r");
+            $data->createUser = $this->session->userdata("user");
+            $data->playerStatus = "created";
+            $ret = $this->couchsag->create($data);
         }catch(Exception $e){ ;return $e->getMessage();}
-        return true;
+        return $ret;
     }
     public function addChat($chat, $user, $wargame)
     {
