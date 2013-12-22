@@ -51,7 +51,7 @@
                     /*var line = "<li class='"+lobbies[i].odd+"'><a href='<?=site_url('wargame/changeWargame');?>/"+lobbies[i].id+"/'><span class='colOne'>"+lobbies[i].id+"</span><span class='colOne'>"+name+"</span></a><a href='<?=site_url('wargame/playAs');?>/"+lobbies[i].id+"/'><span title='click to change' class='colTwo'>"+lobbies[i].gameType+"</span></a><a href='<?=site_url('wargame/changeWargame');?>/"+lobbies[i].id+"/'><span class='colThree "+lobbies[i].mylobbies[i].turn+"'>It's "+lobbies[i].turn+" lobbies[i].turn.</span><span class='colFour'>"+lobbies[i].date+"</span></a><span class='colFive'> "+lobbies[i].players+"</span>";*/
                     var line = "<li id='"+lobbies[i].id+"' class='lobbyRow "+lobbies[i].odd+"'>";
                     line += "<a href='<?=site_url('wargame/changeWargame');?>/"+lobbies[i].id;
-                    line += "/'><span class='colOne'>"+lobbies[i].id+"</span><span class='colOne'>"+lobbies[i].name;
+                    line += "/'><span class='colOne'>"+lobbies[i].name+"</span><span class='colOne'>"+lobbies[i].gameName;
                     line += "</span></a><a href='<?=site_url('wargame/playAs');?>/"+lobbies[i].id;
                     line += "/'>";
                     line += "</span></a><a href='<?=site_url('wargame/changeWargame');?>/"+lobbies[i].id;

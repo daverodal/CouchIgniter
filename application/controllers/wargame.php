@@ -172,7 +172,7 @@ return;
                 array_shift($thePlayers);
                 $players = implode($thePlayers," ");
                 $row->value[1] = "created ".formatDateDiff($dt)." ago";
-                $otherGames[] =  array("name"=>$row->value[0], 'date'=>$row->value[1], "id"=>$id, "creator"=>$creator,"gameType"=>$gameType, "turn"=>$playerTurn, "players"=>$players,"myTurn"=>$myTurn);
+                $otherGames[] =  array("name"=>$name, 'date'=>$row->value[1], "id"=>$id, "creator"=>$creator,"gameType"=>$gameType, "turn"=>$playerTurn, "players"=>$players,"myTurn"=>$myTurn);
             }
             $myName = $user;
             $this->parser->parse("wargame/wargameLobbyView",compact("lobbies","otherGames","myName"));
@@ -181,6 +181,7 @@ return;
         }
         $doc = $this->wargame_model->getDoc($wargame);
 
+        $name = $doc->name;
         $gameName = $doc->gameName;
         if(!$gameName){
             redirect("/wargame/unattachedGame/");
@@ -225,7 +226,7 @@ return;
         $units = $newUnits;
         $mapUrl = $doc->wargame->mapData->mapUrl;
         $arg = $doc->wargame->arg;
-        $this->parser->parse("wargame/wargameView",compact("arg","player","mapUrl","units","playerData","gameName","wargame","lobbies","user"));
+        $this->parser->parse("wargame/wargameView",compact("name","arg","player","mapUrl","units","playerData","gameName","wargame","lobbies","user"));
 
     }
 
