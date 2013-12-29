@@ -1,5 +1,6 @@
 <html>
 <head>
+    <script src="<?=base_url("js/jquery-1.9.0.min.js");?>"></script>
     <style type="text/css">
     body{
         background:url("<?=base_url("js/britishTank.jpg")?>") #333 no-repeat;
@@ -31,11 +32,16 @@
 <?= $message?>
 <fieldset><legend>What would you like to name your new game? May use spaces or any character you like, need not be unique</legend>
 <form method="POST">
- <input name="wargame">
+ <input id="wargame" name="wargame">
     <input type="submit" value="GO GO GO!">
 </form></fieldset>
 <br>
 <a href="<?=site_url("wargame/logout");?>">Logout</a><br>
 <a href="<?=site_url("wargame/leaveGame");?>">back to lobby</a>
 </body>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("#wargame").focus();
+    });
+</script>
 </html>
