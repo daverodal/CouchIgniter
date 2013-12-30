@@ -23,7 +23,6 @@ class Battle
 
        }
     public static function getInit($dir){
-        echo "In $dir ";
         $file = file_get_contents(WARGAMES."/".$dir."/info.json");
         return json_decode($file);
     }
@@ -32,7 +31,7 @@ class Battle
         if(self::$theBattle){
             return self::$theBattle;
         }
-        $game = self::loadGame($name);
+        $game = self::loadGame($name, $arg);
 
         if($game !== false && $arg !== false){
             $scenarios = $game->scenarios->$arg;
@@ -53,23 +52,27 @@ class Battle
     }
     public static function getView($name,$mapUrl, $player = 0, $arg = false, $argTwo = false){
         try{
-        $game = self::loadGame($name);
+        $game = self::loadGame($name, $arg);
             $className = $game->className;
         $className::getView($name, $mapUrl,$player, $arg, $argTwo);
         }catch(Exception $e){echo $e->getMessage()." ".$e->getFile()." ".$e->getLine();}
     }
-    public static function getHeader($name,$data){
+    public static function getHeader($name,$data,$arg){
+
+        if(!isset($arg)){
+            die("NO HEADER");
+        }
         try{
-        $game = self::loadGame($name);
+        $game = self::loadGame($name, $arg);
             $className = $game->className;
 
             $className::getHeader($name,$data);
         }catch(Exception $e){echo $e->getMessage()." ".$e->getFile()." ".$e->getLine();}
 
     }
-    public static function playAs($name,$wargame){
+    public static function playAs($name,$wargame,$arg){
         try{
-            $game = self::loadGame($name);
+            $game = self::loadGame($name,$arg);
             $className = $game->className;
             $className::playAs($name,$wargame);
 
@@ -77,9 +80,9 @@ class Battle
 
     }
 
-    public static function playMulti($name,$wargame){
+    public static function playMulti($name,$wargame,$arg){
         try{
-            $game = self::loadGame($name);
+            $game = self::loadGame($name,$arg);
             $className = $game->className;
             $className::playMulti($name,$wargame);
 
@@ -87,13 +90,19 @@ class Battle
 
     }
 
-    public static function loadGame($name){
+    public static function loadGame($name, $arg = false){
+        if($arg === false){
+            var_dump(debug_backtrace());
+            die("loadGame no arg");
+        }
         try{
             $CI =& get_instance();
             $CI->load->model('users/users_model');
             $game = $CI->users_model->getGame($name);
             if($game !== false){
                 $path = $game->path;
+                $argTwo = $game->scenarios->$arg;
+                set_include_path(WARGAMES . $path . PATH_SEPARATOR . get_include_path());
                 require_once(WARGAMES . $path."/".$game->fileName);
                 $game->className = preg_replace("/.php$/","",$game->fileName);;
                 return $game;

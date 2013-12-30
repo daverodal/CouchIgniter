@@ -391,7 +391,7 @@ HEREUPDATE;
         $gameName = $doc->gameName;
 
 //        $revs = $doc->_revs_info;
-        Battle::loadGame($gameName);
+        Battle::loadGame($gameName, $doc->wargame->arg);
 //Battle::getHeader();
         if(isset($doc->wargame->mapViewer)){
         $playerData = $doc->wargame->mapViewer[$player];

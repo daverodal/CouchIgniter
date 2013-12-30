@@ -341,7 +341,8 @@ return;
             $me = $user;
             $others = $users;
 
-            $this->parser->parse("wargame/wargameMulti",compact("game","users","wargame","me","path","others"));
+            $arg = $doc->wargame->arg;
+            $this->parser->parse("wargame/wargameMulti",compact("game","users","wargame","me","path","others","arg"));
             return;
         }
 
@@ -571,7 +572,7 @@ return;
         preg_match("/^([0-9]+)-/",$click,$matches);
         $click = $matches[1];
         try{
-        $battle = $this->battle->getBattle($game,$doc->wargame);
+        $battle = $this->battle->getBattle($game,$doc->wargame,$doc->wargame->arg);
         $doSave = $battle->poke($event,$id,$x,$y, $user, $click);
         $success = false;
         if($doSave){
@@ -653,6 +654,7 @@ return;
 
         $this->load->model('users/users_model');
         $battle = $this->battle->getBattle($game,null,$arg);
+
         $doc->wargame = $battle->save();
         $click = $doc->_rev;
         $matches = array();
@@ -720,7 +722,8 @@ return;
         }
         $this->load->library("battle");
         $game = $doc->gameName;
-        $this->load->view("wargame/wargamePlayAs",compact("game","user","wargame"))   ;
+        $arg = $doc->wargame->arg;
+        $this->load->view("wargame/wargamePlayAs",compact("game","user","wargame",$doc->wargame,"arg"))   ;
     }
     public function createWargame()
     {
