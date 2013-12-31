@@ -4,6 +4,9 @@
         li{
             list-style: none;
         }
+        form{
+            display:inline;
+        }
     </style>
     <title>All Users</title>
 </head>
@@ -22,6 +25,14 @@
 
         echo " <a href='$delUrl'>delete</a>";
         ?>
+        <form action="<?=site_url()?>/users/addGame">
+            <input type="hidden" name="dir" value="<?=$game->path;?>">
+            <!--    <input type="text" name="newgame[]">-->
+            <!--    <input type="text" name="newgame[]">-->
+            <!--    <input type="text" name="newgame[]">-->
+            <input value="refresh" type="submit">
+        </form>
+
     </li>
 <?php } ?>
 </body>

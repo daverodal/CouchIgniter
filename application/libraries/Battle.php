@@ -19,6 +19,8 @@ set_include_path(WARGAMES . "/stdIncludes" . PATH_SEPARATOR . WARGAMES . PATH_SE
 class Battle
 {
     private static $theBattle;
+    private static $isLoaded = false;
+    private static $game;
        public function resize($size,$player){
 
        }
@@ -91,6 +93,9 @@ class Battle
     }
 
     public static function loadGame($name, $arg = false){
+        if(self::$isLoaded){
+            return self::$game;
+        }
         if($arg === false){
             var_dump(debug_backtrace());
             die("loadGame no arg");
@@ -100,11 +105,13 @@ class Battle
             $CI->load->model('users/users_model');
             $game = $CI->users_model->getGame($name);
             if($game !== false){
+                self::$isLoaded = true;
+                self::$game = $game;
                 $path = $game->path;
                 $argTwo = $game->scenarios->$arg;
                 set_include_path(WARGAMES . $path . PATH_SEPARATOR . get_include_path());
                 require_once(WARGAMES . $path."/".$game->fileName);
-                $game->className = preg_replace("/.php$/","",$game->fileName);;
+                $game->className = preg_replace("/.php$/","",$game->fileName);
                 return $game;
             }
             switch($name){
