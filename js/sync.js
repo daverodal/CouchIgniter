@@ -22,6 +22,11 @@ function Sync(baseUrl) {
         if(this.timeTravel){
             travel = "?timeTravel="+last_seq;
         }
+        if(this.timeBranch){
+          travel += "&branch=true";
+          this.timeBranch = false;
+          this.timeTravel = false;
+        }
         this.current = $.ajax(
             {url:this.baseUrl + "/" + last_seq+travel,
                 type:"POST",

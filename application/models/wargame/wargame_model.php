@@ -3,12 +3,15 @@
 class Wargame_model extends CI_Model
 {
 
-    public function enterHotseat($wargame){
+    public function enterHotseat($wargame)
+    {
         $user = $this->session->userdata("user");
-        try{
-        $doc = $this->couchsag->get($wargame);
-        }catch(Exception $e){return false;}
-        if(!doc || $user != $doc->createUser){
+        try {
+            $doc = $this->couchsag->get($wargame);
+        } catch (Exception $e) {
+            return false;
+        }
+        if (!doc || $user != $doc->createUser) {
             return false;
         }
         $doc->playerStatus = "hot seat";
@@ -22,18 +25,22 @@ class Wargame_model extends CI_Model
         $doc->wargame->gameRules->turnChange = true;
         $this->couchsag->update($doc->_id, $doc);
         return true;
-        }
-    public function enterMulti($wargame,$playerOne, $playerTwo){
+    }
+
+    public function enterMulti($wargame, $playerOne, $playerTwo)
+    {
         $user = $this->session->userdata("user");
-        try{
+        try {
             $doc = $this->couchsag->get($wargame);
-        }catch(Exception $e){return false;}
-        if(!doc || $user != $doc->createUser){
+        } catch (Exception $e) {
+            return false;
+        }
+        if (!doc || $user != $doc->createUser) {
             return false;
         }
 //        var_dump($doc->wargame->players);
         $doc->playerStatus = "multi";
-        $doc->wargame->players = array("",$playerOne,$playerTwo);
+        $doc->wargame->players = array("", $playerOne, $playerTwo);
         $doc->wargame->gameRules->turnChange = true;
         $this->couchsag->update($doc->_id, $doc);
         return true;
@@ -42,17 +49,17 @@ class Wargame_model extends CI_Model
     {
 
         $doc = $this->couchsag->get($wargame);
-        if($doc->playerStatus == "created"){
+        if ($doc->playerStatus == "created") {
             return;
         }
-        if($doc->playerStatus == "multi"){
+        if ($doc->playerStatus == "multi") {
             return;
         }
-        if($doc->playerStatus == "hot seat"){
+        if ($doc->playerStatus == "hot seat") {
             return;
-            if($user == $doc->createUser){
+            if ($user == $doc->createUser) {
                 $player = $doc->wargame->gameRules->attackingForceId;
-            }else{
+            } else {
                 $player = 0;
             }
         }
@@ -76,22 +83,22 @@ class Wargame_model extends CI_Model
         return;
         echo "leave";
         $doc = $this->couchsag->get($wargame);
-        if(!$doc){
+        if (!$doc) {
             return;
         }
-        if(!$doc->wargame){
+        if (!$doc->wargame) {
             return;
         }
         echo "iswargema";
         $newUsers = array();
-        if(!is_array($doc->wargame->players)){
+        if (!is_array($doc->wargame->players)) {
             echo "not is array<br>";
-            $doc->wargame->players = array("","","");
+            $doc->wargame->players = array("", "", "");
         }
         if (in_array($user, $doc->wargame->players)) {
             echo "in array<br>";
             foreach ($doc->wargame->players as $i => $aUser) {
-                echo $aUser." <br>";
+                echo $aUser . " <br>";
                 if ($user == $aUser) {
                     $doc->wargame->players[i] = "";
                 }
@@ -223,10 +230,10 @@ byUsername;
             }
         }
 HEREMAP;
-$wargame->reduce = <<<HERE
+        $wargame->reduce = <<<HERE
 function(keys,values){return sum(values);}
 HERE;
-$update = <<<HEREUPDATE
+        $update = <<<HEREUPDATE
 function(doc,req){
     doc.chats.push(req.query.chat);
     doc.chats_index++;
@@ -247,20 +254,24 @@ HEREUPDATE;
 //        $this->couchsag->sag->setDatabase('users');
 
 
-        $data = array("_id" => "_design/newFilter", "views" => $views, "filters" => $filters, "updates"=> $updates);
-        try{
+        $data = array("_id" => "_design/newFilter", "views" => $views, "filters" => $filters, "updates" => $updates);
+        try {
             $doc = $this->couchsag->get("_design/newFilter");
-        }catch(Exception $e){};
-        if($doc){
+        } catch (Exception $e) {
+        };
+        if ($doc) {
             echo "Doc Found deleting: _design/newFilter\n";
-            $deldoc = $this->couchsag->delete($doc->_id,$doc->_rev);
-            if($deldoc->body){
+            $deldoc = $this->couchsag->delete($doc->_id, $doc->_rev);
+            if ($deldoc->body) {
                 echo "Deleted\n";
             }
         }
-        try{
+        try {
             $this->couchsag->create($data);
-        }catch(Exception $e){echo "<pre> EXC";var_dump($e);}
+        } catch (Exception $e) {
+            echo "<pre> EXC";
+            var_dump($e);
+        }
     }
 
     public function createWargame($name)
@@ -268,18 +279,22 @@ HEREUPDATE;
         date_default_timezone_set("America/New_York");
 //        $data = array('docType' => "wargame", "_id" => $name, "name" => $name, "chats" => array(),"createDate"=>date("r"),"createUser"=>$this->session->userdata("user"),"playerStatus"=>"created");
 //        $data = array('docType' => "wargame", "name" => $name, "chats" => array(),"createDate"=>date("r"),"createUser"=>$this->session->userdata("user"),"playerStatus"=>"created");
-        try{
+        try {
             $data = new stdClass();
             $data->docType = "wargame";
             $data->name = $name;
-            $data->chats =  array();
+            $data->chats = array();
             $data->createDate = date("r");
             $data->createUser = $this->session->userdata("user");
             $data->playerStatus = "created";
             $ret = $this->couchsag->create($data);
-        }catch(Exception $e){ ;return $e->getMessage();}
+        } catch (Exception $e) {
+            ;
+            return $e->getMessage();
+        }
         return $ret;
     }
+
     public function addChat($chat, $user, $wargame)
     {
         $doc = $this->couchsag->get($wargame);
@@ -290,13 +305,17 @@ HEREUPDATE;
         $success = $this->couchsag->update($doc->_id, $doc);
         return $success;
     }
+
     public function getDoc($wargame)
     {
-        try{
-        $doc = $this->couchsag->get($wargame);
-        }catch(Exception $e){return false;}
+        try {
+            $doc = $this->couchsag->get($wargame);
+        } catch (Exception $e) {
+            return false;
+        }
         return $doc;
     }
+
     public function setDoc($doc)
     {
 //        $coe = json_encode($doc);
@@ -305,41 +324,52 @@ HEREUPDATE;
         return $success;
     }
 
-    public function getLobbyChanges($user, $last_seq = 0, $chatsIndex = 0){
-        do{
+    public function getLobbyChanges($user, $last_seq = 0, $chatsIndex = 0)
+    {
+        do {
             $retry = false;
-            try{
+            try {
                 if ($last_seq) {
                     $seq = $this->couchsag->get("/_changes?since=$last_seq&feed=longpoll&filter=newFilter/lobbyChanges&name=$user");
                 } else {
                     $seq = $this->couchsag->get("/_changes");
                 }
-            }catch(Exception $e){$retry = true;}
-        }while($retry || $seq->last_seq <= $last_seq);
+            } catch (Exception $e) {
+                $retry = true;
+            }
+        } while ($retry || $seq->last_seq <= $last_seq);
         return $seq;
     }
-    public function getChanges($wargame, $last_seq = 0, $chatsIndex = 0,$user = 'observer'){
+
+    public function getChanges($wargame, $last_seq = 0, $chatsIndex = 0, $user = 'observer')
+    {
         global $mode_name, $phase_name;
         $time = false;
-        if($_GET['timeTravel']){
+        $timeBranch = false;
+        if ($_GET['timeTravel']) {
             $time = $_GET['timeTravel'];
+            if ($_GET['branch']) {
+                $timeBranch = true;
+            }
         }
 
         /*
          * TODO: make this have a trip switch so it won't spin out of control if the socket is down
          */
-        if(!$time){
-        do{
-            $retry = false;
-            try{
-                if ($last_seq) {
-                    $seq = $this->couchsag->get("/_changes?since=$last_seq&feed=longpoll&filter=newFilter/namefind&name=$wargame");
-                } else {
-                    $seq = $this->couchsag->get("/_changes");
+        if (!$time) {
+            do {
+                $retry = false;
+                try {
+                    if ($last_seq) {
+                        $seq = $this->couchsag->get("/_changes?since=$last_seq&feed=longpoll&filter=newFilter/namefind&name=$wargame");
+                    } else {
+                        $seq = $this->couchsag->get("/_changes");
+                    }
+                } catch (Exception $e) {
+                    $retry = true;
                 }
-            }catch(Exception $e){$retry = true;}
-        }while($retry || $seq->last_seq <= $last_seq);
-        $last_seq = $seq->last_seq;
+            } while ($retry || $seq->last_seq <= $last_seq);
+            $last_seq = $seq->last_seq;
         }
 
 
@@ -348,12 +378,14 @@ HEREUPDATE;
         $match = "";
 //        $time = 65;
 //        $time = false;
-        if($time){
-            $doc = $this->couchsag->get($wargame."?revs_info=true");
+        $revision = "";
+        if ($time) {
+            $doc = $this->couchsag->get($wargame . "?revs_info=true");
             $revs = $doc->_revs_info;
-            foreach($revs as $k => $v){
-                if(preg_match("/^$time-/",$v->rev)){
-                    $match = "rev=".$v->rev;
+            foreach ($revs as $k => $v) {
+                if (preg_match("/^$time-/", $v->rev)) {
+                    $revision = "?rev=" . $v->rev;
+                    $currentRev = $doc->_rev;
 //                    var_dump($match);
                     break;
                 }
@@ -361,20 +393,16 @@ HEREUPDATE;
 
         }
 //        file_put_contents("/tmp/perflog","\nGetting ".microtime(),FILE_APPEND);
-        $doc = $this->couchsag->get($wargame);
-        /* single Unit docs */
-//        if(is_numeric($doc->wargame->force->units)){
-//            $num = $doc->wargame->force->units;
-//            $doc->wargame->force->units = array();
-//            for($i = 0;$i< $num;$i++){
-//                $unit = $this->couchsag->get("$wargame-id".$i);
-//                $doc->wargame->force->units[] =  $unit;
-//            }
-//        }
-//        file_put_contents("/tmp/perflog","\nGotten ".microtime(),FILE_APPEND);
+        $doc = $this->couchsag->get($wargame . $revision);
+        if ($timeBranch) {
+            $doc->_rev = $currentRev;
+            $doc->wargame->gameRules->flashMessages[] = "Time Travel to click $time";
+            $this->couchsag->update($doc->_id, $doc);
+        }
+
         $click = $doc->_rev;
         $matches = array();
-        preg_match("/^([0-9]+)-/",$click,$matches);
+        preg_match("/^([0-9]+)-/", $click, $matches);
         $click = $matches[1];
         $games = $doc->games;
         $chats = array_slice($doc->chats, $chatsIndex);
@@ -382,8 +410,8 @@ HEREUPDATE;
         $users = $doc->users;
         $clock = $doc->clock;
         $players = $doc->wargame->players;
-        $player = array_search($user,$players);
-        if($player === false){
+        $player = array_search($user, $players);
+        if ($player === false) {
             $player = 0;
         }
         $force = $doc->wargame->force;
@@ -393,28 +421,26 @@ HEREUPDATE;
 //        $revs = $doc->_revs_info;
         Battle::loadGame($gameName, $doc->wargame->arg);
 //Battle::getHeader();
-        if(isset($doc->wargame->mapViewer)){
-        $playerData = $doc->wargame->mapViewer[$player];
-        }else{
+        if (isset($doc->wargame->mapViewer)) {
+            $playerData = $doc->wargame->mapViewer[$player];
+        } else {
             $playerData = $doc->wargame->mapData[$player];
         }
         $mapGrid = new MapGrid($playerData);
         $mapUnits = array();
         $moveRules = $doc->wargame->moveRules;
         $combatRules = $doc->wargame->combatRules;
-//        $moveRules->index = $combatRules->index;
         $display = $doc->wargame->display;
         $units = $force->units;
-//        $storm = $combatRules->storm;
         $attackingId = $doc->wargame->gameRules->attackingForceId;
-        foreach($units as $unit){
-            if(is_object($unit->hexagon)){
+        foreach ($units as $unit) {
+            if (is_object($unit->hexagon)) {
 //                $unit->hexagon->parent = $unit->parent;
-            }else{
+            } else {
                 $unit->hexagon = new Hexagon($unit->hexagon);
-              }
+            }
 //            $unit->hexagon->parent = $unit->parent;
-            $mapGrid->setHexagonXY( $unit->hexagon->x, $unit->hexagon->y);
+            $mapGrid->setHexagonXY($unit->hexagon->x, $unit->hexagon->y);
             $mapUnit = new StdClass();
             $mapUnit->isReduced = $unit->isReduced;
             $mapUnit->x = $mapGrid->getPixelX();
@@ -422,27 +448,27 @@ HEREUPDATE;
             $mapUnit->parent = $unit->hexagon->parent;
             $mapUnit->moveAmountUsed = $unit->moveAmountUsed;
             $mapUnit->maxMove = $unit->maxMove;
-            $mapUnit->strength = $unit->strength ;
+            $mapUnit->strength = $unit->strength;
             $mapUnit->supplied = $unit->supplied;
             $mapUnits[] = $mapUnit;
         }
         $turn = $doc->wargame->gameRules->turn;
-        foreach($units as $i => $unit){
+        foreach ($units as $i => $unit) {
             $u = new StdClass();
             $u->status = $unit->status;
             $u->moveAmountUsed = $unit->moveAmountUsed;
             $u->maxMove = $unit->maxMove;
             $u->forceId = $unit->forceId;
             $u->forceMarch = $unit->forceMarch;
-            if($unit->reinforceTurn > $turn){
+            if ($unit->reinforceTurn > $turn) {
                 $u->reinforceTurn = $unit->reinforceTurn;
             }
             $units[$i] = $u;
         }
-        if($moveRules->moves){
-            foreach($moveRules->moves as $k => $move){
+        if ($moveRules->moves) {
+            foreach ($moveRules->moves as $k => $move) {
                 $hex = new Hexagon($k);
-                $mapGrid->setHexagonXY( $hex->getX(), $hex->getY());
+                $mapGrid->setHexagonXY($hex->getX(), $hex->getY());
                 $n = new stdClass();
                 $moveRules->moves->{$k}->pixX = $mapGrid->getPixelX();
                 $moveRules->moves->{$k}->pixY = $mapGrid->getPixelY();
@@ -451,10 +477,10 @@ HEREUPDATE;
 //                unset($moveRules->moves->$k->isOccupied);
 
             }
-            if(false && $moveRules->path){
-                foreach($moveRules->path as $hexName){
+            if (false && $moveRules->path) {
+                foreach ($moveRules->path as $hexName) {
                     $hex = new Hexagon($hexName);
-                    $mapGrid->setHexagonXY($hex->x,$hex->y);
+                    $mapGrid->setHexagonXY($hex->x, $hex->y);
 
                     $path = new stdClass();
                     $path->pixX = $mapGrid->getPixelX();
@@ -472,52 +498,52 @@ HEREUPDATE;
         $gameRules->exchangeAmount = $force->exchangeAmount;
         $newSpecialHexes = new stdClass();
         $phaseClicks = $gameRules->phaseClicks;
-        if($doc->wargame->mapData->specialHexes){
+        if ($doc->wargame->mapData->specialHexes) {
             $specialHexes = $doc->wargame->mapData->specialHexes;
-            foreach($specialHexes as $k => $v){
+            foreach ($specialHexes as $k => $v) {
                 $hex = new Hexagon($k);
-                $mapGrid->setHexagonXY($hex->x,$hex->y);
+                $mapGrid->setHexagonXY($hex->x, $hex->y);
 
                 $path = new stdClass();
-                $newSpecialHexes->{"x".intval($mapGrid->getPixelX())."y".intval($mapGrid->getPixelY())} = $v;
+                $newSpecialHexes->{"x" . intval($mapGrid->getPixelX()) . "y" . intval($mapGrid->getPixelY())} = $v;
             }
         }
         $specialHexes = $newSpecialHexes;
         $newSpecialHexesChanges = new stdClass();
-        if($doc->wargame->mapData->specialHexesChanges){
+        if ($doc->wargame->mapData->specialHexesChanges) {
             $specialHexesChanges = $doc->wargame->mapData->specialHexesChanges;
-            foreach($specialHexesChanges as $k => $v){
+            foreach ($specialHexesChanges as $k => $v) {
                 $hex = new Hexagon($k);
-                $mapGrid->setHexagonXY($hex->x,$hex->y);
+                $mapGrid->setHexagonXY($hex->x, $hex->y);
 
                 $path = new stdClass();
-                $newSpecialHexesChanges->{"x".intval($mapGrid->getPixelX())."y".intval($mapGrid->getPixelY())} = $v;
+                $newSpecialHexesChanges->{"x" . intval($mapGrid->getPixelX()) . "y" . intval($mapGrid->getPixelY())} = $v;
             }
         }
         $newSpecialHexesVictory = new stdClass();
 
-        if($doc->wargame->mapData->specialHexesVictory){
+        if ($doc->wargame->mapData->specialHexesVictory) {
             $specialHexesVictory = $doc->wargame->mapData->specialHexesVictory;
-            foreach($specialHexesVictory as $k => $v){
+            foreach ($specialHexesVictory as $k => $v) {
                 $hex = new Hexagon($k);
-                $mapGrid->setHexagonXY($hex->x,$hex->y);
+                $mapGrid->setHexagonXY($hex->x, $hex->y);
 
                 $path = new stdClass();
-                $newSpecialHexesVictory->{"x".$mapGrid->getPixelX()."y".$mapGrid->getPixelY()} = $v;
+                $newSpecialHexesVictory->{"x" . $mapGrid->getPixelX() . "y" . $mapGrid->getPixelY()} = $v;
             }
         }
         $vp = $doc->wargame->victory->victoryPoints;
 //        echo "Victory ";var_dump($vp);
         $flashMessages = $gameRules->flashMessages;
-        if(count($flashMessages)){
+        if (count($flashMessages)) {
 
         }
 //        $flashMessages = array("Victory","Is","Mine");
         $specialHexesChanges = $newSpecialHexesChanges;
         $specialHexesVictory = $newSpecialHexesVictory;
         $gameRules->playerStatus = $doc->playerStatus;
-        $clock = "The turn is ".$gameRules->turn.". The Phase is ". $phase_name[$gameRules->phase].". The mode is ". $mode_name[$gameRules->mode];
-        return compact("phaseClicks","click","revs","vp","flashMessages","specialHexesVictory","specialHexes","specialHexesChanges","combatRules",'force','seq', 'chats', 'chatsIndex', 'last_seq', 'users', 'games', 'clock', 'mapUnits','moveRules','gameRules');
+        $clock = "The turn is " . $gameRules->turn . ". The Phase is " . $phase_name[$gameRules->phase] . ". The mode is " . $mode_name[$gameRules->mode];
+        return compact("phaseClicks", "click", "revs", "vp", "flashMessages", "specialHexesVictory", "specialHexes", "specialHexesChanges", "combatRules", 'force', 'seq', 'chats', 'chatsIndex', 'last_seq', 'users', 'games', 'clock', 'mapUnits', 'moveRules', 'gameRules');
     }
 
 }
