@@ -17,8 +17,7 @@ class Users extends CI_Controller
         $data = $this->input->post();
 
         if (!$user && $data) {
-            if($this->users_model->isValidLogin($data['name'],md5($data['password'])))
-            {
+            if ($this->users_model->isValidLogin($data['name'], md5($data['password']))) {
                 $user = $this->users_model->getUserByEmail($data['name']);
                 $user = $user->username;
                 $this->session->set_userdata(array("user" => $user));
@@ -39,24 +38,27 @@ class Users extends CI_Controller
         $wargame = $this->session->userdata("wargame");
         $this->session->sess_destroy();
         $this->load->model("wargame/wargame_model");
-        $this->wargame_model->leaveWargame($user,$wargame);
+        $this->wargame_model->leaveWargame($user, $wargame);
         redirect("/wargame/");
     }
 
-    function index(){
+    function index()
+    {
         $this->_isLoggedIn();
         $this->load->model('users/users_model');
         $users = $this->users_model->getUsersByUsername();
-        $this->load->view('users/users_view',compact("users"));
+        $this->load->view('users/users_view', compact("users"));
 //        var_dump($this->users_model->getUsersByEmail());
     }
 
-    function userAdded(){
+    function userAdded()
+    {
         $this->load->view('users/userAdded');
     }
+
     function addUser()
     {
-        if($this->_anyUser() != 0){
+        if ($this->_anyUser() != 0) {
             $this->_isLoggedIn();
         }
 
@@ -70,19 +72,16 @@ class Users extends CI_Controller
         $this->form_validation->set_rules('password', 'Password', 'required|matches[passconf]|md5');
         $this->form_validation->set_rules('passconf', 'Password Confirmation', 'required');
         $this->form_validation->set_message('valid_username', 'Usernames must be letters, numbers, underscore _, dash -, or space , they must also have at least one letter or number in them');
-        if ($this->form_validation->run() == FALSE)
-        {
+        if ($this->form_validation->run() == FALSE) {
             echo "error will";
-            $this->load->view('users/addUser',array("save_errors"=>""));
-        }
-        else
-        {
+            $this->load->view('users/addUser', array("save_errors" => ""));
+        } else {
             $this->load->model('users/users_model');
-            $err = $this->users_model->addUser($this->input->post('email'),$this->input->post('password'),$this->input->post('username'));
-            if($err){
-                $this->load->view('users/addUser',array("save_errors"=>$err));
+            $err = $this->users_model->addUser($this->input->post('email'), $this->input->post('password'), $this->input->post('username'));
+            if ($err) {
+                $this->load->view('users/addUser', array("save_errors" => $err));
 
-            }else{
+            } else {
                 redirect('users/userAdded');
             }
         }
@@ -90,7 +89,7 @@ class Users extends CI_Controller
 
     function changePassword()
     {
-            $this->_isRegUser();
+        $this->_isRegUser();
 
 //	echo "No";
 //	return;
@@ -101,64 +100,72 @@ class Users extends CI_Controller
         $this->form_validation->set_rules('password', 'Password', 'required|matches[passconf]|md5');
         $this->form_validation->set_rules('passconf', 'Password Confirmation', 'required');
         $this->form_validation->set_message('valid_username', 'Usernames must be letters, numbers, underscore _, dash -, or space , they must also have at least one letter or number in them');
-        if ($this->form_validation->run() == FALSE)
-        {
-            $this->load->view('users/changePassword',array("save_errors"=>""));
-        }
-        else
-        {
+        if ($this->form_validation->run() == FALSE) {
+            $this->load->view('users/changePassword', array("save_errors" => ""));
+        } else {
             $this->load->model('users/users_model');
-            $err = $this->users_model->changePassword($this->input->post('currPassword'),$this->input->post('password'),$this->input->post('username'));
-            if($err){
-                $this->load->view('users/changePassword',array("save_errors"=>$err));
+            $err = $this->users_model->changePassword($this->input->post('currPassword'), $this->input->post('password'), $this->input->post('username'));
+            if ($err) {
+                $this->load->view('users/changePassword', array("save_errors" => $err));
 
-            }else{
+            } else {
                 redirect('/');
             }
         }
     }
 
-    public function valid_username($username){
-        $ret =preg_match("/^[a-zA-Z0-9_\- ]+$/",$username);
-        if($ret){
-            $ret = preg_match("/[a-zA-Z0-9]/",$username);
-            if($ret){
+    public function valid_username($username)
+    {
+        $ret = preg_match("/^[a-zA-Z0-9_\- ]+$/", $username);
+        if ($ret) {
+            $ret = preg_match("/[a-zA-Z0-9]/", $username);
+            if ($ret) {
                 return true;
             }
         }
         return false;
     }
-    public function view(){
-     }
 
-    private function _isLoggedIn(){
+    public function view()
+    {
+    }
+
+    private function _isLoggedIn()
+    {
         $user = $this->session->userdata("user");
         if (!$user || $user != "Markarian") {
             redirect("/admin/login/");
         }
 
     }
-    private function _isRegUser(){
+
+    private function _isRegUser()
+    {
         $user = $this->session->userdata("user");
-        if (!$user ) {
+        if (!$user) {
             redirect("/admin/login/");
         }
 
     }
-    private function _anyUser(){
+
+    private function _anyUser()
+    {
         $this->load->model('users/users_model');
         $users = $this->users_model->getUsersByUsername();
-        return(count($users));
+        return (count($users));
     }
-    public function initDoc(){
+
+    public function initDoc()
+    {
         $this->load->model('users/users_model');
         $this->users_model->initDoc();
     }
 
-    function logins(){
+    function logins()
+    {
         $this->load->model('users/users_model');
         $logins = $this->users_model->getLogins();
         $logins = $logins->logins;
-        $this->load->view('users/users_logins',compact("logins"));
+        $this->load->view('users/users_logins', compact("logins"));
     }
 }
