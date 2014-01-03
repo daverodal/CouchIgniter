@@ -11,34 +11,7 @@ $this->load->view('admin/adminMenu');
             display:inline;
         }
     </style>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<div>
 <a href='<?=site_url()?>/admin/addGame'>add</a>
 <ul>
 <?php foreach($games as $key => $game){?>
@@ -64,5 +37,7 @@ $this->load->view('admin/adminMenu');
     </li>
 <?php } ?>
     </ul>
+    </div>
+
 </body>
 </html>

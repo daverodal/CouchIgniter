@@ -90,7 +90,7 @@ class Users extends CI_Controller
 
     function changePassword()
     {
-            $this->_isLoggedIn();
+            $this->_isRegUser();
 
 //	echo "No";
 //	return;
@@ -134,6 +134,13 @@ class Users extends CI_Controller
     private function _isLoggedIn(){
         $user = $this->session->userdata("user");
         if (!$user || $user != "Markarian") {
+            redirect("/admin/login/");
+        }
+
+    }
+    private function _isRegUser(){
+        $user = $this->session->userdata("user");
+        if (!$user ) {
             redirect("/admin/login/");
         }
 
