@@ -20,7 +20,7 @@ $this->load->view('admin/adminMenu');
         <span class="colThree {gameType}">{gameType}</span>
         <span class="colFour">{date}</span>
 
-    <a href="<?=site_url("wargame/deleteGame");?>/{id}/">delete</a>
+    <a href="<?=site_url("admin/deleteGame");?>/{id}/">delete</a>
     </li>
 {/lobbies}
     </ul>
