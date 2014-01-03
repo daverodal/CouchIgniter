@@ -185,7 +185,7 @@ class Admin extends CI_Controller
                 }
             }catch(Exception $e){}
         }
-        redirect("/");
+        redirect("/admin/allGames");
     }
 
 
