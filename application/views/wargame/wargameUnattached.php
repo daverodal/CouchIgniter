@@ -64,7 +64,7 @@ echo "<li class='game''> ". $game->name;
     </ul>
 <br><br><br>
     Or
-<a href="<?=site_url("wargame/logout");?>">Logout</a>
+<a href="<?=site_url("users/logout");?>">Logout</a>
 <a href="<?=site_url("wargame/leaveGame");?>">back to lobby</a>
 </div>
 </body>

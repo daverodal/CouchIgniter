@@ -9,6 +9,6 @@
     <li><?=$login->name;?> <?=$login->time;?></li>
 <?php } ?>
     </ul>
-    <a href="<?=site_url()?>/wargame/logout">logout</a>
+    <a href="<?=site_url()?>/users/logout">logout</a>
 </body>
 </html>

@@ -114,6 +114,8 @@ class Users_model extends CI_Model
             }
         }
 aHEREMAP;
+
+
         $userById = new stdClass();
         $userById->map = <<<byId
         function(doc) {
@@ -236,6 +238,42 @@ gamesAvail;
                 if(isset($usersDoc->userById)){
                     unset($usersDoc->userById);
                 }
+                $ret = $this->couchsag->update($usersDoc->_id, $usersDoc);
+                if($ret && $ret->ok){
+                    return false;
+                }
+            }
+        }
+        return "Cannot save $strikes strikes";
+    }
+
+    public function changePassword($password, $newPassword, $username = false){
+        if(!$username){
+            $username = $this->session->userdata("user");
+        }
+        $this->_setDB();
+        $strikes = 0;
+        while($strikes < 3){
+            $usersDoc = $this->couchsag->get("users");
+            //        $usersDoc->_rev = "";
+            if($usersDoc->docType == "users"){
+                $users = $usersDoc->userByEmail;
+
+                foreach($users as $email => $user){
+                    if($user->username == $username){
+                        $foundUser = $user;
+                        break;
+                    }
+                }
+                if(!$foundUser){
+                    return "Cannot find user $username";
+                }
+
+                if($foundUser->password != $password){
+                    return "Old password does not match";
+                }
+                $foundUser->password = $newPassword;
+                $usersDoc->userByEmail->{$email} = $user;
                 $ret = $this->couchsag->update($usersDoc->_id, $usersDoc);
                 if($ret && $ret->ok){
                     return false;

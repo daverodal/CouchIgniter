@@ -176,6 +176,16 @@ LobbyChanges;
             }
         }
 aHEREMAP;
+
+        $views->allGames = new stdClass();
+        $views->allGames->map = "function(doc){
+            if(doc.docType == 'wargame'){
+               var gameName = doc.gameName;
+	        	if(doc.wargame && doc.wargame.arg){
+		            gameName += '-'+doc.wargame.arg;
+                }
+                emit([doc.createUser,gameName,doc.name,doc.playerStatus,doc.createDate, doc._id],[doc.gameName,doc.createDate]);
+            }}";
         $userById = new stdClass();
         $userById->map = <<<byId
         function(doc) {

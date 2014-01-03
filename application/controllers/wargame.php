@@ -15,6 +15,14 @@ class Wargame extends CI_Controller
     public $couchsag;
     /* @var Wargame_model $wargame_model */
 
+    public function __construct(){
+        parent::__construct();
+        $user = $this->session->userdata("user");
+        if (!$user) {
+            redirect("/users/login/");
+        }
+    }
+
     function test(){
         echo "testing";
         $this->load->library("battle");
@@ -41,27 +49,15 @@ return;
 
     function index()
     {
-        $user = $this->session->userdata("user");
-        if (!$user) {
-            redirect("/wargame/login/");
-        }
         redirect("/wargame/play");
     }
 
     function leaveGame(){
-        $user = $this->session->userdata("user");
-        if (!$user) {
-            redirect("/wargame/login/");
-        }
         $this->session->unset_userdata('wargame');
                redirect("/wargame/play");
     }
     function unattachedGame()
     {
-        $user = $this->session->userdata("user");
-        if (!$user) {
-            redirect("/wargame/login/");
-        }
         $wargame = urldecode($this->session->userdata("wargame"));
         $this->load->model("wargame/wargame_model");
 
@@ -88,9 +84,6 @@ return;
     }
     function deleteGame($gameName){
         $user = $this->session->userdata("user");
-        if (!$user) {
-            redirect("/wargame/login/");
-        }
         if($gameName){
             try{
 
@@ -108,9 +101,7 @@ return;
     {
         $this->load->helper('date');
         $user = $this->session->userdata("user");
-        if (!$user) {
-            redirect("/wargame/login/");
-        }
+
         $wargame = urldecode($this->session->userdata("wargame"));
         $this->load->model("wargame/wargame_model");
         if(!$wargame){
@@ -230,44 +221,10 @@ return;
 
     }
 
-    function logout()
-    {
-        $user = $this->session->userdata("user");
-        $wargame = $this->session->userdata("wargame");
-        $this->session->sess_destroy();
-        $this->load->model("wargame/wargame_model");
-        $this->wargame_model->leaveWargame($user,$wargame);
-        redirect("/wargame/");
-    }
 
-    function login()
-    {
-        $this->load->model('users/users_model');
-        $user = $this->session->userdata("user");
-        $data = $this->input->post();
-
-        if (!$user && $data) {
-            if($this->users_model->isValidLogin($data['name'],md5($data['password'])))
-            {
-                $user = $this->users_model->getUserByEmail($data['name']);
-            $user = $user->username;
-            $this->session->set_userdata(array("user" => $user));
-		$this->users_model->userLoggedIn($user);
-//            $this->session->set_userdata(array("wargame" => "MainWargame"));
-//            $this->load->model('wargame/wargame_model');
-//            $this->wargame_model->enterWargame($user, "MainWargame");
-            redirect("/wargame/");
-            }
-        }
-        $this->load->view("login");
-
-    }
 
     function changeWargame($newWargame = false){
         $user = $this->session->userdata("user");
-        if (!$user) {
-            redirect("/wargame/login/");
-        }
         $wargame = $this->session->userdata("wargame");
 
         $this->load->model("wargame/wargame_model");
@@ -284,10 +241,6 @@ return;
     }
 
     public function enterHotseat($newWargame = false){
-        $user = $this->session->userdata("user");
-        if (!$user) {
-            redirect("/wargame/login/");
-        }
         if(!$newWargame){
             redirect("wargame/play");
         }
@@ -303,9 +256,6 @@ return;
 
     public function enterMulti($wargame = false,$playerOne = "", $playerTwo = ""){
         $user = $this->session->userdata("user");
-        if (!$user) {
-            redirect("/wargame/login/");
-        }
         if(!$wargame){
             redirect("wargame/play");
 
@@ -355,11 +305,7 @@ return;
         redirect("wargame/changeWargame/$wargame");
     }
     public function testDB($name = "aaa"){
-        $user = $this->session->userdata("user");
-        if (!$user) {
-            redirect("/wargame/login/");
-        }
-        $this->load->model("wargame/wargame_model");
+         $this->load->model("wargame/wargame_model");
         $cnt = 300;
         while($cnt--){
             $before = microtime(true);
@@ -378,10 +324,6 @@ return;
         echo "WE";
     }
     public function initDoc(){
-        $user = $this->session->userdata("user");
-        if (!$user) {
-            redirect("/wargame/login/");
-        }
         $this->load->model("wargame/wargame_model");
         $this->wargame_model->initDoc();
     }
@@ -389,9 +331,6 @@ return;
     public function fetch( $last_seq = '')
     {
         $user = $this->session->userdata("user");
-        if (!$user) {
-            redirect("/wargame/login/");
-        }
         $wargame = urldecode($this->session->userdata("wargame"));
 
 
@@ -408,9 +347,6 @@ return;
     {
 
         $user = $this->session->userdata("user");
-        if (!$user) {
-            redirect("/wargame/login/");
-        }
         $this->load->helper('date');
         $wargame = urldecode($this->session->userdata("wargame"));
 
@@ -488,9 +424,6 @@ return;
     public function add()
     {
         $user = $this->session->userdata("user");
-        if (!$user) {
-            redirect("/wargame/login/");
-        }
         $wargame = urldecode($this->session->userdata("wargame"));
         $chat = $this->input->post('chat',TRUE);
         $this->load->model("wargame/wargame_model");
@@ -533,9 +466,6 @@ return;
     public function poke()
     {
         $user = $this->session->userdata("user");
-        if (!$user) {
-            redirect("/wargame/login/");
-        }
 
         $player = $this->session->userdata("player");
         $wargame = urldecode($this->session->userdata("wargame"));
@@ -615,9 +545,6 @@ return;
     public function resize($small = true)
     {
         $user = $this->session->userdata("user");
-        if (!$user) {
-            redirect("/wargame/login/");
-        }
         $wargame = urldecode($this->session->userdata("wargame"));
         $this->load->model("wargame/wargame_model");
         $doc = $this->wargame_model->getDoc(urldecode($wargame));
@@ -639,9 +566,6 @@ return;
    public function unitInit($game = "MartianCivilWar", $arg = false)
     {
         $user = $this->session->userdata("user");
-        if (!$user) {
-            redirect("/wargame/login/");
-        }
         $wargame = urldecode($this->session->userdata("wargame"));
         $chat = $this->input->post('chat',TRUE);
         $this->load->model("wargame/wargame_model");
@@ -707,9 +631,6 @@ return;
     }
     function playAs($game = false){
         $user = $this->session->userdata("user");
-        if (!$user) {
-            redirect("/wargame/login/");
-        }
         $wargame = urldecode($this->session->userdata("wargame"));
         if(!$wargame && $game){
             $wargame = $game;
@@ -727,10 +648,6 @@ return;
     }
     public function createWargame()
     {
-        $user = $this->session->userdata("user");
-        if (!$user) {
-            redirect("/wargame/login/");
-        }
 
         $message = "";
         $wargame = $this->input->post('wargame');

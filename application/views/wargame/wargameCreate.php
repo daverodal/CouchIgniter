@@ -36,7 +36,7 @@
     <input type="submit" value="GO GO GO!">
 </form></fieldset>
 <br>
-<a href="<?=site_url("wargame/logout");?>">Logout</a><br>
+<a href="<?=site_url("users/logout");?>">Logout</a><br>
 <a href="<?=site_url("wargame/leaveGame");?>">back to lobby</a>
 </body>
 <script type="text/javascript">

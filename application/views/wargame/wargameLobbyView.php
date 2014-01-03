@@ -225,6 +225,9 @@
 </head>
 <body>
 <div>
+    <?php if($myName == "Markarian"){?>
+         <h1><a href="<?=site_url("admin");?>">Admin </a></h1>
+    <?php } ?>
 <h2>Welcome {myName}</h2>
 <h3>You can <a id="create" href="<?=site_url("wargame/createWargame");?>">Create a new Wargame</a> </h3>
 Or play an existing game:<br>
@@ -248,7 +251,7 @@ Games you were invited to:
 <!--    </li>-->
 <!--    {/otherGames}-->
 </ul>
-<a id="logout" href="<?=site_url("wargame/logout");?>">Logout</a>
+<a id="logout" href="<?=site_url("users/logout");?>">Logout</a>
     </div>
 </body>
 </html>

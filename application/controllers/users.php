@@ -10,6 +10,39 @@
  */
 class Users extends CI_Controller
 {
+    function login()
+    {
+        $this->load->model('users/users_model');
+        $user = $this->session->userdata("user");
+        $data = $this->input->post();
+
+        if (!$user && $data) {
+            if($this->users_model->isValidLogin($data['name'],md5($data['password'])))
+            {
+                $user = $this->users_model->getUserByEmail($data['name']);
+                $user = $user->username;
+                $this->session->set_userdata(array("user" => $user));
+                $this->users_model->userLoggedIn($user);
+//            $this->session->set_userdata(array("wargame" => "MainWargame"));
+//            $this->load->model('wargame/wargame_model');
+//            $this->wargame_model->enterWargame($user, "MainWargame");
+                redirect("/");
+            }
+        }
+        $this->load->view("login");
+
+    }
+
+    function logout()
+    {
+        $user = $this->session->userdata("user");
+        $wargame = $this->session->userdata("wargame");
+        $this->session->sess_destroy();
+        $this->load->model("wargame/wargame_model");
+        $this->wargame_model->leaveWargame($user,$wargame);
+        redirect("/wargame/");
+    }
+
     function index(){
         $this->_isLoggedIn();
         $this->load->model('users/users_model');
@@ -55,6 +88,36 @@ class Users extends CI_Controller
         }
     }
 
+    function changePassword()
+    {
+            $this->_isLoggedIn();
+
+//	echo "No";
+//	return;
+        $this->load->helper(array('form', 'url'));
+
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules('currPassword', 'Old Password', 'required|md5');
+        $this->form_validation->set_rules('password', 'Password', 'required|matches[passconf]|md5');
+        $this->form_validation->set_rules('passconf', 'Password Confirmation', 'required');
+        $this->form_validation->set_message('valid_username', 'Usernames must be letters, numbers, underscore _, dash -, or space , they must also have at least one letter or number in them');
+        if ($this->form_validation->run() == FALSE)
+        {
+            $this->load->view('users/changePassword',array("save_errors"=>""));
+        }
+        else
+        {
+            $this->load->model('users/users_model');
+            $err = $this->users_model->changePassword($this->input->post('currPassword'),$this->input->post('password'),$this->input->post('username'));
+            if($err){
+                $this->load->view('users/changePassword',array("save_errors"=>$err));
+
+            }else{
+                redirect('/');
+            }
+        }
+    }
+
     public function valid_username($username){
         $ret =preg_match("/^[a-zA-Z0-9_\- ]+$/",$username);
         if($ret){
@@ -71,9 +134,8 @@ class Users extends CI_Controller
     private function _isLoggedIn(){
         $user = $this->session->userdata("user");
         if (!$user || $user != "Markarian") {
-            redirect("/wargame/login/");
+            redirect("/admin/login/");
         }
-
 
     }
     private function _anyUser(){
@@ -85,39 +147,7 @@ class Users extends CI_Controller
         $this->load->model('users/users_model');
         $this->users_model->initDoc();
     }
-    function addGame(){
-        $this->_isLoggedIn();
-//        var_dump($_GET);
-        $this->load->model('users/users_model');
-        if($_GET['dir']){
-            $this->load->library("battle");
-            $info = $this->battle->getInit($_GET['dir']);
-            echo "<pre>";
-            var_dump($info);
-            $games = $this->users_model->addGame($info);
-            redirect('users/games');
-        }
 
-        $this->load->view('users/addGame_view',compact("games"));
-//        $this->load->view('users/games_view',compact("games"));
-//        var_dump($this->users_model->getUsersByEmail());
-    }
-    function deleteGame(){
-        $this->_isLoggedIn();
-        $this->load->model('users/users_model');
-        var_dump($_GET);
-        $games = $this->users_model->deleteGame($_GET['killGame']);
-        redirect('users/games');
-//        $this->load->view('users/games_view',compact("games"));
-//        var_dump($this->users_model->getUsersByEmail());
-    }
-    function games(){
-        $this->_isLoggedIn();
-        $this->load->model('users/users_model');
-        $games = $this->users_model->getAvailGames();
-        $this->load->view('users/games_view',compact("games"));
-//        var_dump($this->users_model->getUsersByEmail());
-    }
     function logins(){
         $this->load->model('users/users_model');
         $logins = $this->users_model->getLogins();
