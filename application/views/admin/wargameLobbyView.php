@@ -19,7 +19,7 @@ $this->load->view('admin/adminMenu');
         <span title="click to change" class="colTwo">{name}</span>
         <span class="colThree {gameType}">{gameType}</span>
         <span class="colFour">{date}</span>
-    <a href="<?=site_url("changeWargame");?>/id"><span class="colOne">Watch</span></a>
+    <a href="<?=site_url("wargame/changeWargame");?>/{id}"><span class="colOne">Watch</span></a>
 
 
     <a href="<?=site_url("admin/deleteGame");?>/{id}/">delete</a>
