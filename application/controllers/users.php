@@ -163,6 +163,7 @@ class Users extends CI_Controller
 
     function logins()
     {
+        $this->_isLoggedIn();
         $this->load->model('users/users_model');
         $logins = $this->users_model->getLogins();
         $logins = $logins->logins;

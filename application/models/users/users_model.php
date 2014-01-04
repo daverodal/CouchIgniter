@@ -247,10 +247,8 @@ gamesAvail;
         return "Cannot save $strikes strikes";
     }
 
-    public function changePassword($password, $newPassword, $username = false){
-        if(!$username){
+    public function changePassword($password, $newPassword){
             $username = $this->session->userdata("user");
-        }
         $this->_setDB();
         $strikes = 0;
         while($strikes < 3){
@@ -276,6 +274,7 @@ gamesAvail;
                 $usersDoc->userByEmail->{$email} = $user;
                 $ret = $this->couchsag->update($usersDoc->_id, $usersDoc);
                 if($ret && $ret->ok){
+                    mail($email,"Password Change","Dear $username, Your password for davidrodal.com has been changeed");
                     return false;
                 }
             }
