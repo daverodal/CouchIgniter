@@ -277,7 +277,7 @@ gamesAvail;
                     $headers = 'From: wargame_daemon@davidrodal.com' . "\r\n" .
                         'Reply-To: dave.rodal@gmail.com' . "\r\n" .
                         'X-Mailer: PHP/' . phpversion();
-                    mail($email,"Password Change","Dear $username, Your password for davidrodal.com has been changeed",$headers);
+                    mail($email,"Password Change","Dear $username, Your password for davidrodal.com has been changed",$headers);
                     return false;
                 }
             }
