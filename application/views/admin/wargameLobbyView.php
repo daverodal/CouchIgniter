@@ -9,7 +9,7 @@ $this->load->view('admin/adminMenu');
 <br>   All Games:
     <ul id="myGames">
         <li class="bold"><span class="colOne">Creator</span><span class="colOne">Game</span><span class="colTwo">Name</span>
-            <span class="colThree">Type</span><span class="colFour">Date</span><span class="colFive">Delete</span></li>
+            <span class="colThree">Type</span><span class="colFour">Date</span><span class="colFive">Watch</span><span class="colFive">Delete</span></li>
 
         <li class="bold" >&nbsp;</li>
     {lobbies}
@@ -19,6 +19,8 @@ $this->load->view('admin/adminMenu');
         <span title="click to change" class="colTwo">{name}</span>
         <span class="colThree {gameType}">{gameType}</span>
         <span class="colFour">{date}</span>
+    <a href="<?=site_url("changeWargame");?>/id"><span class="colOne">Watch</span></a>
+
 
     <a href="<?=site_url("admin/deleteGame");?>/{id}/">delete</a>
     </li>
