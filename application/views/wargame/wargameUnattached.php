@@ -55,7 +55,7 @@ echo "<li class='game''> ". $game->name;
     echo "<ul>";
     foreach($game->scenarios as $key => $value){
             $href = site_url("wargame/unitInit")."/".$game->key."/".$key;
-            echo "<li><a href='$href'>$key: {$value->description}</a></li>";
+            echo "<li><a href='$href'>{$value->description}</a></li>";
     }
     echo "</ul>";
 }
