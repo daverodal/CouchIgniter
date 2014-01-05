@@ -41,7 +41,7 @@ class Battle
                 $scenarios = new stdClass();
             }
             $className = $game->className;
-            $thisBattle = new $className($doc, $arg, $scenarios);
+            $thisBattle = new $className($doc, $arg, $scenarios, $game);
         }else{
             $className = $game->className;
 
@@ -56,7 +56,7 @@ class Battle
         try{
         $game = self::loadGame($name, $arg);
             $className = $game->className;
-        $className::getView($name, $mapUrl,$player, $arg, $argTwo);
+        $className::getView($name, $mapUrl,$player, $arg, $argTwo, $game);
         }catch(Exception $e){echo $e->getMessage()." ".$e->getFile()." ".$e->getLine();}
     }
     public static function getHeader($name,$data,$arg){
@@ -100,10 +100,12 @@ class Battle
             var_dump(debug_backtrace());
             die("loadGame no arg");
         }
+
         try{
             $CI =& get_instance();
             $CI->load->model('users/users_model');
             $game = $CI->users_model->getGame($name);
+
             if($game !== false){
                 self::$isLoaded = true;
                 self::$game = $game;
