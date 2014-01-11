@@ -413,7 +413,7 @@ return;
             $players = implode($thePlayers," ");
             $row->value[1] = "created ".formatDateDiff($dt)." ago";
             $odd ^= 1;
-            $otherGames[] =  array("odd"=>$odd ? "odd":"","name"=>$name, 'date'=>$row->value[1], "id"=>$id, "creator"=>$creator,"gameType"=>$gameType, "turn"=>$playerTurn, "players"=>$players,"myTurn"=>$myTurn);
+            $otherGames[] =  array("odd"=>$odd ? "odd":"","name"=>$name, "gameName"=>$gameName,'date'=>$row->value[1], "id"=>$id, "creator"=>$creator,"gameType"=>$gameType, "turn"=>$playerTurn, "players"=>$players,"myTurn"=>$myTurn);
         }
         $results = $lastSeq->results;
         $last_seq = $lastSeq->last_seq;
