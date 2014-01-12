@@ -539,7 +539,7 @@ HEREUPDATE;
                 $mapGrid->setHexagonXY($hex->x, $hex->y);
 
                 $path = new stdClass();
-                $newSpecialHexesVictory->{"x" . $mapGrid->getPixelX() . "y" . $mapGrid->getPixelY()} = $v;
+                $newSpecialHexesVictory->{"x" . intval($mapGrid->getPixelX()) . "y" . intval($mapGrid->getPixelY())} = $v;
             }
         }
         $vp = $doc->wargame->victory->victoryPoints;
