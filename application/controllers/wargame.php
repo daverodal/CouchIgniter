@@ -579,6 +579,9 @@ return;
         $this->load->model('users/users_model');
         $battle = $this->battle->getBattle($game,null,$arg);
 
+        if(method_exists($battle, 'init')){
+            $battle->init();
+        }
         $doc->wargame = $battle->save();
         $click = $doc->_rev;
         $matches = array();
