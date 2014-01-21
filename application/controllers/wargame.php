@@ -217,8 +217,10 @@ return;
         $units = $newUnits;
         $mapUrl = $doc->wargame->mapData->mapUrl;
         $arg = $doc->wargame->arg;
-        $this->parser->parse("wargame/wargameView",compact("name","arg","player","mapUrl","units","playerData","gameName","wargame","lobbies","user"));
-
+        $scenario = $doc->wargame->scenario;
+        $scenarioArray = [];
+        $scenarioArray[] = $scenario;
+        $this->parser->parse("wargame/wargameView",compact("scenarioArray","name","arg","player","mapUrl","units","playerData","gameName","wargame","user"));
     }
 
 
