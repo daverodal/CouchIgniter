@@ -398,6 +398,7 @@ return;
             $keys = $row->key;
             $you = array_shift($keys);
             $creator = array_shift($keys);
+            $gameName = array_shift($keys);
             $name = array_shift($keys);
             $gameType = array_shift($keys);
             $playerTurn = array_shift($keys);

@@ -118,7 +118,12 @@ class Wargame_model extends CI_Model
                     if(doc.wargame.players[i] == '' || doc.wargame.players[i] == doc.createUser){
                         continue;
                     }
-                    emit([doc.wargame.players[i],doc.createUser, doc.gameName,doc.playerStatus, doc.wargame.gameRules.attackingForceId, doc._id],[doc.gameName,doc.createDate,doc.wargame.players]);
+                    var gameName = doc.gameName;
+                    if(doc.wargame.arg){
+                        gameName += '-'+doc.wargame.arg;
+                    }
+
+                    emit([doc.wargame.players[i],doc.createUser, gameName, doc.gameName,doc.playerStatus, doc.wargame.gameRules.attackingForceId, doc._id],[doc.gameName,doc.createDate,doc.wargame.players]);
                 }
             }
         }";
