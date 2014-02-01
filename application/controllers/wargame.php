@@ -212,6 +212,10 @@ return;
                 $newUnit[$key] = $value;
             }
                 $newUnit['class'] = $aUnit->nationality;
+            $newUnit['unitSize'] = $aUnit->name;
+            if($aUnit->name == "infantry-1"){
+                $newUnit['unitSize'] = 'xx';
+            }
             $newUnits[] = $newUnit;
         }
         $units = $newUnits;
