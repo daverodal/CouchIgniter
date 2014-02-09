@@ -18,6 +18,45 @@ set_include_path(WARGAMES . "/stdIncludes" . PATH_SEPARATOR . WARGAMES . PATH_SE
 
 class Battle
 {
+    public static function pokePlayer($player){
+        echo "I have been poked !!!!! ======================= ";
+        $CI =& get_instance();
+
+        $CI->load->database();
+
+        echo "abou tto get users";
+         $que = 'SELECT count(*) as COUNT FROM  `ci_sessions` WHERE user_data LIKE  "%'.$player.'%" LIMIT 0 , 30';
+        $query = $CI->db->query($que);
+        foreach ($query->result() as $row)
+        {
+            if($row->COUNT){
+                $CI->load->model('users/users_model');
+                $userObj = $CI->users_model->getUsersByUsername($player)[0]->value;
+                echo "did smoethin ";
+
+                Battle::sendReminder($userObj->email);
+            }
+            echo $row->COUNT;
+        }
+        echo 'hi';
+    }
+    public static function sendReminder($emailAddr){
+        $CI =& get_instance();
+
+        $CI->load->library('email');
+
+        $CI->email->from('gameBot@davidrodal.com', 'GameBot ');
+        $CI->email->to('dave.rodal@gmail.com');
+
+        $CI->email->subject('Email Test sending to '.$emailAddr);
+        $CI->email->message('Your turn.');
+
+        $CI->email->send();
+
+        echo $CI->email->print_debugger();
+
+
+    }
     private static $theBattle;
     private static $isLoaded = false;
     private static $game;

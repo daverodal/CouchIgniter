@@ -19,9 +19,13 @@ class Users_model extends CI_Model
     private function _restoreDB(){
         $this->couchsag->sag->setDatabase($this->prevDB);
     }
-    public function getUsersByUsername(){
+    public function getUsersByUsername($name = false){
         $this->_setDB();
-        $seq = $this->couchsag->get("/_design/newFilter/_view/userByUsername");
+        $startKey = "";
+        if($name !== false){
+            $startKey = "?startkey=\"$name\"&endkey=\"$name"."zzzzzzzzzzzzzzzzzzzzzzzz\"";
+        }
+        $seq = $this->couchsag->get("/_design/newFilter/_view/userByUsername$startKey");
         $this->_restoreDB();
         return $seq->rows;
     }
