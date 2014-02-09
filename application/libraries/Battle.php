@@ -29,7 +29,7 @@ class Battle
         $query = $CI->db->query($que);
         foreach ($query->result() as $row)
         {
-            if($row->COUNT){
+            if(!$row->COUNT){
                 $CI->load->model('users/users_model');
                 $userObj = $CI->users_model->getUsersByUsername($player)[0]->value;
                 echo "did smoethin ";
