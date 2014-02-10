@@ -19,20 +19,24 @@ set_include_path(WARGAMES . "/stdIncludes" . PATH_SEPARATOR . WARGAMES . PATH_SE
 class Battle
 {
     public static function pokePlayer($player){
-        $CI =& get_instance();
-
-        $CI->load->database();
-
-        $que = 'SELECT count(*) as COUNT FROM  `ci_sessions` WHERE user_data LIKE  "%'.$player.'%" LIMIT 0 , 30';
-        $query = $CI->db->query($que);
-        foreach ($query->result() as $row)
-        {
-            if(!$row->COUNT){
-                $CI->load->model('users/users_model');
-                $userObj = $CI->users_model->getUsersByUsername($player)[0]->value;
-                Battle::sendReminder($userObj->email);
-            }
-        }
+//        $CI =& get_instance();
+//
+//        $CI->load->database();
+//
+//        $que = 'SELECT count(*) as COUNT FROM  `ci_sessions` WHERE user_data LIKE  "%\"'.$player.'\"%" LIMIT 0 , 30';
+//        $query = $CI->db->query($que);
+//        foreach ($query->result() as $row)
+//        {
+//            if(!$row->COUNT){
+//                $CI->load->model('users/users_model');
+//                $userObj = $CI->users_model->getUserByUsername($player);
+//                echo "$player ";
+//                die($row->COUNT);
+//                if($userObj){
+//                    Battle::sendReminder($userObj->email);
+//                }
+//            }
+//        }
     }
     public static function sendReminder($emailAddr){
         $CI =& get_instance();
