@@ -123,7 +123,7 @@
     }
     .myTurn{
         color:white;
-        text-shadow:0px 0px 3px black,0px 0px 3px black,0px 0px 3px black,0px 0px 3px black;
+        text-shadow:0px 0px 3px green,0px 0px 3px green,0px 0px 3px green,0px 0px 3px green;
     }
     body{
         background-color:pink;
