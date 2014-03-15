@@ -201,8 +201,6 @@ class Admin extends CI_Controller
         if($_GET['dir']){
             $this->load->library("battle");
             $info = $this->battle->getInit($_GET['dir']);
-            echo "<pre>";
-            var_dump($info);
 
             $games = $this->users_model->addGame($info);
             redirect('admin/games');
@@ -214,7 +212,6 @@ class Admin extends CI_Controller
     }
     function deleteGameType(){
         $this->load->model('users/users_model');
-        var_dump($_GET);
         $games = $this->users_model->deleteGame($_GET['killGame']);
         redirect('admin/games');
 //        $this->load->view('users/games_view',compact("games"));

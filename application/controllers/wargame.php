@@ -260,6 +260,25 @@ return;
         }
     }
 
+    public function makePublic($game = false){
+
+        if($game === false){
+            redirect("wargame/play");
+        }
+        $this->load->model("wargame/wargame_model");
+        $ret = $this->wargame_model->makePublic($game);
+        redirect("wargame/play");
+    }
+
+    public function makePrivate($game = false){
+
+        if($game === false){
+            redirect("wargame/play");
+        }
+        $this->load->model("wargame/wargame_model");
+        $ret = $this->wargame_model->makePrivate($game);
+        redirect("wargame/play");
+    }
     public function enterMulti($wargame = false,$playerOne = "", $playerTwo = ""){
         $user = $this->session->userdata("user");
         if(!$wargame){
@@ -375,6 +394,8 @@ return;
             $name = array_shift($keys);
             $gameType = array_shift($keys);
             $playerTurn = array_shift($keys);
+            array_shift($keys);
+            $public = array_shift($keys);
             $filename = array_shift($keys);
 //               $key = implode($keys,"  ");
             $id = $row->id;
@@ -392,7 +413,7 @@ return;
             $players = implode($thePlayers," ");
             $row->value[1] = "created ".formatDateDiff($dt)." ago";
             $odd ^= 1;
-            $lobbies[] =  array("odd"=>$odd ? "odd":"","gameName"=>$gameName, "name"=>$name, 'date'=>$row->value[1], "id"=>$id, "creator"=>$creator,"gameType"=>$gameType, "turn"=>$playerTurn, "players"=>$players,"myTurn"=>$myTurn);
+            $lobbies[] =  array("public"=>$public,"odd"=>$odd ? "odd":"","gameName"=>$gameName, "name"=>$name, 'date'=>$row->value[1], "id"=>$id, "creator"=>$creator,"gameType"=>$gameType, "turn"=>$playerTurn, "players"=>$players,"myTurn"=>$myTurn);
         }
         $seq = $this->couchsag->get("/_design/newFilter/_view/getGamesImIn?startkey=[\"$user\"]&endkey=[\"$user\",\"zzzzzzzzzzzzzzzzzzzzzzzz\"]");
 
@@ -422,9 +443,36 @@ return;
             $odd ^= 1;
             $otherGames[] =  array("odd"=>$odd ? "odd":"","name"=>$name, "gameName"=>$gameName,'date'=>$row->value[1], "id"=>$id, "creator"=>$creator,"gameType"=>$gameType, "turn"=>$playerTurn, "players"=>$players,"myTurn"=>$myTurn);
         }
+        $seq = $this->couchsag->get("/_design/newFilter/_view/publicGames");
+
+        $odd = 0;
+        $publicGames = array();
+        foreach($seq->rows as $row){
+            $keys = $row->key;
+            $creator = array_shift($keys);
+            $gameName = array_shift($keys);
+            $name = array_shift($keys);
+            $gameType = array_shift($keys);
+            $playerTurn = array_shift($keys);
+            $filename = array_shift($keys);
+            $id = $row->id;
+            $dt = new DateTime($row->value[1]);
+            $thePlayers = $row->value[2];
+            $playerTurn = $thePlayers[$playerTurn];
+            $myTurn = "";
+            if($playerTurn == $user){
+                $playerTurn = "Your";
+                $myTurn = "myTurn";
+            }
+            array_shift($thePlayers);
+            $players = implode($thePlayers," ");
+            $row->value[1] = "created ".formatDateDiff($dt)." ago";
+            $odd ^= 1;
+            $publicGames[] =  array("odd"=>$odd ? "odd":"","name"=>$name, "gameName"=>$gameName,'date'=>$row->value[1], "id"=>$id, "creator"=>$creator,"gameType"=>$gameType, "turn"=>$playerTurn, "players"=>$players,"myTurn"=>$myTurn);
+        }
         $results = $lastSeq->results;
         $last_seq = $lastSeq->last_seq;
-        $ret = compact("lobbies","otherGames","last_seq","results");
+        $ret = compact("lobbies","otherGames","last_seq","results","publicGames");
         echo json_encode($ret);
     }
 
