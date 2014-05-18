@@ -50,15 +50,22 @@
 Attach to game:
     <ul>
 <?php
-foreach($games as $game){
-echo "<li class='game''> ". $game->name;
-    echo "<ul>";
-    foreach($game->scenarios as $key => $value){
-            $href = site_url("wargame/unitInit")."/".$game->key."/".$key;
-            echo "<li><a href='$href'>{$value->description}</a></li>";
+    $lastKey = '';
+
+    foreach($games as $game){
+        if($game->key[0] != $lastKey){
+            $lastKey = $game->key[0];
+            $name = $game->genre;
+            echo "<li><h3>Genre $name</h3></li>";
+        }
+        echo "<li class='game''> ". $game->name;
+        echo "<ul>";
+        foreach($game->scenarios as $key => $value){
+                $href = site_url("wargame/unitInit")."/".$game->key[1]."/".$key;
+                echo "<li><a href='$href'>{$value->description}</a></li>";
+        }
+        echo "</ul>";
     }
-    echo "</ul>";
-}
 
 ?>
     </ul>

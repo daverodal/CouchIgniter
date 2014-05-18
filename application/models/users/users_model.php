@@ -183,7 +183,7 @@ byUsername;
                 if(doc.docType == 'gnuGamesAvail'){
                     if(doc.games){
                         for(var i in doc.games){
-                            emit(i,doc.games[i]);
+                            emit([doc.games[i].path,i],doc.games[i]);
                         }
                     }
                 }
@@ -366,7 +366,7 @@ gamesAvail;
     public function getGame($gameName){
         $games = $this->getAvailGames();
         foreach($games as $game){
-            if($gameName == $game->key){
+            if($gameName == $game->key[1]){
                 return $game;
             }
         }

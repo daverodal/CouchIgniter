@@ -56,7 +56,7 @@ return;
         $this->session->unset_userdata('wargame');
                redirect("/wargame/play");
     }
-    function unattachedGame()
+    function unattachedGame($fudge)
     {
         $wargame = urldecode($this->session->userdata("wargame"));
         $this->load->model("wargame/wargame_model");
@@ -69,13 +69,11 @@ return;
 
         $this->load->model('users/users_model');
         $gamesAvail = $this->users_model->getAvailGames();
-
         $seq = $this->couchsag->get("/_design/newFilter/_view/getLobbies");
         $games = array();
         foreach($gamesAvail as $gameAvail){
-
             $games[] = $gameAvail;
-    }
+        }
 
         $nest = [];
 
