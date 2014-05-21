@@ -84,6 +84,12 @@ class Battle
                 $scenarios = new stdClass();
             }
             $className = $game->className;
+            $params = $game->params ? $game->params : new stdClass();
+            foreach($params as $pKey => $pValue){
+                if(!isset($scenarios->$pKey)){
+                    $scenarios->$pKey = $pValue;
+                }
+            }
             $thisBattle = new $className($doc, $arg, $scenarios, $game);
         }else{
             $className = $game->className;
