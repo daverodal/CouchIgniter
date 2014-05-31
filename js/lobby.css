@@ -1,0 +1,119 @@
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box; }
+
+#myOtherGames {
+  max-width: 100em;
+  margin-left: auto;
+  margin-right: auto; }
+  #myOtherGames:after {
+    content: "";
+    display: table;
+    clear: both; }
+  #myOtherGames .lobbyRow .colOne, #myOtherGames .lobbyHeader .colOne {
+    float: left;
+    display: block;
+    margin-right: 2.35765%;
+    width: 23.23176%; }
+    #myOtherGames .lobbyRow .colOne:last-child, #myOtherGames .lobbyHeader .colOne:last-child {
+      margin-right: 0; }
+  #myOtherGames .lobbyRow .colTwo, #myOtherGames .lobbyHeader .colTwo {
+    float: left;
+    display: block;
+    margin-right: 2.35765%;
+    width: 23.23176%;
+    word-break: break-all; }
+    #myOtherGames .lobbyRow .colTwo:last-child, #myOtherGames .lobbyHeader .colTwo:last-child {
+      margin-right: 0; }
+  #myOtherGames .lobbyRow .colThree, #myOtherGames .lobbyHeader .colThree {
+    float: left;
+    display: block;
+    margin-right: 2.35765%;
+    width: 14.70196%; }
+    #myOtherGames .lobbyRow .colThree:last-child, #myOtherGames .lobbyHeader .colThree:last-child {
+      margin-right: 0; }
+  #myOtherGames .lobbyRow .colFour, #myOtherGames .lobbyHeader .colFour {
+    float: left;
+    display: block;
+    margin-right: 2.35765%;
+    width: 14.70196%; }
+    #myOtherGames .lobbyRow .colFour:last-child, #myOtherGames .lobbyHeader .colFour:last-child {
+      margin-right: 0; }
+  #myOtherGames .lobbyRow .colFive, #myOtherGames .lobbyHeader .colFive {
+    float: left;
+    display: block;
+    margin-right: 2.35765%;
+    width: 14.70196%; }
+    #myOtherGames .lobbyRow .colFive:last-child, #myOtherGames .lobbyHeader .colFive:last-child {
+      margin-right: 0; }
+
+#myGames {
+  max-width: 100em;
+  margin-left: auto;
+  margin-right: auto; }
+  #myGames:after {
+    content: "";
+    display: table;
+    clear: both; }
+  #myGames .lobbyRow .colOne, #myGames .lobbyHeader .colOne {
+    float: left;
+    display: block;
+    margin-right: 2.35765%;
+    width: 14.70196%; }
+    #myGames .lobbyRow .colOne:last-child, #myGames .lobbyHeader .colOne:last-child {
+      margin-right: 0; }
+  #myGames .lobbyRow .colTwo, #myGames .lobbyHeader .colTwo {
+    float: left;
+    display: block;
+    margin-right: 2.35765%;
+    width: 10.43705%;
+    word-break: break-all; }
+    #myGames .lobbyRow .colTwo:last-child, #myGames .lobbyHeader .colTwo:last-child {
+      margin-right: 0; }
+  #myGames .lobbyRow .colThree, #myGames .lobbyHeader .colThree {
+    float: left;
+    display: block;
+    margin-right: 2.35765%;
+    width: 6.17215%; }
+    #myGames .lobbyRow .colThree:last-child, #myGames .lobbyHeader .colThree:last-child {
+      margin-right: 0; }
+  #myGames .lobbyRow .colFour, #myGames .lobbyHeader .colFour {
+    float: left;
+    display: block;
+    margin-right: 2.35765%;
+    width: 10.43705%; }
+    #myGames .lobbyRow .colFour:last-child, #myGames .lobbyHeader .colFour:last-child {
+      margin-right: 0; }
+  #myGames .lobbyRow .colFive, #myGames .lobbyHeader .colFive {
+    float: left;
+    display: block;
+    margin-right: 2.35765%;
+    width: 14.70196%; }
+    #myGames .lobbyRow .colFive:last-child, #myGames .lobbyHeader .colFive:last-child {
+      margin-right: 0; }
+  #myGames .lobbyRow .colSix, #myGames .lobbyHeader .colSix {
+    float: left;
+    display: block;
+    margin-right: 2.35765%;
+    width: 14.70196%; }
+    #myGames .lobbyRow .colSix:last-child, #myGames .lobbyHeader .colSix:last-child {
+      margin-right: 0; }
+  #myGames .lobbyRow .colSeven, #myGames .lobbyHeader .colSeven {
+    float: left;
+    display: block;
+    margin-right: 2.35765%;
+    width: 14.70196%;
+    margin-right: 0; }
+    #myGames .lobbyRow .colSeven:last-child, #myGames .lobbyHeader .colSeven:last-child {
+      margin-right: 0; }
+
+.lobbyRow, .lobbyHeader {
+  clear: both;
+  padding: 5px 0; }
+
+.clear {
+  clear: both; }
+
+ul .lobbyHeader:hover, ul .lobbySpacer:hover {
+  background-color: transparent; }
