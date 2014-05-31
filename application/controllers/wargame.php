@@ -404,12 +404,18 @@ return;
             $dt = new DateTime($row->value[1]);
             $thePlayers = $row->value[2];
             $playerTurn = $thePlayers[$playerTurn];
+            $gameOver = $row->value[4];
             $myTurn = "";
-            if($playerTurn == $user){
-                $playerTurn = "Your";
-                $myTurn = "myTurn";
+            if($gameOver === true){
+                $playerTurn = "Game Over";
+                $myTurn = "gameOver";
             }else{
-                $playerTurn .= "'s";
+                if($playerTurn == $user){
+                    $playerTurn = "It's Your Turn";
+                    $myTurn = "myTurn";
+                }else{
+                    $playerTurn = "It's ".$playerTurn."'s Turn";
+                }
             }
             array_shift($thePlayers);
             $players = implode($thePlayers," ");

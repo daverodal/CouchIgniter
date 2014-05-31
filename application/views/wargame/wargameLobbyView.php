@@ -30,9 +30,9 @@
                 line += "</span>";
                 line += "<span class='colTwo'>" + lobbies[i].gameType;
                 line += "</span></a><a href='<?=site_url('wargame/changeWargame');?>/" + lobbies[i].id;
-                line += "/'><span class='colThree " + lobbies[i].myTurn + "'>It's " + lobbies[i].turn;
+                line += "/'><span class='colThree " + lobbies[i].myTurn + "'>" + lobbies[i].turn;
 
-                line += " turn </span><span class='colFour'>" + lobbies[i].date + "</span></a><span class='colFive'> " + lobbies[i].players;
+                line += " </span><span class='colFour'>" + lobbies[i].date + "</span></a><span class='colFive'> " + lobbies[i].players;
                 line += "</span>";
                 var pubLink;
                 if(lobbies[i].public == "public"){
@@ -58,7 +58,7 @@
                 line += "</span></a><a href='<?=site_url('wargame/playAs');?>/" + lobbies[i].id;
                 line += "/'>";
                 line += "</span></a><a href='<?=site_url('wargame/changeWargame');?>/" + lobbies[i].id;
-                line += "/'><span class='colThree " + lobbies[i].myTurn + "'>It's " + lobbies[i].turn;
+                line += "/'><span class='colThree " + lobbies[i].myTurn + "'>" + lobbies[i].turn;
 
                 line += " turn </span><span class='colFour'>" + lobbies[i].date + "</span></a><span class='colFive'> " + lobbies[i].players;
                 line += "</span>";
@@ -157,7 +157,10 @@
         color: white;
         text-shadow: 0px 0px 3px green, 0px 0px 3px green, 0px 0px 3px green, 0px 0px 3px green;
     }
-
+    .gameOver {
+        color: white;
+        text-shadow: 0px 0px 3px red, 0px 0px 3px red, 0px 0px 3px red, 0px 0px 3px red;
+    }
     body {
         background: url("<?=base_url("js/armoredKnight.jpg")?>") #fff;
         background-repeat: no-repeat;
