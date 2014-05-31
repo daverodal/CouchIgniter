@@ -154,7 +154,7 @@ class Wargame_model extends CI_Model
                         gameName += '-'+doc.wargame.arg;
                     }
 
-                    emit([doc.wargame.players[i],doc.createUser, gameName, doc.gameName,doc.playerStatus, doc.wargame.gameRules.attackingForceId, doc._id],[doc.gameName,doc.createDate,doc.wargame.players,doc.wargame.victory.gameOver]);
+                    emit([doc.wargame.players[i],doc.createUser, doc.name, gameName, doc.gameName,doc.playerStatus, doc.wargame.gameRules.attackingForceId, doc._id],[doc.gameName,doc.createDate,doc.wargame.players,doc.wargame.victory.gameOver]);
                 }
             }
         }";

@@ -1,0 +1,40 @@
+@import "bourbon/bourbon";
+@import "neat/neat";
+$max-width: 100em;
+#myOtherGames{
+  @include outer-container;
+  .lobbyRow, .lobbyHeader{
+    .colOne { @include span-columns(3);}
+    .colTwo {@include span-columns(3);
+      word-break:break-all;
+    }
+    .colThree {@include span-columns(2);}
+    .colFour {@include span-columns(2);}
+    .colFive {@include span-columns(2);}
+  }
+}
+$grid-columns: 12;
+#myGames{
+  @include outer-container;
+  .lobbyRow, .lobbyHeader{
+    .colOne { @include span-columns(2);}
+    .colTwo {@include span-columns(1.5);
+      word-break:break-all;
+    }
+    .colThree {@include span-columns(1);}
+    .colFour {@include span-columns(1.5);}
+    .colFive {@include span-columns(2);}
+    .colSix {@include span-columns(2);}
+    .colSeven {@include span-columns(2);@include omega;}
+  }
+}
+.lobbyRow, .lobbyHeader{
+  clear:both;
+  padding: 5px 0;
+}
+.clear{
+  clear:both;
+}
+ul .lobbyHeader:hover, ul .lobbySpacer:hover{
+  background-color:transparent;
+}

@@ -11,6 +11,7 @@
 <script src="<?= base_url("js/jquery-1.9.0.min.js"); ?>"></script>
 <script src="<?= base_url("js/jquery-ui-1.9.2.custom.min.js"); ?>"></script>
 <script src="<?= base_url("js/sync.js"); ?>"></script>
+<link href="<?= base_url("js/lobby.css"); ?>" rel="stylesheet" type="text/css">
 <script type="text/javascript">
     $(document).ready(function(){
         var sync = new Sync("<?=site_url("wargame/fetchLobby/");?>");
@@ -23,17 +24,16 @@
                 $("#myGames").append("<li style='text-align:center' class='lobbyRow'>you have created no games</li>");
 
             }
+            var changeLobbyHref;
             for(var i in lobbies){
-                var line = "<li id='" + lobbies[i].id + "' class='lobbyRow " + lobbies[i].odd + "'>";
-                line += "<a href='<?=site_url('wargame/changeWargame');?>/" + lobbies[i].id;
-                line += "/'><span class='colOne'>" + lobbies[i].name + "</span><span class='colOne'>" + lobbies[i].gameName;
-                line += "</span>";
-                line += "<span class='colTwo'>" + lobbies[i].gameType;
-                line += "</span></a><a href='<?=site_url('wargame/changeWargame');?>/" + lobbies[i].id;
-                line += "/'><span class='colThree " + lobbies[i].myTurn + "'>" + lobbies[i].turn;
-
-                line += " </span><span class='colFour'>" + lobbies[i].date + "</span></a><span class='colFive'> " + lobbies[i].players;
-                line += "</span>";
+                changeLobbyHref = "<?=site_url('wargame/changeWargame');?>/"+ lobbies[i].id;
+                var line = "<li id='" + lobbies[i].id + "' class='lobbyRow " + lobbies[i].odd + "'>&nbsp;";
+                line += "<span class='colOne'>" + anchorMe(lobbies[i].name, changeLobbyHref) + "</span>";
+                line += "<span class='colTwo'>" + anchorMe(lobbies[i].gameName, changeLobbyHref) + "</span>";
+                line += "<span class='colThree'>" + anchorMe(lobbies[i].gameType, changeLobbyHref) + "</span>";
+                line += "<span class='colFour " + lobbies[i].myTurn + "'>" + lobbies[i].turn + " </span>";
+                line += "<span class='colFive'>" + anchorMe(lobbies[i].date, changeLobbyHref) + "</span>";
+                line += "<span class='colSix'> " + anchorMe(lobbies[i].players, changeLobbyHref) + "</span>";
                 var pubLink;
                 if(lobbies[i].public == "public"){
                     pubLink = "<a href='<?=site_url('wargame/makePrivate');?>/" + lobbies[i].id + "'>private</a>";
@@ -41,7 +41,7 @@
                 }else{
                     pubLink = "<a href='<?=site_url('wargame/makePublic');?>/" + lobbies[i].id + "'>public</a>";
                 }
-                line += pubLink + " <a href='<?=site_url('wargame/playAs');?>/" + lobbies[i].id + "'>edit</a> <a href='<?=site_url("wargame/deleteGame");?>/" + lobbies[i].id + "/'>delete</a>";
+                line += "<span class='colSeven'>"+pubLink + " <a href='<?=site_url('wargame/playAs');?>/" + lobbies[i].id + "'>edit</a> <a href='<?=site_url("wargame/deleteGame");?>/" + lobbies[i].id + "/'>delete</a></span>&nbsp;<nav class='clear'></nav></li>";
                 $("#myGames").append(line);
             }
         });
@@ -53,15 +53,14 @@
             }
             for(var i in lobbies){
                 var line = "<li id='" + lobbies[i].id + "' class='lobbyRow " + lobbies[i].odd + "'>";
-                line += "<a href='<?=site_url('wargame/changeWargame');?>/" + lobbies[i].id;
-                line += "/'><span class='colOne'>" + lobbies[i].name + "</span><span class='colOne'>" + lobbies[i].gameName;
-                line += "</span></a><a href='<?=site_url('wargame/playAs');?>/" + lobbies[i].id;
-                line += "/'>";
-                line += "</span></a><a href='<?=site_url('wargame/changeWargame');?>/" + lobbies[i].id;
-                line += "/'><span class='colThree " + lobbies[i].myTurn + "'>" + lobbies[i].turn;
-
-                line += " turn </span><span class='colFour'>" + lobbies[i].date + "</span></a><span class='colFive'> " + lobbies[i].players;
+                line += "<a href='<?=site_url('wargame/changeWargame');?>/" + lobbies[i].id + "/'>";
+                line += "<span class='colOne'>" + lobbies[i].name + "</span><span class='colTwo'>" + lobbies[i].gameName;
                 line += "</span>";
+                line += "<span class='colThree " + lobbies[i].myTurn + "'>" + lobbies[i].turn;
+
+                line += " turn </span><span class='colFour'>" + lobbies[i].date + "</span><span class='colFive'> " + lobbies[i].players;
+                line += "</span></a>"
+                line += "<nav class='clear'></nav></li>";
                 $("#myOtherGames").append(line);
             }
         });
@@ -106,6 +105,9 @@
         sync.fetch(0);
     });
 
+    function anchorMe(text, href){
+        return '<a href="'+ href + '">'+ text+ '</a>';
+    }
 </script>
 
 <style type="text/css">
@@ -235,18 +237,18 @@
     Or play an existing game:<br>
     <br> Games you created:
     <ul id="myGames">
-        <li class="bold"><span class="colOne">Name</span><span class="colOne">Game</span><span class="colTwo">Single/multi</span><span
-                class="colThree">Turn</span><span class="colFour">Date</span><span
-                class="colFive">Players Involved</span></li>
+        <li class="bold lobbyHeader"><span class="colOne">Name</span><span class="colTwo">Game</span><span class="colThree">Single multi</span><span
+                class="colFour">Turn</span><span class="colFive">Date</span><span
+                class="colSix">Players Involved</span><span class="colSeven">Actions</span></li>
 
-        <li class="bold">&nbsp;</li>
+        <li class="bold lobbySpacer">&nbsp;</li>
     </ul>
     Games you were invited to:
     <ul id="myOtherGames">
-        <li class="bold"><span class="colOne">Name</span><span class="colOne">Game</span><span
+        <li class="lobbyHeader bold"><span class="colOne">Name</span><span class="colTwo">Game</span><span
                 class="colThree">Turn</span><span class="colFour">Date</span><span
                 class="colFive">Players Involved</span></li>
-        <li>&nbsp;</li>
+        <li class="lobbySpacer">&nbsp;</li>
     </ul>
     Public Games: (you can observe but not play)
     <ul id="publicGames">
