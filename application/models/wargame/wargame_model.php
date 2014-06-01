@@ -166,7 +166,7 @@ class Wargame_model extends CI_Model
                         gameName += '-'+doc.wargame.arg;
                     }
 
-                    emit([doc.createUser, gameName, doc.gameName,doc.playerStatus, doc.wargame.gameRules.attackingForceId, doc._id],[doc.gameName,doc.createDate,doc.wargame.players]);
+                    emit([doc.createUser, doc.name, gameName, doc.gameName,doc.playerStatus, doc.wargame.gameRules.attackingForceId, doc._id],[doc.gameName,doc.createDate,doc.wargame.players]);
 
             }
         }";
@@ -177,7 +177,7 @@ class Wargame_model extends CI_Model
 	        	if(doc.wargame.arg){
 		            gameName += '-'+doc.wargame.arg;
                 }
-                emit([doc.createUser,gameName,doc.name,doc.playerStatus, doc.wargame.gameRules.attackingForceId, doc._id, doc.visibility],[doc.gameName,doc.createDate,doc.wargame.players,doc.wargame.mapData.mapUrl,doc.wargame.victory.gameOver]);
+                emit([doc.createUser, doc.playerStatus, gameName,doc.name,doc.wargame.gameRules.attackingForceId, doc._id, doc.visibility],[doc.gameName,doc.createDate,doc.wargame.players,doc.wargame.mapData.mapUrl,doc.wargame.victory.gameOver,doc.wargame.gameRules.turn, doc.wargame.gameRules.maxTurn]);
             }}";
 //        $views->getAvailGames = new StdClass;
 //        $views->getAvailGames->map = "function(doc){if(doc.docType == 'gamesAvail'){if(doc.games){for(var i in doc.games){emit(doc.games[i],doc.games[i]);}}}}";

@@ -12,9 +12,19 @@
 <script src="<?= base_url("js/jquery-ui-1.9.2.custom.min.js"); ?>"></script>
 <script src="<?= base_url("js/sync.js"); ?>"></script>
 <link href="<?= base_url("js/lobby.css"); ?>" rel="stylesheet" type="text/css">
+<style type="text/css">
+
+    body{
+        background: url("<?=base_url("js/armoredKnight.jpg")?>") #fff;
+        background-repeat: no-repeat;
+        background-position: center top;
+    }
+
+</style>
 <script type="text/javascript">
+    var fetchUrl = "<?=site_url("wargame/fetchLobby/");?>"
     $(document).ready(function(){
-        var sync = new Sync("<?=site_url("wargame/fetchLobby/");?>");
+        var sync = new Sync(fetchUrl);
         sync.register("lobbies", function(lobbies){
             $("#myGames .lobbyRow").remove();
             $("#myGames .bold").hide();
@@ -28,12 +38,11 @@
             for(var i in lobbies){
                 changeLobbyHref = "<?=site_url('wargame/changeWargame');?>/"+ lobbies[i].id;
                 var line = "<li id='" + lobbies[i].id + "' class='lobbyRow " + lobbies[i].odd + "'>&nbsp;";
+                line += "<a href='<?=site_url('wargame/changeWargame');?>/" + lobbies[i].id + "/'>";
                 line += "<span class='colOne'>" + anchorMe(lobbies[i].name, changeLobbyHref) + "</span>";
                 line += "<span class='colTwo'>" + anchorMe(lobbies[i].gameName, changeLobbyHref) + "</span>";
-                line += "<span class='colThree'>" + anchorMe(lobbies[i].gameType, changeLobbyHref) + "</span>";
-                line += "<span class='colFour " + lobbies[i].myTurn + "'>" + lobbies[i].turn + " </span>";
-                line += "<span class='colFive'>" + anchorMe(lobbies[i].date, changeLobbyHref) + "</span>";
-                line += "<span class='colSix'> " + anchorMe(lobbies[i].players, changeLobbyHref) + "</span>";
+                line += "<span class='colThree " + lobbies[i].myTurn + "'>" + lobbies[i].turn + " </span>";
+                line += "<span class='colFour'>" + anchorMe(lobbies[i].date, changeLobbyHref) + "</span>";
                 var pubLink;
                 if(lobbies[i].public == "public"){
                     pubLink = "<a href='<?=site_url('wargame/makePrivate');?>/" + lobbies[i].id + "'>private</a>";
@@ -41,8 +50,38 @@
                 }else{
                     pubLink = "<a href='<?=site_url('wargame/makePublic');?>/" + lobbies[i].id + "'>public</a>";
                 }
-                line += "<span class='colSeven'>"+pubLink + " <a href='<?=site_url('wargame/playAs');?>/" + lobbies[i].id + "'>edit</a> <a href='<?=site_url("wargame/deleteGame");?>/" + lobbies[i].id + "/'>delete</a></span>&nbsp;<nav class='clear'></nav></li>";
+                line += "<span class='colFive'>"+pubLink + " <a href='<?=site_url('wargame/playAs');?>/" + lobbies[i].id + "'>edit</a> <a href='<?=site_url("wargame/deleteGame");?>/" + lobbies[i].id + "/'>delete</a></span><div class='clear'></div></li>";
                 $("#myGames").append(line);
+            }
+        });
+        sync.register("multiLobbies", function(lobbies){
+            $("#myMultiGames .lobbyRow").remove();
+            $("#myMultiGames .bold").hide();
+            if(lobbies.length > 0){
+                $("#myMultiGames .bold").show();
+            }else{
+                $("#myMultiGames").append("<li style='text-align:center' class='lobbyRow'>you have created no games</li>");
+
+            }
+            var changeLobbyHref;
+            for(var i in lobbies){
+                changeLobbyHref = "<?=site_url('wargame/changeWargame');?>/"+ lobbies[i].id;
+                var line = "<li id='" + lobbies[i].id + "' class='lobbyRow " + lobbies[i].odd + "'>&nbsp;";
+                line += "<a href='<?=site_url('wargame/changeWargame');?>/" + lobbies[i].id + "/'>";
+                line += "<span class='colOne'>" + anchorMe(lobbies[i].name, changeLobbyHref) + "</span>";
+                line += "<span class='colTwo'>" + anchorMe(lobbies[i].gameName, changeLobbyHref) + "</span>";
+                line += "<span class='colThree " + lobbies[i].myTurn + "'>" + lobbies[i].turn + " </span>";
+                line += "<span class='colFour'>" + anchorMe(lobbies[i].date, changeLobbyHref) + "</span>";
+                line += "<span class='colFive'> " + anchorMe(lobbies[i].players, changeLobbyHref) + "</span></a>";
+                var pubLink;
+                if(lobbies[i].public == "public"){
+                    pubLink = "<a href='<?=site_url('wargame/makePrivate');?>/" + lobbies[i].id + "'>private</a>";
+                    ;
+                }else{
+                    pubLink = "<a href='<?=site_url('wargame/makePublic');?>/" + lobbies[i].id + "'>public</a>";
+                }
+                line += "<span class='colSix'>"+pubLink + " <a href='<?=site_url('wargame/playAs');?>/" + lobbies[i].id + "'>edit</a> <a href='<?=site_url("wargame/deleteGame");?>/" + lobbies[i].id + "/'>delete</a></span><div class='clear'></div></li>";
+                $("#myMultiGames").append(line);
             }
         });
         sync.register("otherGames", function(lobbies){
@@ -60,7 +99,7 @@
 
                 line += " turn </span><span class='colFour'>" + lobbies[i].date + "</span><span class='colFive'> " + lobbies[i].players;
                 line += "</span></a>"
-                line += "<nav class='clear'></nav></li>";
+                line += "<div class='clear'></div></li>";
                 $("#myOtherGames").append(line);
             }
         });
@@ -73,14 +112,14 @@
             for(var i in lobbies){
                 var line = "<li id='" + lobbies[i].id + "' class='lobbyRow " + lobbies[i].odd + "'>";
                 line += "<a href='<?=site_url('wargame/changeWargame');?>/" + lobbies[i].id;
-                line += "/'><span class='colOne'>" + lobbies[i].name + "</span><span class='colOne'>" + lobbies[i].gameName;
+                line += "/'><span class='colOne'>" + lobbies[i].name + "</span><span class='colTwo'>" + lobbies[i].gameName;
                 line += "</span></a><a href='<?=site_url('wargame/playAs');?>/" + lobbies[i].id;
                 line += "/'>";
                 line += "</span></a><a href='<?=site_url('wargame/changeWargame');?>/" + lobbies[i].id;
                 line += "/'><span class='colThree " + lobbies[i].myTurn + "'>It's " + lobbies[i].turn;
 
                 line += " turn </span><span class='colFour'>" + lobbies[i].date + "</span></a><span class='colFive'> " + lobbies[i].players;
-                line += "</span>";
+                line += "</span><div class='clear'></div></li>";
                 $("#publicGames").append(line);
             }
         });
@@ -91,9 +130,9 @@
                     continue;
                 }
                 $("#" + id).animate({color: "#000", backgroundColor: "#fff"}, 800, function(){
-                    $(this).animate({color: "#fff", backgroundColor: "rgb(112,66,20)"}, 800, function(){
+                    $(this).animate({color: "#fff", backgroundColor: "rgb(170,0,0)"}, 800, function(){
                         $(this).animate({color: "#000", backgroundColor: "#fff"}, 800, function(){
-                            $(this).animate({color: "#fff", backgroundColor: "rgb(112,66,20)"}, 800, function(){
+                            $(this).animate({color: "#fff", backgroundColor: "rgb(170,0,0)"}, 800, function(){
                                 $(this).css("background-color", "").css("color", "");
                             });
                         });
@@ -106,128 +145,14 @@
     });
 
     function anchorMe(text, href){
+        return text;
         return '<a href="'+ href + '">'+ text+ '</a>';
     }
 </script>
 
-<style type="text/css">
-    h3 {
-        font-size: 16px;
-    }
-
-    span {
-        display: inline-block;
-    }
-
-    .bold {
-        font-family: Lucida;
-        font-weight: bold;
-        font-size: 18px;
-        color: white;
-        text-shadow: 0px 0px 3px black, 0px 0px 3px black, 0px 0px 3px black, 0px 0px 3px black, 0px 0px 3px black, 0px 0px 3px black;
-    }
-
-    .colOne {
-        width: 150px;
-    }
-
-    .colTwo {
-        width: 120px;
-    }
-
-    .colThree {
-        width: 180px;
-    }
-
-    .colFour {
-        width: 160px;
-    }
-
-    .colFive {
-        width: 170px;
-    }
-
-    h2 {
-        font-style: italic;
-    }
-
-    li {
-        list-style: none;
-    }
-
-    .myTurn {
-        color: white;
-        text-shadow: 0px 0px 3px green, 0px 0px 3px green, 0px 0px 3px green, 0px 0px 3px green;
-    }
-    .gameOver {
-        color: white;
-        text-shadow: 0px 0px 3px red, 0px 0px 3px red, 0px 0px 3px red, 0px 0px 3px red;
-    }
-    body {
-        background: url("<?=base_url("js/armoredKnight.jpg")?>") #fff;
-        background-repeat: no-repeat;
-        color: #666;
-        background-position: center top;
-        height: 100%;
-
-    }
-
-    .odd {
-        background: rgba(66, 66, 66, .4);
-    }
-
-    a {
-        color: black;
-        font-size: 120%;
-    }
-
-    #logout {
-        color: white;
-        text-shadow: 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00;
-        text-decoration: none;
-    }
-
-    #create {
-        color: white;
-        text-shadow: 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0;
-        text-decoration: none;
-        border-bottom: 3px solid #afa;
-        font-family: sans-serif;
-        font-style: italic;
-    }
-
-    ul {
-        padding: 5px 10px;
-        border-radius: 10px;
-        background: rgba(33, 33, 33, .5);
-        color: white;
-    }
-
-    ul a {
-        color: white;
-    }
-
-    ul li:hover {
-        background: rgba(0, 0, 0, .5);
-    }
-
-    div {
-        color: black;
-        min-width: 900px;
-        /*float:left;*/
-        /*max-width:1000px;*/
-        /*margin-top: 50px;*/
-        border-radius: 20px;
-        border: 5px solid gray;
-        padding: 15px 30px 15px 15px;
-        background: rgba(160, 160, 160, .15);
-        width: 80%;
-        margin: 0 auto;
-    }
-</style>
 </head>
 <body>
-<div>
+<div id="content">
     <?php if ($myName == "Markarian") { ?>
         <h1><a href="<?= site_url("admin"); ?>">Admin </a></h1>
     <?php } ?>
@@ -235,27 +160,58 @@
 
     <h3>You can <a id="create" href="<?= site_url("wargame/createWargame"); ?>">Create a new Wargame</a></h3>
     Or play an existing game:<br>
-    <br> Games you created:
-    <ul id="myGames">
-        <li class="bold lobbyHeader"><span class="colOne">Name</span><span class="colTwo">Game</span><span class="colThree">Single multi</span><span
-                class="colFour">Turn</span><span class="colFive">Date</span><span
-                class="colSix">Players Involved</span><span class="colSeven">Actions</span></li>
 
+    <h1>Multi Player Games</h1>
+    <ul id="multiPlayerGames">
+        <li>
+            <h2>Multi games you created:</h2>
+            <ul id="myMultiGames">
+                <li class="bold lobbyHeader">
+                    <span class="colOne">Name</span>
+                    <span class="colTwo">Game</span>
+                    <span class="colThree">Turn</span>
+                    <span class="colFour">Date</span>
+                    <span class="colFive">Players Involved</span>
+                    <span class="colSix">Actions</span>
+                </li>
+                <li class="bold lobbySpacer">&nbsp;</li>
+            </ul>
+        </li>
+        <li>
+            <h2>Games you were invited to:</h2>
+            <ul id="myOtherGames">
+                <li class="lobbyHeader bold">
+                    <span class="colOne">Name</span>
+                    <span class="colTwo">Game</span>
+                    <span class="colThree">Turn</span>
+                    <span class="colFour">Date</span>
+                    <span class="colFive">Players Involved</span>
+                </li>
+                <li class="lobbySpacer">&nbsp;</li>
+            </ul>
+        </li>
+    </ul>
+    <h2>HOTSEAT games you created:</h2>
+    <ul id="myGames">
+        <li class="bold lobbyHeader">
+            <span class="colOne">Name</span>
+            <span class="colTwo">Game</span>
+            <span class="colThree">Turn</span>
+            <span class="colFour">Date</span>
+            <span class="colFive">Actions</span>
+        </li>
         <li class="bold lobbySpacer">&nbsp;</li>
     </ul>
-    Games you were invited to:
-    <ul id="myOtherGames">
-        <li class="lobbyHeader bold"><span class="colOne">Name</span><span class="colTwo">Game</span><span
-                class="colThree">Turn</span><span class="colFour">Date</span><span
-                class="colFive">Players Involved</span></li>
-        <li class="lobbySpacer">&nbsp;</li>
-    </ul>
-    Public Games: (you can observe but not play)
+    <h2>Public Games: (you can observe but not play)</h2>
     <ul id="publicGames">
-        <li class="bold"><span class="colOne">Name</span><span class="colOne">Game</span><span
-                class="colThree">Turn</span><span class="colFour">Date</span><span
-                class="colFive">Players Involved</span></li>
-        <li>&nbsp;</li>
+        <li class="lobbyHeader bold">
+            <span class="colOne">Name</span>
+            <span class="colTwo">Game</span>
+            <span class="colThree">Turn</span>
+            <span class="colFour">Date</span>
+            <span class="colFive">Players Involved</span>
+        </li>
+        <li class="lobbySpacer">&nbsp;</li>
     </ul>
     <a id="logout" href="<?= site_url("users/logout"); ?>">Logout</a>
 </div>

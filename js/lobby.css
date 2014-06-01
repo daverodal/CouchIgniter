@@ -3,49 +3,50 @@
   -moz-box-sizing: border-box;
   box-sizing: border-box; }
 
-#myOtherGames {
+#myOtherGames, #publicGames {
   max-width: 100em;
   margin-left: auto;
   margin-right: auto; }
-  #myOtherGames:after {
+  #myOtherGames:after, #publicGames:after {
     content: "";
     display: table;
     clear: both; }
-  #myOtherGames .lobbyRow .colOne, #myOtherGames .lobbyHeader .colOne {
+  #myOtherGames .lobbyRow .colOne, #myOtherGames .lobbyHeader .colOne, #publicGames .lobbyRow .colOne, #publicGames .lobbyHeader .colOne {
     float: left;
     display: block;
     margin-right: 2.35765%;
     width: 23.23176%; }
-    #myOtherGames .lobbyRow .colOne:last-child, #myOtherGames .lobbyHeader .colOne:last-child {
+    #myOtherGames .lobbyRow .colOne:last-child, #myOtherGames .lobbyHeader .colOne:last-child, #publicGames .lobbyRow .colOne:last-child, #publicGames .lobbyHeader .colOne:last-child {
       margin-right: 0; }
-  #myOtherGames .lobbyRow .colTwo, #myOtherGames .lobbyHeader .colTwo {
+  #myOtherGames .lobbyRow .colTwo, #myOtherGames .lobbyHeader .colTwo, #publicGames .lobbyRow .colTwo, #publicGames .lobbyHeader .colTwo {
     float: left;
     display: block;
     margin-right: 2.35765%;
     width: 23.23176%;
     word-break: break-all; }
-    #myOtherGames .lobbyRow .colTwo:last-child, #myOtherGames .lobbyHeader .colTwo:last-child {
+    #myOtherGames .lobbyRow .colTwo:last-child, #myOtherGames .lobbyHeader .colTwo:last-child, #publicGames .lobbyRow .colTwo:last-child, #publicGames .lobbyHeader .colTwo:last-child {
       margin-right: 0; }
-  #myOtherGames .lobbyRow .colThree, #myOtherGames .lobbyHeader .colThree {
+  #myOtherGames .lobbyRow .colThree, #myOtherGames .lobbyHeader .colThree, #publicGames .lobbyRow .colThree, #publicGames .lobbyHeader .colThree {
     float: left;
     display: block;
     margin-right: 2.35765%;
     width: 14.70196%; }
-    #myOtherGames .lobbyRow .colThree:last-child, #myOtherGames .lobbyHeader .colThree:last-child {
+    #myOtherGames .lobbyRow .colThree:last-child, #myOtherGames .lobbyHeader .colThree:last-child, #publicGames .lobbyRow .colThree:last-child, #publicGames .lobbyHeader .colThree:last-child {
       margin-right: 0; }
-  #myOtherGames .lobbyRow .colFour, #myOtherGames .lobbyHeader .colFour {
+  #myOtherGames .lobbyRow .colFour, #myOtherGames .lobbyHeader .colFour, #publicGames .lobbyRow .colFour, #publicGames .lobbyHeader .colFour {
     float: left;
     display: block;
     margin-right: 2.35765%;
     width: 14.70196%; }
-    #myOtherGames .lobbyRow .colFour:last-child, #myOtherGames .lobbyHeader .colFour:last-child {
+    #myOtherGames .lobbyRow .colFour:last-child, #myOtherGames .lobbyHeader .colFour:last-child, #publicGames .lobbyRow .colFour:last-child, #publicGames .lobbyHeader .colFour:last-child {
       margin-right: 0; }
-  #myOtherGames .lobbyRow .colFive, #myOtherGames .lobbyHeader .colFive {
+  #myOtherGames .lobbyRow .colFive, #myOtherGames .lobbyHeader .colFive, #publicGames .lobbyRow .colFive, #publicGames .lobbyHeader .colFive {
     float: left;
     display: block;
     margin-right: 2.35765%;
-    width: 14.70196%; }
-    #myOtherGames .lobbyRow .colFive:last-child, #myOtherGames .lobbyHeader .colFive:last-child {
+    width: 14.70196%;
+    margin-right: 0; }
+    #myOtherGames .lobbyRow .colFive:last-child, #myOtherGames .lobbyHeader .colFive:last-child, #publicGames .lobbyRow .colFive:last-child, #publicGames .lobbyHeader .colFive:last-child {
       margin-right: 0; }
 
 #myGames {
@@ -67,7 +68,7 @@
     float: left;
     display: block;
     margin-right: 2.35765%;
-    width: 10.43705%;
+    width: 23.23176%;
     word-break: break-all; }
     #myGames .lobbyRow .colTwo:last-child, #myGames .lobbyHeader .colTwo:last-child {
       margin-right: 0; }
@@ -75,37 +76,76 @@
     float: left;
     display: block;
     margin-right: 2.35765%;
-    width: 6.17215%; }
+    width: 14.70196%; }
     #myGames .lobbyRow .colThree:last-child, #myGames .lobbyHeader .colThree:last-child {
       margin-right: 0; }
   #myGames .lobbyRow .colFour, #myGames .lobbyHeader .colFour {
     float: left;
     display: block;
     margin-right: 2.35765%;
-    width: 10.43705%; }
+    width: 14.70196%; }
     #myGames .lobbyRow .colFour:last-child, #myGames .lobbyHeader .colFour:last-child {
       margin-right: 0; }
   #myGames .lobbyRow .colFive, #myGames .lobbyHeader .colFive {
     float: left;
     display: block;
     margin-right: 2.35765%;
-    width: 14.70196%; }
+    width: 23.23176%;
+    margin-right: 0; }
     #myGames .lobbyRow .colFive:last-child, #myGames .lobbyHeader .colFive:last-child {
       margin-right: 0; }
-  #myGames .lobbyRow .colSix, #myGames .lobbyHeader .colSix {
+
+#myMultiGames {
+  max-width: 100em;
+  margin-left: auto;
+  margin-right: auto; }
+  #myMultiGames:after {
+    content: "";
+    display: table;
+    clear: both; }
+  #myMultiGames .lobbyRow .colOne, #myMultiGames .lobbyHeader .colOne {
+    float: left;
+    display: block;
+    margin-right: 2.35765%;
+    width: 10.43705%; }
+    #myMultiGames .lobbyRow .colOne:last-child, #myMultiGames .lobbyHeader .colOne:last-child {
+      margin-right: 0; }
+  #myMultiGames .lobbyRow .colTwo, #myMultiGames .lobbyHeader .colTwo {
+    float: left;
+    display: block;
+    margin-right: 2.35765%;
+    width: 18.96686%;
+    word-break: break-all; }
+    #myMultiGames .lobbyRow .colTwo:last-child, #myMultiGames .lobbyHeader .colTwo:last-child {
+      margin-right: 0; }
+  #myMultiGames .lobbyRow .colThree, #myMultiGames .lobbyHeader .colThree {
     float: left;
     display: block;
     margin-right: 2.35765%;
     width: 14.70196%; }
-    #myGames .lobbyRow .colSix:last-child, #myGames .lobbyHeader .colSix:last-child {
+    #myMultiGames .lobbyRow .colThree:last-child, #myMultiGames .lobbyHeader .colThree:last-child {
       margin-right: 0; }
-  #myGames .lobbyRow .colSeven, #myGames .lobbyHeader .colSeven {
+  #myMultiGames .lobbyRow .colFour, #myMultiGames .lobbyHeader .colFour {
+    float: left;
+    display: block;
+    margin-right: 2.35765%;
+    width: 14.70196%; }
+    #myMultiGames .lobbyRow .colFour:last-child, #myMultiGames .lobbyHeader .colFour:last-child {
+      margin-right: 0; }
+  #myMultiGames .lobbyRow .colFive, #myMultiGames .lobbyHeader .colFive {
+    float: left;
+    display: block;
+    margin-right: 2.35765%;
+    width: 14.70196%; }
+    #myMultiGames .lobbyRow .colFive:last-child, #myMultiGames .lobbyHeader .colFive:last-child {
+      margin-right: 0; }
+  #myMultiGames .lobbyRow .colSix, #myMultiGames .lobbyHeader .colSix {
     float: left;
     display: block;
     margin-right: 2.35765%;
     width: 14.70196%;
     margin-right: 0; }
-    #myGames .lobbyRow .colSeven:last-child, #myGames .lobbyHeader .colSeven:last-child {
+    #myMultiGames .lobbyRow .colSix:last-child, #myMultiGames .lobbyHeader .colSix:last-child {
       margin-right: 0; }
 
 .lobbyRow, .lobbyHeader {
@@ -115,5 +155,87 @@
 .clear {
   clear: both; }
 
+#multiPlayerGames {
+  background-color: rgba(170, 170, 170, 0.4);
+  padding-bottom: 20px;
+  border: 5px solid rgba(130, 130, 130, 0.4); }
+  #multiPlayerGames h2 {
+    color: black; }
+
+body {
+  background-repeat: no-repeat;
+  color: #666;
+  background-position: center top;
+  height: 100%; }
+
 ul .lobbyHeader:hover, ul .lobbySpacer:hover {
   background-color: transparent; }
+
+h3 {
+  font-size: 16px; }
+
+span {
+  display: inline-block; }
+
+.bold {
+  font-family: Lucida;
+  font-weight: bold;
+  font-size: 18px;
+  color: white;
+  text-shadow: 0px 0px 3px black, 0px 0px 3px black, 0px 0px 3px black, 0px 0px 3px black, 0px 0px 3px black, 0px 0px 3px black; }
+
+h2 {
+  font-style: italic; }
+
+li {
+  list-style: none; }
+
+.myTurn {
+  color: white;
+  text-shadow: 0px 0px 3px green, 0px 0px 3px green, 0px 0px 3px green, 0px 0px 3px green; }
+
+.gameOver {
+  color: white;
+  text-shadow: 0px 0px 3px red, 0px 0px 3px red, 0px 0px 3px red, 0px 0px 3px red; }
+
+.odd {
+  background: rgba(66, 66, 66, 0.4); }
+
+a {
+  color: black;
+  font-size: 120%; }
+
+#logout {
+  color: white;
+  text-shadow: 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00;
+  text-decoration: none; }
+
+#create {
+  color: white;
+  text-shadow: 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0;
+  text-decoration: none;
+  border-bottom: 3px solid #afa;
+  font-family: sans-serif;
+  font-style: italic; }
+
+ul {
+  padding: 5px 10px;
+  border-radius: 10px;
+  background: rgba(33, 33, 33, 0.5);
+  color: white; }
+
+ul a {
+  color: white; }
+
+ul .lobbyRow:hover {
+  background: rgba(0, 0, 0, 0.5); }
+
+#content {
+  color: black;
+  min-width: 900px;
+  border-radius: 20px;
+  border: 5px solid gray;
+  padding: 15px 30px 15px 15px;
+  background: rgba(160, 160, 160, 0.15);
+  width: 80%;
+  margin: 0 auto; }

@@ -385,16 +385,16 @@ return;
         $lastSeq = $this->wargame_model->getLobbyChanges($user,$last_seq);
         //$seq = $this->couchsag->get("/_design/newFilter/_view/getLobbies?startkey=[\"$user\"]&endkey=[\"$user\",\"zzzzzzzzzzzzzzzzzzzzzzzz\"]");
 
-        $seq = $this->couchsag->get("/_design/newFilter/_view/getLobbies?startkey=[\"$user\"]&endkey=[\"$user\",\"zzzzzzzzzzzzzzzzzzzzzzzz\"]");
+        $seq = $this->couchsag->get("/_design/newFilter/_view/getLobbies?startkey=[\"$user\",\"hot seat\"]&endkey=[\"$user\",\"hot seat\",\"zzzzzzzzzzzzzzzzzzzzzzzz\"]");
         $lobbies = [];
         date_default_timezone_set("America/New_York");
         $odd = 0;
         foreach($seq->rows as $row){
             $keys = $row->key;
             $creator = array_shift($keys);
+            $gameType = array_shift($keys);
             $gameName = array_shift($keys);
             $name = array_shift($keys);
-            $gameType = array_shift($keys);
             $playerTurn = array_shift($keys);
             array_shift($keys);
             $public = array_shift($keys);
@@ -405,6 +405,44 @@ return;
             $thePlayers = $row->value[2];
             $playerTurn = $thePlayers[$playerTurn];
             $gameOver = $row->value[4];
+            $currentTurn = $row->value[5];
+            $maxTurn = $row->value[6];
+            $myTurn = "";
+            if($gameOver === true){
+                $playerTurn = "Game Over";
+                $myTurn = "gameOver";
+            }else{
+
+                    $playerTurn = "$currentTurn of $maxTurn";
+            }
+            array_shift($thePlayers);
+            $players = implode($thePlayers," ");
+            $row->value[1] = "created ".formatDateDiff($dt)." ago";
+            $odd ^= 1;
+            $lobbies[] =  array("public"=>$public,"odd"=>$odd ? "odd":"","gameName"=>$gameName, "name"=>$name, 'date'=>$row->value[1], "id"=>$id, "creator"=>$creator,"gameType"=>$gameType, "turn"=>$playerTurn, "players"=>$players,"myTurn"=>$myTurn);
+        }
+        $seq = $this->couchsag->get("/_design/newFilter/_view/getLobbies?startkey=[\"$user\",\"multi\"]&endkey=[\"$user\",\"multi\",\"zzzzzzzzzzzzzzzzzzzzzzzz\"]");
+
+        $multiLobbies  = [];
+        date_default_timezone_set("America/New_York");
+        $odd = 0;
+        foreach($seq->rows as $row){
+            $keys = $row->key;
+            $creator = array_shift($keys);
+            $gameType = array_shift($keys);
+            $gameName = array_shift($keys);
+            $name = array_shift($keys);
+            $playerTurn = array_shift($keys);
+            array_shift($keys);
+            $public = array_shift($keys);
+            $filename = array_shift($keys);
+//               $key = implode($keys,"  ");
+            $id = $row->id;
+            $dt = new DateTime($row->value[1]);
+            $thePlayers = $row->value[2];
+            $playerTurn = $thePlayers[$playerTurn];
+            $gameOver = $row->value[4];
+
             $myTurn = "";
             if($gameOver === true){
                 $playerTurn = "Game Over";
@@ -421,7 +459,7 @@ return;
             $players = implode($thePlayers," ");
             $row->value[1] = "created ".formatDateDiff($dt)." ago";
             $odd ^= 1;
-            $lobbies[] =  array("public"=>$public,"odd"=>$odd ? "odd":"","gameName"=>$gameName, "name"=>$name, 'date'=>$row->value[1], "id"=>$id, "creator"=>$creator,"gameType"=>$gameType, "turn"=>$playerTurn, "players"=>$players,"myTurn"=>$myTurn);
+            $multiLobbies[] =  array("public"=>$public,"odd"=>$odd ? "odd":"","gameName"=>$gameName, "name"=>$name, 'date'=>$row->value[1], "id"=>$id, "creator"=>$creator,"gameType"=>$gameType, "turn"=>$playerTurn, "players"=>$players,"myTurn"=>$myTurn);
         }
         $seq = $this->couchsag->get("/_design/newFilter/_view/getGamesImIn?startkey=[\"$user\"]&endkey=[\"$user\",\"zzzzzzzzzzzzzzzzzzzzzzzz\"]");
 
@@ -465,8 +503,9 @@ return;
         foreach($seq->rows as $row){
             $keys = $row->key;
             $creator = array_shift($keys);
-            $gameName = array_shift($keys);
             $name = array_shift($keys);
+            $gameName = array_shift($keys);
+            array_shift($keys);
             $gameType = array_shift($keys);
             $playerTurn = array_shift($keys);
             $filename = array_shift($keys);
@@ -487,7 +526,7 @@ return;
         }
         $results = $lastSeq->results;
         $last_seq = $lastSeq->last_seq;
-        $ret = compact("lobbies","otherGames","last_seq","results","publicGames");
+        $ret = compact("lobbies","multiLobbies", "otherGames","last_seq","results","publicGames");
         echo json_encode($ret);
     }
 
