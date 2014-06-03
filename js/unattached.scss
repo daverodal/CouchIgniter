@@ -1,0 +1,14 @@
+@import "bourbon/bourbon";
+@import "neat/neat";
+$grid-columns: 6;
+$max-width: 29em;
+#container{
+  max-width: 30em;
+}
+#theGrid{
+  @include outer-container;
+
+  .leftGrid, .rightGrid{
+    @include span-columns(3);
+  }
+}

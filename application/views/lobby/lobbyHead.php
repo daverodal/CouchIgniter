@@ -1,4 +1,4 @@
-<head>aaaaaaa
+<head>
     <link rel="shortcut icon" href="/favicon.ico" type="image/icon">
     <link href="<?=base_url("js/jquery-ui.css");?>" rel="stylesheet" type="text/css"/>
     <script src="<?=base_url("js/jquery.min.js");?>"></script>

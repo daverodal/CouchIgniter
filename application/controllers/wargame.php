@@ -56,7 +56,7 @@ return;
         $this->session->unset_userdata('wargame');
                redirect("/wargame/play");
     }
-    function unattachedGame($fudge)
+    function unattachedGame($dir = false, $genre = false, $game = false)
     {
         $wargame = urldecode($this->session->userdata("wargame"));
         $this->load->model("wargame/wargame_model");
@@ -68,16 +68,20 @@ return;
         }
 
         $this->load->model('users/users_model');
-        $gamesAvail = $this->users_model->getAvailGames();
+        $gamesAvail = $this->users_model->getAvailGames($dir, $genre, $game);
         $seq = $this->couchsag->get("/_design/newFilter/_view/getLobbies");
         $games = array();
-        foreach($gamesAvail as $gameAvail){
-            $games[] = $gameAvail;
+        $theGame = false;
+        if($game !== false){
+            $theGame = $gamesAvail[0];
+        }else{
+            foreach($gamesAvail as $gameAvail){
+                $games[] = $gameAvail;
+            }
         }
-
         $nest = [];
 
-        $this->load->view("wargame/wargameUnattached",compact("games","nest"));
+        $this->load->view("wargame/wargameUnattached",compact("genre","theGame","games","nest"));
 
     }
     function deleteGame($gameName){
@@ -687,6 +691,7 @@ return;
 
         $this->load->model('users/users_model');
         $battle = $this->battle->getBattle($game,null,$arg);
+
 
         if(method_exists($battle, 'init')){
             $battle->init();
