@@ -78,6 +78,8 @@
                 echo "<a href='$href'>" . $scenario->description . "</a><br>";
 
             }
+            echo $theGame->value->longDesc;
+            echo $theGame->value->playerNotes;
         }else{
         if($games && $games[0]->game){
             $href = site_url("wargame/unattachedGame/");
