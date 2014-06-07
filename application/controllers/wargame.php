@@ -64,14 +64,6 @@ class Wargame extends CI_Controller
 
     function unattachedGame($dir = false, $genre = false, $game = false)
     {
-        $wargame = urldecode($this->session->userdata("wargame"));
-        $this->load->model("wargame/wargame_model");
-
-        $doc = $this->wargame_model->getDoc($wargame);
-        $gameName = $doc->gameName;
-        if ($gameName) {
-            redirect("/wargame/play/");
-        }
 
         $this->load->model('users/users_model');
         $gamesAvail = $this->users_model->getAvailGames($dir, $genre, $game);
