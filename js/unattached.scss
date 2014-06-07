@@ -1,9 +1,15 @@
 @import "bourbon/bourbon";
 @import "neat/neat";
 $grid-columns: 6;
-$max-width: 29em;
 #container{
   max-width: 30em;
+  $max-width: 30em;
+
+}
+#container.wideGame{
+  $max-width: 100em;
+
+  max-width:100em;
 }
 #theGrid{
   @include outer-container;
@@ -11,4 +17,21 @@ $max-width: 29em;
   .leftGrid, .rightGrid{
     @include span-columns(3);
   }
+}
+$grid-columns: 6;
+
+#theGameGrid{
+  @include outer-container;
+
+  .leftGrid, .rightGrid{
+    @include span-columns(3);
+  }
+}
+
+.softVoice{
+  color:#999;
+  font-size:70%;
+}
+a:hover{
+  color:#999;
 }

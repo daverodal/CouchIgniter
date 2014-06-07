@@ -52,57 +52,65 @@
         li.game {
             border-bottom: 1px solid #333;
         }
-        .breadcrumb{
+
+        .breadcrumb {
             text-decoration: none;
         }
     </style>
 </head>
 <body>
-<div id="container">
+
+<div id="container" <?=$theGame?"class='wideGame'":'';?>>
     Attach to game:
-    <ul id="theGrid">
-        <?php
+    <?php
 
-        if ($theGame) {
-            echo "<li>";
-            $href = site_url("wargame/unattachedGame/");
-            echo "<a class='breadcrumb' href='$href'>top</a> ";
-            $up = $theGame->dir."/".rawurlencode($theGame->genre);
-            $href = site_url("wargame/unattachedGame/$up");
-            echo "<a class='breadcrumb' href='$href'>back</a> ";
-            echo "</li>";
-            echo "<li><h2>".$theGame->value->name."</h2><p>".$theGame->value->description."</p></li>";
-            foreach ($theGame->value->scenarios as $sKey => $scenario) {
+    if ($theGame) {
+        echo "<ul id='theGameGrid'>";
+        echo "<li class='leftGrid'>";
+        $href = site_url("wargame/unattachedGame/");
+        echo "<a class='breadcrumb' href='$href'>top</a> ";
+        $up = $theGame->dir . "/" . rawurlencode($theGame->genre);
+        $href = site_url("wargame/unattachedGame/$up");
+        echo "<a class='breadcrumb' href='$href'>back</a><br> ";
+        echo "";
+        echo "<h2>" . $theGame->value->name . "</h2><p>" . $theGame->value->description . "</p><p class='softVoice'> Click on a scenario below</p>";
+        foreach ($theGame->value->scenarios as $sKey => $scenario) {
 
-                $href = site_url("wargame/unitInit/" . rawurlencode($theGame->game) . "/" . $sKey);
-                echo "<a href='$href'>" . $scenario->description . "</a><br>";
+            $href = site_url("wargame/unitInit/" . rawurlencode($theGame->game) . "/" . $sKey);
+            echo "<a href='$href'>" . $scenario->description . "</a><br><br>";
 
-            }
-            echo $theGame->value->longDesc;
-            echo $theGame->value->playerNotes;
-        }else{
-        if($games && $games[0]->game){
+        }?>
+        </li>
+        <li class='rightGrid'>
+        <h3>Historical Context</h3>
+        <?php echo $theGame->value->longDesc;
+        echo "<h3>Player Notes</h3>";
+        echo $theGame->value->playerNotes;
+        echo "</li>";
+        echo "</ul>";
+    } else {
+        echo '<ul id = "theGrid" >';
+        if ($games && $games[0]->game) {
             $href = site_url("wargame/unattachedGame/");
             echo "<a href='$href'>back</a><br>";
         }
         foreach ($games as $game) {
             $href = site_url("wargame/unattachedGame/" . rawurlencode($game->dir) . "/" . rawurlencode($game->genre) . "/" . rawurlencode($game->game));
 
-            if(!$game->game){
+            if (!$game->game) {
                 $nGames = "$game->value  available";
-            }else{
-               $nGames = "<a class='leftGrid' href='$href'>".$game->game."</a>";
+            } else {
+                $nGames = "<a class='leftGrid' href='$href'>" . $game->game . "</a>";
             }
             ?>
-        <li class="gridRow">
-            <?php echo "<a class='leftGrid' href='$href'>" . $game->genre . " </a> <span class='rightGrid'>$nGames</span>";?>
-        </li>
+            <li class="gridRow">
+                <?php echo "<a class='leftGrid' href='$href'>" . $game->genre . " </a> <span class='rightGrid'>$nGames</span>"; ?>
+            </li>
         <?php
         }
-        }
-
-        ?>
-    </ul>
+        echo "</ul>";
+    }
+    ?>
     <br><br><br>
     Or
     <a href="<?= site_url("users/logout"); ?>">Logout</a>

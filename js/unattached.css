@@ -6,8 +6,11 @@
 #container {
   max-width: 30em; }
 
+#container.wideGame {
+  max-width: 100em; }
+
 #theGrid {
-  max-width: 29em;
+  max-width: 100em;
   margin-left: auto;
   margin-right: auto; }
   #theGrid:after {
@@ -21,3 +24,26 @@
     width: 47.58542%; }
     #theGrid .leftGrid:last-child, #theGrid .rightGrid:last-child {
       margin-right: 0; }
+
+#theGameGrid {
+  max-width: 100em;
+  margin-left: auto;
+  margin-right: auto; }
+  #theGameGrid:after {
+    content: "";
+    display: table;
+    clear: both; }
+  #theGameGrid .leftGrid, #theGameGrid .rightGrid {
+    float: left;
+    display: block;
+    margin-right: 4.82916%;
+    width: 47.58542%; }
+    #theGameGrid .leftGrid:last-child, #theGameGrid .rightGrid:last-child {
+      margin-right: 0; }
+
+.softVoice {
+  color: #999;
+  font-size: 70%; }
+
+a:hover {
+  color: #999; }
