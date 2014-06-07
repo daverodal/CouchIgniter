@@ -205,7 +205,10 @@ a {
   color: black;
   font-size: 120%; }
 
-#logout {
+.logoutUpper {
+  float: right; }
+
+.logout {
   color: white;
   text-shadow: 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00;
   text-decoration: none; }

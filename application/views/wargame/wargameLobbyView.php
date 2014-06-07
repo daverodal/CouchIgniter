@@ -153,12 +153,14 @@
 </head>
 <body>
 <div id="content">
+    <a class="logout logoutUpper" href="<?= site_url("users/logout"); ?>">Logout</a>
+
     <?php if ($myName == "Markarian") { ?>
         <h1><a href="<?= site_url("admin"); ?>">Admin </a></h1>
     <?php } ?>
     <h2>Welcome {myName}</h2>
 
-    <h3>You can <a id="create" href="<?= site_url("wargame/createWargame"); ?>">Create a new Wargame</a></h3>
+    <h3>You can <a id="create" href="<?= site_url("wargame/unattachedGame"); ?>">Browse or Start a new Wargame</a></h3>
     Or play an existing game:<br>
 
     <h1>Multi Player Games</h1>
@@ -213,7 +215,7 @@
         </li>
         <li class="lobbySpacer">&nbsp;</li>
     </ul>
-    <a id="logout" href="<?= site_url("users/logout"); ?>">Logout</a>
+    <a class="logout" href="<?= site_url("users/logout"); ?>">Logout</a>
 </div>
 </body>
 </html>

@@ -75,9 +75,12 @@ class Wargame extends CI_Controller
 
         $this->load->model('users/users_model');
         $gamesAvail = $this->users_model->getAvailGames($dir, $genre, $game);
+        $plainGenre = rawurldecode($genre);
         $seq = $this->couchsag->get("/_design/newFilter/_view/getLobbies");
         $games = array();
         $theGame = false;
+        $siteUrl = site_url("wargame/unattachedGame/");
+
         if ($game !== false) {
             $theGame = $gamesAvail[0];
             $gameFeed = strtolower($game);
@@ -92,12 +95,17 @@ class Wargame extends CI_Controller
                         $editLink = "http://davidrodal.com/pubs/wp-admin/post.php?post=".$matches[1]."&action=edit";
                         $content = $entry->children('http://purl.org/rss/1.0/modules/content/');
                         $str = $content->encoded;
+                        // http://stackoverflow.com/questions/8781911/remove-non-ascii-characters-from-string-in-php
+                        $str = preg_replace('/[[:^print:]]/', '', $str); // should be aA
                         $theGame->value->longDesc = $str;
                         $theGame->value->histEditLink = "<a target='blank' href='$editLink'>edit</a>";
                     }
                     if (preg_match("/Player/", $entry->title)) {
                         $content = $entry->children('http://purl.org/rss/1.0/modules/content/');
                         $str = $content->encoded;
+
+                        // http://stackoverflow.com/questions/8781911/remove-non-ascii-characters-from-string-in-php
+                        $str = preg_replace('/[[:^print:]]/', '', $str); // should be aA
                         $matches = [];
                         if(preg_match("/p=(\d+)$/",$entry->guid,$matches)){
                             $editLink = "http://davidrodal.com/pubs/wp-admin/post.php?post=".$matches[1]."&action=edit";
@@ -114,12 +122,13 @@ class Wargame extends CI_Controller
 //            $regExp = preg_match("/<content:encoded><!\[CDATA\[(.*)]]><\/content:encoded/", $feed, $matches);
         } else {
             foreach ($gamesAvail as $gameAvail) {
+                $gameAvail->urlGenre = rawurlencode($gameAvail->genre);
                 $games[] = $gameAvail;
             }
         }
         $nest = [];
 
-        $this->load->view("wargame/wargameUnattached", compact("genre", "theGame", "games", "nest"));
+        $this->parser->parse("wargame/wargameUnattached", compact("plainGenre", "theGame", "games", "nest","siteUrl"));
 
     }
 
@@ -820,7 +829,7 @@ class Wargame extends CI_Controller
         $this->load->view("wargame/wargamePlayAs", compact("game", "user", "wargame", $doc->wargame, "arg"));
     }
 
-    public function createWargame()
+    public function createWargame($game, $scenario)
     {
 
         $message = "";
@@ -830,7 +839,7 @@ class Wargame extends CI_Controller
             $ret = $this->wargame_model->createWargame($wargame);
             if (is_object($ret) === true) {
                 $this->session->set_userdata(array("wargame" => $ret->body->id));
-                redirect("/wargame/play");
+                redirect("/wargame/unitInit/$game/$scenario");
             }
             $message = "Name $wargame already used, please enter new name";
 //            redirect("/wargame/unitInit");
@@ -838,7 +847,7 @@ class Wargame extends CI_Controller
         if ($this->input->post()) {
             $message = "Please in put a name (need not be unique)";
         }
-        $this->load->view("wargame/wargameCreate", compact("message"));
+        $this->load->view("wargame/wargameCreate", compact("message", "game","scenario"));
     }
 //    public function clock()
 //    {
