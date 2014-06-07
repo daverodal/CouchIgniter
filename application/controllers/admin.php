@@ -191,7 +191,7 @@ class Admin extends CI_Controller
 
     function games(){
         $this->load->model('users/users_model');
-        $games = $this->users_model->getAvailGames();
+        $games = $this->users_model->getAvailGames(true);
         $this->load->view('admin/games_view',compact("games"));
 //        var_dump($this->users_model->getUsersByEmail());
     }

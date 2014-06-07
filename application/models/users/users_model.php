@@ -183,13 +183,24 @@ byUsername;
                 if(doc.docType == 'gnuGamesAvail'){
                     if(doc.games){
                         for(var i in doc.games){
-                            emit([doc.games[i].path,i],doc.games[i]);
+                            emit([doc.games[i].path,doc.games[i].genre,i],doc.games[i]);
                         }
                     }
                 }
             }
 
 gamesAvail;
+        $gnuGetAvailGames->reduce = <<<gamesAvailReduce
+            function(keys, values, rereduce) {
+                if (rereduce) {
+                    return sum(values);
+                } else {
+                    return values.length;
+                }
+            }
+
+gamesAvailReduce;
+
 
 
         $views['userByEmail'] = $users;
@@ -349,24 +360,47 @@ gamesAvail;
 		$this->couchsag->update($doc->_id, $doc);
 		$this->_restoreDB();
 	}
-    public function getAvailGames(){
+    public function getAvailGames($dir = false, $genre = false, $game = false){
+        $reduceArgs = "group=true&group_level=2";
+        if($dir !== false){
+            $reduceArgs = "group=true&group_level=2&startkey=[\"$dir\"]&endkey=[\"$dir\",\"zzzzzzzzzzzzzzzzzzzzzzzz\"]";
+            if($dir === true){
+                $reduceArgs = "reduce=false";
+            }
+            if($genre !== false){
+                $reduceArgs = "group=true&group_level=3&startkey=[\"$dir\",\"$genre\"]&endkey=[\"$dir\",\"$genre\",\"zzzzzzzzzzzzzzzzzzzzzzzz\"]";
+                if($game !== false){
+                    $reduceArgs = "reduce=false&startkey=[\"$dir\",\"$genre\",\"$game\"]&endkey=[\"$dir\",\"$genre\",\"$game\",\"zzzzzzzzzzzzzzzzzzzzzzzz\"]";
+                }
+            }
+        }
         $this->_setDB();
-        $seq = $this->couchsag->get("/_design/newFilter/_view/gnuGetAvailGames");
+
+        $seq = $this->couchsag->get("/_design/newFilter/_view/gnuGetAvailGames?$reduceArgs");
         $this->_restoreDB();
         $rows = $seq->rows;
         $games = [];
+
         foreach($rows as $row){
-            $game = $row->value;
-            $game->key = $row->key;
+            if($dir === true){
+                $game = $row->value;
+                $game->key = $row->key;
+            }else{
+                $game = new stdClass();
+                $game->dir = $row->key[0];
+                $game->genre = $row->key[1];
+                $game->game = $row->key[2];
+                $game->value = $row->value;
+            }
             $games[] = $game;
         }
 
         return $games;
     }
     public function getGame($gameName){
-        $games = $this->getAvailGames();
+        $games = $this->getAvailGames(true);
         foreach($games as $game){
-            if($gameName == $game->key[1]){
+            if($gameName == $game->key[2]){
                 return $game;
             }
         }

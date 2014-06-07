@@ -23,7 +23,7 @@ $this->load->view('admin/adminMenu');
                     echo $game->name;
                 }
                 $delUrl = "deleteGameType/?";
-                $delUrl .= "killGame=" . $game->key[1];
+                $delUrl .= "killGame=" . $game->key[2];
 
                 echo " <a href='$delUrl'>delete</a>";
                 ?>

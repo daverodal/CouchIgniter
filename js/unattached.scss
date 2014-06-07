@@ -1,0 +1,89 @@
+@import "bourbon/bourbon";
+@import "neat/neat";
+$grid-columns: 6;
+#container{
+  max-width: 30em;
+  $max-width: 30em;
+
+}
+#container.wideGame{
+  $max-width: 100em;
+
+  max-width:100em;
+}
+#theGrid{
+  @include outer-container;
+
+  .leftGrid, .rightGrid{
+    @include span-columns(3);
+  }
+}
+$grid-columns: 6;
+
+#theGameGrid{
+  @include outer-container;
+
+  .leftGrid, .rightGrid{
+    @include span-columns(3);
+  }
+}
+
+.softVoice{
+  color:#999;
+  font-size:70%;
+}
+a:hover{
+//  color:#999;
+}
+
+.scenarioWrapper, .breadcrumb{
+
+  background: #eee;
+  border: 5px solid #aaa;
+  border-radius: 10px;
+  padding: 5px;
+  display:block;
+  margin:20px 0;
+  &:hover{
+    background:#fff;
+    border-color:#999;
+  }
+}
+
+div {
+  font-size: 22px;
+  background: rgba(255, 255, 255, .9);
+  border: 1px solid #333;
+  border-radius: 15px;
+  margin: 40px;
+  padding: 20px;
+  box-shadow: 10px 10px 10px rgba(20, 20, 20, .7);
+}
+
+input {
+  margin-left: 15px;
+}
+
+a {
+  color: #333;
+}
+
+ul {
+  list-style-type: none;
+}
+
+li {
+  margin: 5px 0;
+}
+
+.gameDesc {
+  width: auto;
+}
+
+li.game {
+  border-bottom: 1px solid #333;
+}
+
+.breadcrumb {
+  display:inline-block;
+}
