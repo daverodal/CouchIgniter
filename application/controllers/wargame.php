@@ -87,9 +87,13 @@ class Wargame extends CI_Controller
 
                 foreach ($xml->channel->item as $entry) {
                     if (preg_match("/Historical/", $entry->title)) {
+                        $matches = [];
+                        $editLink = preg_match("/p=(\d+)$/",$entry->guid,$matches);
+                        $editLink = "http://davidrodal.com/pubs/wp-admin/post.php?post=".$matches[1]."&action=edit";
                         $content = $entry->children('http://purl.org/rss/1.0/modules/content/');
                         $str = $content->encoded;
                         $theGame->value->longDesc = $str;
+                        $theGame->value->histEditLink = "<a target='blank' href='$editLink'>edit</a>";
                     }
                     if (preg_match("/Player/", $entry->title)) {
                         $content = $entry->children('http://purl.org/rss/1.0/modules/content/');

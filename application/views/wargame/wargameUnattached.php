@@ -83,7 +83,7 @@
         </li>
         <li class='rightGrid'>
         <h3>Historical Context</h3>
-        <?php echo $theGame->value->longDesc;
+        <?php echo $theGame->value->histEditLink; echo $theGame->value->longDesc;
         echo "<h3>Player Notes</h3>";
         echo $theGame->value->playerNotes;
         echo "</li>";
