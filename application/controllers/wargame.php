@@ -81,7 +81,7 @@ class Wargame extends CI_Controller
         if ($game !== false) {
             $theGame = $gamesAvail[0];
             $gameFeed = strtolower($game);
-            $feed = file_get_contents("http://localhost/~david/wordpress/category/$gameFeed/feed");
+            $feed = file_get_contents("http://davidrodal.com/pubs/category/$gameFeed/feed");
             if ($feed !== false) {
                 $xml = new SimpleXmlElement($feed);
 
