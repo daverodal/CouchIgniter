@@ -31,10 +31,12 @@ function Sync(baseUrl) {
             {url:this.baseUrl + "/" + last_seq+travel,
                 type:"POST",
                 data:theArgs,
-                error:function(one, two, three){
-                    one.abort();
+
+                error:function(jqXHR, two, three){
+                        console.log("error");
+//                    jqXHR.abort();
                 },
-                success:function (data, textstatus) {
+                success:function (data, textstatus, jqXHR) {
                     var now = ((new Date()).getTime()) / 1000;
                     that.fetchTimes.push(now);
                     if (that.fetchTimes.length > 10) {
@@ -45,6 +47,9 @@ function Sync(baseUrl) {
                         }
                     }
                     fetchArgs = {};
+                    if(!(typeof data == "object" && data !== null)){
+                        window.location = 'login';
+                    }
                     for (var i in that.callbacks) {
                         if (data[i]) {
                             if ($.isArray(data[i])) {
@@ -75,7 +80,9 @@ function Sync(baseUrl) {
                         }
                     }
 
-                    if (textstatus != "success")that.fetch(0);
+                    if (textstatus != "success" && !that.timeTravel){
+                        that.fetch(0);
+                    }
                 }
             });
     }
