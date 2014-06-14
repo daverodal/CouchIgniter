@@ -47,7 +47,12 @@ function Sync(baseUrl) {
                         }
                     }
                     fetchArgs = {};
+                    /* bleh ajax will automagically forward on 301's and 302's not letting me know
+                     * if we got logged out. The only way I know is the object is no longer an object.
+                     * So we redirect then
+                     */
                     if(!(typeof data == "object" && data !== null)){
+                        /* make em login */
                         window.location = 'login';
                     }
                     for (var i in that.callbacks) {
