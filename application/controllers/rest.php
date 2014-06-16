@@ -17,6 +17,29 @@ class Rest extends CI_Controller
         }
     }
 
+    function purge($stuf){
+        if($stuf){
+        }
+        $seq = $this->couchsag->get("/_design/restFilter/_view/getMaps");
+        $rows = $seq->rows;
+        foreach($rows as  $key => $val){
+            $id = $val->value->_id;
+            $rev = $val->value->_rev;
+            echo "id $id rev $rev<br>";
+            $this->couchsag->delete($id, $rev);
+        }
+
+        $seq = $this->couchsag->get("/_design/restFilter/_view/getHexStrs");
+        $rows = $seq->rows;
+        foreach($rows as  $key => $val){
+            $id = $val->value->_id;
+            $rev = $val->value->_rev;
+            echo "id $id rev $rev<br>";
+            $this->couchsag->delete($id, $rev);
+        }
+
+    }
+
     function index(){
     }
 
@@ -149,8 +172,6 @@ class Rest extends CI_Controller
            $map->id = $val->key;
            $maps[] = $map;
        }
-       $things = [];
-       $things[] = ['asset'=>'something','id'=>'833d27e04bf1f5365d7830fc9732aed8'];
        echo json_encode(['maps'=>$maps]);
    }
 
