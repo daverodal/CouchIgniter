@@ -175,6 +175,41 @@ class Rest extends CI_Controller
        echo json_encode(['maps'=>$maps]);
    }
 
+    function cloneFile($stuff){
+        echo "Cloning $stuff ";
+        $doc = $this->couchsag->get($stuff);
+        if($doc->docType == "hexMapData"){
+            echo "MapDatDoc! ";
+            unset($doc->_id);
+            unset($doc->_rev);
+            $hexStr = $doc->map->hexStr;
+            $doc->map->hexStr = "";
+            $ret = $this->couchsag->create($doc);
+            var_dump($ret);
+            $mapId = $ret->body->id;
+            $mapRev = $ret->body->rev;
+            if($ret->body->ok === true){
+                if($hexStr){
+                    echo "Got HexStr ";
+                    $hexDoc = $this->couchsag->get($hexStr);
+                    unset($hexDoc->_id);
+                    unset($hexDoc->_rev);
+                    $hexDoc->hexStr->map = $mapId;
+                    $hexRet = $this->couchsag->create($hexDoc);
+                    if($hexRet->body->ok){
+                        $doc->_id = $mapId;
+                        $doc->_rev = $mapRev;
+                        echo "Hexret Okay ".$hexRet->body->id;
+                        $doc->map->hexStr = $hexRet->body->id;
+                        echo "MapId $mapId ";
+                        $this->couchsag->update($doc->_id, $doc);
+                    }
+                }
+            }
+        }
+
+    }
+
 
 
 
