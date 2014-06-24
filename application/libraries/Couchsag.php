@@ -57,6 +57,7 @@ class Couchsag
                 }
             }
             $this->sag = new Sag($host, $port);
+		$this->sag->setHttpAdapter('HTTP_NATIVE_SOCKETS');
             if ($password || $user || $auth_type) {
                 $this->sag->login($user, $password, $auth_type);
             }
