@@ -1,13 +1,27 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: david
  * Date: 6/14/14
  * Time: 9:25 PM
  */
-
 class Rest extends CI_Controller
 {
+    private $prevDB;
+
+    private function _setDB()
+    {
+//        $this->prevDB = $this->couchsag->sag->currentDatabase();
+//        $this->couchsag->sag->setDatabase('myfundb');
+
+    }
+
+    private function _restoreDB()
+    {
+//        $this->couchsag->sag->setDatabase($this->prevDB);
+    }
+
     public function __construct()
     {
         parent::__construct();
@@ -17,12 +31,15 @@ class Rest extends CI_Controller
         }
     }
 
-    function purge($stuf){
-        if($stuf){
+    function purge($stuf)
+    {
+        return;
+        $this->_setDB();
+        if ($stuf) {
         }
         $seq = $this->couchsag->get("/_design/restFilter/_view/getMaps");
         $rows = $seq->rows;
-        foreach($rows as  $key => $val){
+        foreach ($rows as $key => $val) {
             $id = $val->value->_id;
             $rev = $val->value->_rev;
             echo "id $id rev $rev<br>";
@@ -31,31 +48,36 @@ class Rest extends CI_Controller
 
         $seq = $this->couchsag->get("/_design/restFilter/_view/getHexStrs");
         $rows = $seq->rows;
-        foreach($rows as  $key => $val){
+        foreach ($rows as $key => $val) {
             $id = $val->value->_id;
             $rev = $val->value->_rev;
             echo "id $id rev $rev<br>";
             $this->couchsag->delete($id, $rev);
         }
+        $this->_restoreDB();
 
     }
 
-    function index(){
+    function index()
+    {
     }
 
-    function migrate(){
-        define("MAPROOT","/Users/david/maproot");
+    function migrate()
+    {
+        return;
+        $this->_setDB();
+        define("MAPROOT", "/Users/david/maproot");
         $modelName = "maps";
         $singleModel = "map";
         $top = new stdClass();
         $ret = array();
-        $dirs = glob(MAPROOT."/$modelName/*");
+        $dirs = glob(MAPROOT . "/$modelName/*");
         if (count($dirs) >= 0) {
 
             /* This is the correct way to loop over the directory. */
             foreach ($dirs as $entry) {
                 var_dump($entry);
-                if(preg_match("/\/_id$/",$entry)){
+                if (preg_match("/\/_id$/", $entry)) {
                     continue;
                 }
                 $model = json_decode(file_get_contents($entry));
@@ -80,9 +102,12 @@ class Rest extends CI_Controller
                 $this->couchsag->update($doc->_id, $doc);
             }
         }
+        $this->_restoreDB();
     }
 
-    function initDoc(){
+    function initDoc()
+    {
+        $this->_setDB();
 
         $views = new stdClass();
         $views->getMaps = new stdClass();
@@ -119,24 +144,28 @@ class Rest extends CI_Controller
         }
 
 
-
-
+        $this->_restoreDB();
 
     }
-    function maps($stuf = false ){
+
+    function maps($stuf = false)
+    {
+        $this->_setDB();
         $req = $_SERVER['REQUEST_METHOD'];
-        if($req == 'GET'){
-            return $this->mapGet($stuf);
+        if ($req == 'GET') {
+            $this->_mapGet($stuf);
         }
-        if($req == 'POST'){
-            return $this->mapPost($stuf);
+        if ($req == 'POST') {
+            $this->_mapPost($stuf);
         }
-        if($req == 'PUT'){
-            return $this->mapPut($stuf);
+        if ($req == 'PUT') {
+            $this->_mapPut($stuf);
         }
+        $this->_restoreDB();
     }
 
-    function mapPost($stuff){
+    function _mapPost($stuff)
+    {
         $putdata = file_get_contents("php://input", "r");
 
         $postData = json_decode($putdata);
@@ -149,7 +178,8 @@ class Rest extends CI_Controller
         echo json_encode($postData);
     }
 
-    function mapPut($stuff){
+    function _mapPut($stuff)
+    {
         $doc = $this->couchsag->get($stuff);
         $putdata = file_get_contents("php://input", "r");
 
@@ -160,25 +190,28 @@ class Rest extends CI_Controller
         echo json_encode($postData);
     }
 
-   function mapGet($stuf){
-       if($stuf){
-       }
-       $seq = $this->couchsag->get("/_design/restFilter/_view/getMaps");
+    function _mapGet($stuf)
+    {
+        if ($stuf) {
+        }
+        $seq = $this->couchsag->get("/_design/restFilter/_view/getMaps");
 //       var_dump($seq->rows);
-       $rows = $seq->rows;
-       $maps = [];
-       foreach($rows as  $key => $val){
-           $map = $val->value->map;
-           $map->id = $val->key;
-           $maps[] = $map;
-       }
-       echo json_encode(['maps'=>$maps]);
-   }
+        $rows = $seq->rows;
+        $maps = [];
+        foreach ($rows as $key => $val) {
+            $map = $val->value->map;
+            $map->id = $val->key;
+            $maps[] = $map;
+        }
+        echo json_encode(['maps' => $maps]);
+    }
 
-    function cloneFile($stuff){
+    function cloneFile($stuff)
+    {
+        $this->_setDB();
         echo "Cloning $stuff ";
         $doc = $this->couchsag->get($stuff);
-        if($doc->docType == "hexMapData"){
+        if ($doc->docType == "hexMapData") {
             echo "MapDatDoc! ";
             unset($doc->_id);
             unset($doc->_rev);
@@ -188,18 +221,18 @@ class Rest extends CI_Controller
             var_dump($ret);
             $mapId = $ret->body->id;
             $mapRev = $ret->body->rev;
-            if($ret->body->ok === true){
-                if($hexStr){
+            if ($ret->body->ok === true) {
+                if ($hexStr) {
                     echo "Got HexStr ";
                     $hexDoc = $this->couchsag->get($hexStr);
                     unset($hexDoc->_id);
                     unset($hexDoc->_rev);
                     $hexDoc->hexStr->map = $mapId;
                     $hexRet = $this->couchsag->create($hexDoc);
-                    if($hexRet->body->ok){
+                    if ($hexRet->body->ok) {
                         $doc->_id = $mapId;
                         $doc->_rev = $mapRev;
-                        echo "Hexret Okay ".$hexRet->body->id;
+                        echo "Hexret Okay " . $hexRet->body->id;
                         $doc->map->hexStr = $hexRet->body->id;
                         echo "MapId $mapId ";
                         $this->couchsag->update($doc->_id, $doc);
@@ -207,27 +240,28 @@ class Rest extends CI_Controller
                 }
             }
         }
-
+        $this->_restoreDB();
     }
 
 
-
-
-
-    function hexStrs($stuf = false ){
+    function hexStrs($stuf = false)
+    {
+        $this->_setDB();
         $req = $_SERVER['REQUEST_METHOD'];
-        if($req == 'GET'){
-            return $this->hexStrGet($stuf);
+        if ($req == 'GET') {
+            $this->hexStrGet($stuf);
         }
-        if($req == 'POST'){
-            return $this->hexStrPost($stuf);
+        if ($req == 'POST') {
+            $this->hexStrPost($stuf);
         }
-        if($req == 'PUT'){
-            return $this->hexStrPut($stuf);
+        if ($req == 'PUT') {
+            $this->hexStrPut($stuf);
         }
+        $this->_restoreDB();
     }
 
-    function hexStrPost($stuff){
+    function hexStrPost($stuff)
+    {
         $putdata = file_get_contents("php://input", "r");
 
         $postData = json_decode($putdata);
@@ -240,7 +274,8 @@ class Rest extends CI_Controller
         echo json_encode($postData);
     }
 
-    function hexStrPut($stuff){
+    function hexStrPut($stuff)
+    {
         $doc = $this->couchsag->get($stuff);
         $putdata = file_get_contents("php://input", "r");
 
@@ -251,22 +286,22 @@ class Rest extends CI_Controller
         echo json_encode($postData);
     }
 
-    function hexStrGet($stuf){
-        if($stuf){
+    function hexStrGet($stuf)
+    {
+        if ($stuf) {
             $doc = $this->couchsag->get($stuf);
             $doc->hexStr->id = $stuf;
-            echo json_encode(['hexStr'=>$doc->hexStr]);
+            echo json_encode(['hexStr' => $doc->hexStr]);
             return;
         }
         $seq = $this->couchsag->get("/_design/restFilter/_view/getHexStrs");
-//       var_dump($seq->rows);
         $rows = $seq->rows;
         $hexStrs = [];
-        foreach($rows as  $key => $val){
+        foreach ($rows as $key => $val) {
             $hexStr = $val->value->hexStr;
             $hexStr->id = $val->key;
             $hexStrs[] = $hexStr;
         }
-        echo json_encode(['hexStrs'=>$hexStrs]);
+        echo json_encode(['hexStrs' => $hexStrs]);
     }
 }
