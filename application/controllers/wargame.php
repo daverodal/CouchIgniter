@@ -732,7 +732,6 @@ class Wargame extends CI_Controller
 
     public function terrainInit($game = "MartianCivilWar", $arg = false, $terrainDocId = false)
     {
-        echo "hi there ";
         $user = $this->session->userdata("user");
 
         $this->load->library("battle");
@@ -741,39 +740,34 @@ class Wargame extends CI_Controller
         $battle = $this->battle->getBattle($game, null, $arg);
 
 
-        echo "got one ! ";
         if (method_exists($battle, 'terrainGen')) {
-            echo "calling $terrainDocId";
             $battle->terrainGen($terrainDocId);
         }else{
             echo "No TerrainGen ";
             return;
         }
 
-        echo "wonder ing ";
         $wargameDoc = $battle->save();
-        var_dump($wargameDoc->terrainName);
             try {
-                echo
                 $ter = $this->couchsag->get($wargameDoc->terrainName);
             } catch (Exception $e) {
             };
             if (!$ter) {
-                echo "creatin ";
                 $data = array("_id" => $wargameDoc->terrainName, "docType" => "terrain", "terrain" => $wargameDoc->terrain);
                 $this->couchsag->create($data);
             } else {
-                echo "GOing to create";
+
                 $data = array("_id" => $wargameDoc->terrainName, "docType" => "terrain", "terrain" => $wargameDoc->terrain);
                 /* totall throw the old one away */
 //                $ter->terrain = $wargameDoc->terrain;
 //                $this->couchsag->update($data['_id'],$data);
                 $this->couchsag->delete($wargameDoc->terrainName, $ter->_rev);
                 $this->couchsag->create($data);
-                echo "did it all ";
-
             }
-        redirect("wargame/playAs/$game");
+        $ret = new stdClass();
+        $ret->ok = true;
+        echo json_encode($ret);
+//        redirect("wargame/playAs/$game");
     }
 
     public function unitInit($game = "MartianCivilWar", $arg = false)

@@ -9,18 +9,18 @@
 class Rest extends CI_Controller
 {
     private $prevDB;
-
     private function _setDB()
     {
-//        $this->prevDB = $this->couchsag->sag->currentDatabase();
-//        $this->couchsag->sag->setDatabase('myfundb');
+        $this->prevDB = $this->couchsag->sag->currentDatabase();
+        $this->couchsag->sag->setDatabase('rest');
 
     }
 
     private function _restoreDB()
     {
-//        $this->couchsag->sag->setDatabase($this->prevDB);
+        $this->couchsag->sag->setDatabase($this->prevDB);
     }
+
 
     public function __construct()
     {
@@ -29,15 +29,23 @@ class Rest extends CI_Controller
         if (!$user) {
             redirect("/users/login/");
         }
+        $this->load->model('rest/rest_model');
     }
 
     function purge($stuf)
     {
         return;
         $this->_setDB();
-        if ($stuf) {
+        $ret = $this->couchsag->get("/_design/newFilter/_view/allGames");
+        $rows = $ret->rows;
+        foreach($rows as $row){
+            var_dump($row);
+            $doc = $this->couchsag->get($row->id);
+            echo "Rev ".$doc->_rev."<br>";
+            $this->couchsag->delete($doc->_id, $doc->_rev);
         }
-        $seq = $this->couchsag->get("/_design/restFilter/_view/getMaps");
+        die('love');
+        $seq = $this->rest_model->getMaps();
         $rows = $seq->rows;
         foreach ($rows as $key => $val) {
             $id = $val->value->_id;
@@ -46,7 +54,7 @@ class Rest extends CI_Controller
             $this->couchsag->delete($id, $rev);
         }
 
-        $seq = $this->couchsag->get("/_design/restFilter/_view/getHexStrs");
+        $seq = $this->rest_model->getHexStrs();
         $rows = $seq->rows;
         foreach ($rows as $key => $val) {
             $id = $val->value->_id;
@@ -54,7 +62,6 @@ class Rest extends CI_Controller
             echo "id $id rev $rev<br>";
             $this->couchsag->delete($id, $rev);
         }
-        $this->_restoreDB();
 
     }
 
@@ -62,10 +69,40 @@ class Rest extends CI_Controller
     {
     }
 
+
+    function fixMaps($doFix)
+    {
+
+
+        $seq = $this->rest_model->getMaps();
+//       var_dump($seq->rows);
+        $rows = $seq->rows;
+        $maps = [];
+        foreach ($rows as $key => $val) {
+            $map = $val->value->map;
+            echo "checking ".$val->value->_id." ";
+            $hexStrDoc = $this->rest_model->get($map->hexStr);
+
+            if($hexStrDoc->hexStr->map !== $val->id){
+                echo "BAD BAD BAD ";
+                $hexStrDoc->hexStr->map = $val->id;
+                if($doFix){
+                    $ret = $this->rest_model->update($hexStrDoc);
+                    echo "Fixing ";
+                    if($ret->ok == true){
+                        echo "Fixed ";
+                    }
+                }
+                echo "<br>";
+            }else{
+                echo "okay<br>";
+            }
+        }
+    }
+
     function migrate()
     {
         return;
-        $this->_setDB();
         define("MAPROOT", "/Users/david/maproot");
         $modelName = "maps";
         $singleModel = "map";
@@ -102,7 +139,6 @@ class Rest extends CI_Controller
                 $this->couchsag->update($doc->_id, $doc);
             }
         }
-        $this->_restoreDB();
     }
 
     function initDoc()
@@ -137,7 +173,7 @@ class Rest extends CI_Controller
             }
         }
         try {
-            $this->couchsag->create($data);
+            $this->rest_model->create($data);
         } catch (Exception $e) {
             echo "<pre> EXC";
             var_dump($e);
@@ -150,7 +186,6 @@ class Rest extends CI_Controller
 
     function maps($stuf = false)
     {
-        $this->_setDB();
         $req = $_SERVER['REQUEST_METHOD'];
         if ($req == 'GET') {
             $this->_mapGet($stuf);
@@ -161,7 +196,9 @@ class Rest extends CI_Controller
         if ($req == 'PUT') {
             $this->_mapPut($stuf);
         }
-        $this->_restoreDB();
+        if ($req == 'DELETE') {
+            $this->_mapDelete($stuf);
+        }
     }
 
     function _mapPost($stuff)
@@ -172,7 +209,7 @@ class Rest extends CI_Controller
         $data = new stdClass();
         $data->docType = "hexMapData";
         $data->map = $postData->map;
-        $ret = $this->couchsag->create($data);
+        $ret = $this->rest_model->create($data);
         $ret->body->id;
         $postData->map->id = $ret->body->id;
         echo json_encode($postData);
@@ -180,21 +217,27 @@ class Rest extends CI_Controller
 
     function _mapPut($stuff)
     {
-        $doc = $this->couchsag->get($stuff);
+        $doc = $this->rest_model->get($stuff);
         $putdata = file_get_contents("php://input", "r");
 
         $postData = json_decode($putdata);
         $doc->map = $postData->map;
-        $ret = $this->couchsag->update($doc->_id, $doc);
+        $ret = $this->rest_model->update($doc);
         $postData->map->id = $stuff;
         echo json_encode($postData);
     }
 
-    function _mapGet($stuf)
+
+    function _mapDelete($docId)
     {
-        if ($stuf) {
-        }
-        $seq = $this->couchsag->get("/_design/restFilter/_view/getMaps");
+        $this->rest_model->delete($docId);
+        echo json_encode(new stdClass());
+    }
+
+    function _mapGet()
+    {
+
+        $seq = $this->rest_model->get("/_design/restFilter/_view/getMaps");
 //       var_dump($seq->rows);
         $rows = $seq->rows;
         $maps = [];
@@ -208,9 +251,7 @@ class Rest extends CI_Controller
 
     function cloneFile($stuff)
     {
-        $this->_setDB();
-        echo "Cloning $stuff ";
-        $doc = $this->couchsag->get($stuff);
+        $doc = $this->rest_model->get($stuff);
         if ($doc->docType == "hexMapData") {
             echo "MapDatDoc! ";
             unset($doc->_id);
@@ -240,13 +281,11 @@ class Rest extends CI_Controller
                 }
             }
         }
-        $this->_restoreDB();
     }
 
 
     function hexStrs($stuf = false)
     {
-        $this->_setDB();
         $req = $_SERVER['REQUEST_METHOD'];
         if ($req == 'GET') {
             $this->hexStrGet($stuf);
@@ -257,7 +296,9 @@ class Rest extends CI_Controller
         if ($req == 'PUT') {
             $this->hexStrPut($stuf);
         }
-        $this->_restoreDB();
+        if ($req == 'DELETE') {
+            $this->hexStrDelete($stuf);
+        }
     }
 
     function hexStrPost($stuff)
@@ -268,7 +309,7 @@ class Rest extends CI_Controller
         $data = new stdClass();
         $data->docType = "hexMapStrs";
         $data->hexStr = $postData->hexStr;
-        $ret = $this->couchsag->create($data);
+        $ret = $this->rest_model->create($data);
         $ret->body->id;
         $postData->hexStr->id = $ret->body->id;
         echo json_encode($postData);
@@ -276,25 +317,25 @@ class Rest extends CI_Controller
 
     function hexStrPut($stuff)
     {
-        $doc = $this->couchsag->get($stuff);
+        $doc = $this->rest_model->get($stuff);
         $putdata = file_get_contents("php://input", "r");
 
         $postData = json_decode($putdata);
         $doc->hexStr = $postData->hexStr;
         $postData->hexStr->id = $stuff;
-        $ret = $this->couchsag->update($doc->_id, $doc);
+        $ret = $this->rest_model->update($doc);
         echo json_encode($postData);
     }
 
     function hexStrGet($stuf)
     {
         if ($stuf) {
-            $doc = $this->couchsag->get($stuf);
+            $doc = $this->rest_model->get($stuf);
             $doc->hexStr->id = $stuf;
             echo json_encode(['hexStr' => $doc->hexStr]);
             return;
         }
-        $seq = $this->couchsag->get("/_design/restFilter/_view/getHexStrs");
+        $seq = $this->rest_model->getHexStrs();
         $rows = $seq->rows;
         $hexStrs = [];
         foreach ($rows as $key => $val) {
@@ -303,5 +344,11 @@ class Rest extends CI_Controller
             $hexStrs[] = $hexStr;
         }
         echo json_encode(['hexStrs' => $hexStrs]);
+    }
+
+    function hexStrDelete($docId)
+    {
+        $this->rest_model->delete($docId);
+        echo json_encode(new stdClass());
     }
 }
