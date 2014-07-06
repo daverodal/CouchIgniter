@@ -69,7 +69,6 @@ class Wargame_model extends CI_Model
         if (!doc || $user != $doc->createUser) {
             return false;
         }
-//        var_dump($doc->wargame->players);
         $doc->playerStatus = "multi";
         $doc->wargame->players = array("", $playerOne, $playerTwo);
         $doc->wargame->gameRules->turnChange = true;
@@ -444,7 +443,6 @@ HEREUPDATE;
                 if (preg_match("/^$time-/", $v->rev)) {
                     $revision = "?rev=" . $v->rev;
                     $currentRev = $doc->_rev;
-//                    var_dump($match);
                     break;
                 }
             }
@@ -566,7 +564,37 @@ HEREUPDATE;
                 $newSpecialHexes->{"x" . intval($mapGrid->getPixelX()) . "y" . intval($mapGrid->getPixelY())} = $v;
             }
         }
-        $specialHexes = $newSpecialHexes;
+        $sentBreadcrumbs = new stdClass();
+        if ($doc->wargame->mapData->breadcrumbs) {
+            $breadcrumbs = $doc->wargame->mapData->breadcrumbs;
+            foreach($breadcrumbs as $key => $moves){
+                $matches = array();
+                preg_match("/m(\d*)$/",$key,$matches);
+                $unitId = $matches[1];
+                    if(!isset($sentBreadcrumbs->$unitId)){
+                        $sentBreadcrumbs->$unitId = [];
+                    }
+                    $sentMoves = $sentBreadcrumbs->$unitId;
+                    foreach($moves as $move){
+                        if($move->fromHex === "0000"){
+                            continue;
+                        }
+                        $fromHex = new Hexagon($move->fromHex);
+                        $mapGrid->setHexagonXY($fromHex->x, $fromHex->y);
+                        $move->fromX = intval($mapGrid->getPixelX());
+                        $move->fromY = intval($mapGrid->getPixelY());
+
+                        $toHex = new Hexagon($move->toHex);
+                        $mapGrid->setHexagonXY($toHex->x, $toHex->y);
+                        $move->toX = intval($mapGrid->getPixelX());
+                        $move->toY = intval($mapGrid->getPixelY());
+
+                        $sentMoves[] = $move;
+                    }
+                    $sentBreadcrumbs->$unitId = $sentMoves;
+                }
+            }
+            $specialHexes = $newSpecialHexes;
         $newSpecialHexesChanges = new stdClass();
         if ($doc->wargame->mapData->specialHexesChanges) {
             $specialHexesChanges = $doc->wargame->mapData->specialHexesChanges;
@@ -591,7 +619,6 @@ HEREUPDATE;
             }
         }
         $vp = $doc->wargame->victory->victoryPoints;
-//        echo "Victory ";var_dump($vp);
         $flashMessages = $gameRules->flashMessages;
         if (count($flashMessages)) {
 
@@ -601,7 +628,7 @@ HEREUPDATE;
         $specialHexesVictory = $newSpecialHexesVictory;
         $gameRules->playerStatus = $doc->playerStatus;
         $clock = "The turn is " . $gameRules->turn . ". The Phase is " . $phase_name[$gameRules->phase] . ". The mode is " . $mode_name[$gameRules->mode];
-        return compact("phaseClicks", "click", "revs", "vp", "flashMessages", "specialHexesVictory", "specialHexes", "specialHexesChanges", "combatRules", 'force', 'seq', 'chats', 'chatsIndex', 'last_seq', 'users', 'games', 'clock', 'mapUnits', 'moveRules', 'gameRules');
+        return compact("sentBreadcrumbs", "phaseClicks", "click", "revs", "vp", "flashMessages", "specialHexesVictory", "specialHexes", "specialHexesChanges", "combatRules", 'force', 'seq', 'chats', 'chatsIndex', 'last_seq', 'users', 'games', 'clock', 'mapUnits', 'moveRules', 'gameRules');
     }
 
 }
