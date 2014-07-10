@@ -1,6 +1,6 @@
 <html>
 <head>
-    <script src="<?=base_url("js/jquery-1.9.0.min.js");?>"></script>
+    <script src="<?=base_url("js/jquery-1.11.1.min.js");?>"></script>
     <style type="text/css">
     body{
         background:url("<?=base_url("js/britishTank.jpg")?>") #333 no-repeat;

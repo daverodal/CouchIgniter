@@ -8,8 +8,8 @@
 <!doctype html>
 <html>
 <head>
-<script src="<?= base_url("js/jquery-1.9.0.min.js"); ?>"></script>
-<script src="<?= base_url("js/jquery-ui-1.9.2.custom.min.js"); ?>"></script>
+<script src="<?= base_url("js/jquery-1.11.1.min.js"); ?>"></script>
+<script src="<?= base_url("js/jquery-ui-1.11.0.min.js"); ?>"></script>
 <script src="<?= base_url("js/sync.js"); ?>"></script>
 <link href="<?= base_url("js/lobby.css"); ?>" rel="stylesheet" type="text/css">
 <style type="text/css">

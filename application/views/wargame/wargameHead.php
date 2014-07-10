@@ -1,9 +1,9 @@
 <head>
     <link rel="shortcut icon" href="/favicon.ico" type="image/icon">
 <!--    <link href="--><?//=base_url("js/jquery-ui.css");?><!--" rel="stylesheet" type="text/css"/>-->
-    <script src="<?=base_url("js/jquery-1.9.0.min.js");?>"></script>
-    <script src="<?=base_url("js/jquery-ui-1.9.2.custom.min.js");?>"></script>
-<!--    <script src="--><?//=base_url("js/jquery.ui.touch-punch.min.js");?><!--"></script>-->
+    <script src="<?=base_url("js/jquery-1.11.1.min.js");?>"></script>
+    <script src="<?=base_url("js/jquery-ui-1.11.0.min.js");?>"></script>
+    <script src="<?=base_url("js/jquery.ui.touch-punch.min.js");?>"></script>
     <!--    <script src="http://code.jquery.com/jquery-1.8.3.js"></script>-->
 <!--    <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>-->
 

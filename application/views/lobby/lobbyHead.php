@@ -1,8 +1,8 @@
 <head>
     <link rel="shortcut icon" href="/favicon.ico" type="image/icon">
-    <link href="<?=base_url("js/jquery-ui.css");?>" rel="stylesheet" type="text/css"/>
-    <script src="<?=base_url("js/jquery.min.js");?>"></script>
-    <script src="<?=base_url("js/jquery-ui.min.js");?>"></script>
+    <link href="<?=base_url("js/jquery-ui-1.11.0.css");?>" rel="stylesheet" type="text/css"/>
+    <script src="<?=base_url("js/jquery-1.11.1.min.js");?>"></script>
+    <script src="<?=base_url("js/jquery-ui-1.11.0.min.js");?>"></script>
     <style type="text/css">
         #draggable {
             border: 0px solid red;

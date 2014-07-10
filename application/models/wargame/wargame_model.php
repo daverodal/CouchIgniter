@@ -567,7 +567,12 @@ HEREUPDATE;
         $sentBreadcrumbs = new stdClass();
         if ($doc->wargame->mapData->breadcrumbs) {
             $breadcrumbs = $doc->wargame->mapData->breadcrumbs;
+            $breadcrumbKey = "/$turn"."t".$gameRules->phase."p".$gameRules->mode."m/";
+
             foreach($breadcrumbs as $key => $moves){
+                if(!preg_match($breadcrumbKey, $key)){
+                    continue;
+                }
                 $matches = array();
                 preg_match("/m(\d*)$/",$key,$matches);
                 $unitId = $matches[1];
