@@ -243,3 +243,16 @@ ul .lobbyRow:hover {
   background: rgba(160, 160, 160, 0.15);
   width: 80%;
   margin: 0 auto; }
+
+.attribution {
+  max-width: 100em;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: rgba(255, 255, 255, 0.9);
+  text-align: center;
+  padding: 5px 10px 15px;
+  border-radius: 10px;
+  margin-bottom: 15px; }
+  .attribution:before {
+    content: "Image by: ";
+    font-style: italic; }

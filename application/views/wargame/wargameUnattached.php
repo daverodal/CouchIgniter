@@ -85,5 +85,9 @@
     <a href="<?= site_url("users/logout"); ?>">Logout</a>
     <a href="<?= site_url("wargame/leaveGame"); ?>">back to lobby</a>
 </div>
+
+<footer class="unattached attribution">
+    By Greg Goebel [Public domain], <a target='blank' href="http://commons.wikimedia.org/wiki/File%3AM110_8_inch_self_propelled_howitzer_tank_military.jpg">via Wikimedia Commons</a></footer>
+
 </body>
 </html>

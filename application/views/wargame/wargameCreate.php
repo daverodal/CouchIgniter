@@ -1,9 +1,10 @@
 <html>
 <head>
     <script src="<?=base_url("js/jquery-1.11.1.min.js");?>"></script>
+    <link href="<?= base_url("js/create.css"); ?>" rel="stylesheet" type="text/css">
     <style type="text/css">
     body{
-        background:url("<?=base_url("js/britishTank.jpg")?>") #333 no-repeat;
+        background:url("<?=base_url("js/The_British_Army_in_the_Normandy_Campaign_1944_B9045.jpg")?>") #333 no-repeat;
         background-size: 100%;
         background-color: #F5F1DE
     }
@@ -30,14 +31,20 @@
 ?>
 <body>
 <?= $message?>
-<fieldset><legend>What would you like to name your new game? May use spaces or any character you like, need not be unique</legend>
-<form method="POST">
- <input id="wargame" name="wargame">
-    <input type="submit" value="GO GO GO!">
-</form></fieldset>
+<div class="messageBox">
+    What would you like to name your new game? <br>May use spaces or any character you like, need not be unique
+    <form method="POST">
+        <input id="wargame" name="wargame">
+        <input type="submit" value="GO GO GO!">
+    </form>
+    <a href="<?=site_url("users/logout");?>">Logout</a><br>
+    <a href="<?=site_url("wargame/leaveGame");?>">back to lobby</a></div>
 <br>
-<a href="<?=site_url("users/logout");?>">Logout</a><br>
-<a href="<?=site_url("wargame/leaveGame");?>">back to lobby</a>
+
+<footer class="unattached attribution">
+    By Gee (Sgt), No 5 Army Film & Photographic Unit [Public domain], <a href="http://commons.wikimedia.org/wiki/File%3AThe_British_Army_in_the_Normandy_Campaign_1944_B9045.jpg">via Wikimedia Commons</a>
+</footer>
+
 </body>
 <script type="text/javascript">
     $(document).ready(function(){

@@ -215,6 +215,9 @@
         </li>
         <li class="lobbySpacer">&nbsp;</li>
     </ul>
+    <footer class="attribution">
+        By Paul Mercuri [Public domain or Public domain], <a target='blank' href="http://commons.wikimedia.org/wiki/File%3AArmored_Knight_Mounted_on_Cloaked_Horse.JPG">via Wikimedia Commons</a>
+    </footer>
     <a class="logout" href="<?= site_url("users/logout"); ?>">Logout</a>
 </div>
 </body>

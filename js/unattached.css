@@ -4,10 +4,12 @@
   box-sizing: border-box; }
 
 #container {
-  max-width: 30em; }
+  max-width: 30em;
+  margin-bottom: 50px; }
 
 #container.wideGame {
-  max-width: 100em; }
+  max-width: 100em;
+  margin-bottom: 100px; }
 
 #theGrid {
   max-width: 100em;
@@ -85,3 +87,19 @@ li.game {
 
 .breadcrumb {
   display: inline-block; }
+
+.attribution {
+  position: fixed;
+  bottom: 0;
+  max-width: 100em;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: rgba(255, 255, 255, 0.9);
+  text-align: center;
+  padding: 5px 10px 15px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  box-shadow: 10px 10px 10px rgba(20, 20, 20, 0.7); }
+  .attribution:before {
+    content: "Image by: ";
+    font-style: italic; }
