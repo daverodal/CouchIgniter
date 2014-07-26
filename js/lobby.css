@@ -151,7 +151,7 @@
 .lobbyRow, .lobbyHeader {
   clear: both;
   padding: 5px 0;
-  word-break: "break-word"; }
+  word-break: break-word; }
 
 .clear {
   clear: both; }
