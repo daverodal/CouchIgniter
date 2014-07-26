@@ -42,7 +42,7 @@
 <br>
 
 <footer class="unattached attribution">
-    By Gee (Sgt), No 5 Army Film & Photographic Unit [Public domain], <a href="http://commons.wikimedia.org/wiki/File%3AThe_British_Army_in_the_Normandy_Campaign_1944_B9045.jpg">via Wikimedia Commons</a>
+    By Gee (Sgt), No 5 Army Film & Photographic Unit [Public domain], <a target='blank' href="http://commons.wikimedia.org/wiki/File%3AThe_British_Army_in_the_Normandy_Campaign_1944_B9045.jpg">via Wikimedia Commons</a>
 </footer>
 
 </body>
