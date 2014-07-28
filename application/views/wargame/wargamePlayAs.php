@@ -1,3 +1,3 @@
 <!doctype html>
 <html>
-<?php Battle::playAs($game,$wargame,$arg);
+<?php Battle::playAs($game,$wargame,$arg);?></html>
