@@ -454,6 +454,7 @@ HEREUPDATE;
             $doc->_rev = $currentRev;
             $doc->wargame->gameRules->flashMessages[] = "Time Travel to click $time";
             $this->couchsag->update($doc->_id, $doc);
+            $last_seq = 0;
         }
 
         $click = $doc->_rev;
