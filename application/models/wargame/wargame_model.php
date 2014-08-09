@@ -491,6 +491,7 @@ HEREUPDATE;
         $units = $force->units;
         $attackingId = $doc->wargame->gameRules->attackingForceId;
         foreach ($units as $unit) {
+            $unit = new unit($unit);
             if (is_object($unit->hexagon)) {
 //                $unit->hexagon->parent = $unit->parent;
             } else {

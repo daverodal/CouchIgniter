@@ -254,6 +254,9 @@ class Wargame extends CI_Controller
                 if ($key == "hexagon") {
                     continue;
                 }
+                if($key == "adjustments"){
+                    continue;
+                }
                 $newUnit[$key] = $value;
             }
             $newUnit['class'] = $aUnit->nationality;
