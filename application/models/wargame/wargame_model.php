@@ -530,6 +530,10 @@ HEREUPDATE;
                 $n = new stdClass();
                 $moveRules->moves->{$k}->pixX = $mapGrid->getPixelX();
                 $moveRules->moves->{$k}->pixY = $mapGrid->getPixelY();
+                $pointsLeft = sprintf("%.2f",$moveRules->moves->{$k}->pointsLeft);
+                $pointsLeft = preg_replace("/\.0*$/",'',$pointsLeft);
+                $pointsLeft = preg_replace("/(\.[1-9]*)0*/","$1",$pointsLeft);
+                $moveRules->moves->{$k}->pointsLeft = $pointsLeft;
                 unset($moveRules->moves->$k->isValid);
 
 //                unset($moveRules->moves->$k->isOccupied);
