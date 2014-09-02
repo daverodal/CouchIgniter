@@ -161,47 +161,19 @@ class Battle
                 $path = $game->path;
                 $argTwo = $game->scenarios->$arg;
                 set_include_path(WARGAMES . $path . PATH_SEPARATOR . get_include_path());
+                $className = preg_replace("/.php$/","",$game->fileName);
+
+                $matches = [];
+                if(preg_match("%([^/]*)/%",$className, $matches)){
+                    set_include_path(WARGAMES . "$path/".$matches[1] . PATH_SEPARATOR . get_include_path());
+                }
+
+
                 require_once(WARGAMES . $path."/".$game->fileName);
-                $game->className = preg_replace("/.php$/","",$game->fileName);
+                $game->className = preg_replace("%[^/]*/%","",$className);
                 return $game;
             }
             switch($name){
-//            case "MartianCivilWar":
-//                require_once(WARGAMES . "TMCW/MartianCivilWar.php");
-//                break;
-//            case "Napoleon":
-//                include_once(WARGAMES . "NAPOLEON/Napoleon.php");
-//                break;
-//            case "Tutorial":
-//                include_once(WARGAMES . "Tutorial/Tutorial.php");
-//                break;
-//            case "OMCW":
-//                include_once(WARGAMES . "OMCW/OrigMartianCivilWar.php");
-//                break;
-//            case "Pink":
-//                @include_once(WARGAMES."pink.php");
-//                break;
-//            case "NapOnMars":
-//                @require_once(WARGAMES . "NOM/NapOnMars.php");
-//                break;
-//            case "Jagersdorf":
-//                @include_once(WARGAMES . "Jagersdorf/Jagersdorf.php");
-//                break;
-//            case "Waterloo":
-//                @include_once(WARGAMES."Waterloo.php");
-//                break;
-//            case "BattleOfMoscow":
-//                include_once(WARGAMES."BattleOfMoscow.php");
-//                break;
-//            case "BattleForAllenCreek":
-//                include_once(WARGAMES . "BattleOfAllenCreek/BattleForAllenCreek.php");
-//                break;
-//            case "NapoleonsTrainingAcademy":
-//                include_once(WARGAMES . "NTA/NapoleonsTrainingAcademy.php");
-//                break;
-//            case "HotWar":
-//                require_once(WARGAMES . "HotWar/HotWar.php");
-//                break;
             default:
                 throw(new Exception("Bad Class in loadGame '$name'"));
         }
