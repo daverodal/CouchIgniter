@@ -92,6 +92,7 @@ class Wargame extends CI_Controller
                         $str = $content->encoded;
                         // http://stackoverflow.com/questions/8781911/remove-non-ascii-characters-from-string-in-php
                         $str = preg_replace('/[[:^print:]]/', '', $str); // should be aA
+                        $str = preg_replace("/></","> <", $str);
                         $theGame->value->longDesc = $str;
                         $theGame->value->histEditLink = "<a target='blank' href='$editLink'>edit</a>";
                     }

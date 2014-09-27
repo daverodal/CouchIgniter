@@ -9,6 +9,7 @@
 <html>
 
 <head>
+    <meta charset="UTF-8">
     <link href="<?= base_url("js/unattached.css"); ?>" rel="stylesheet" type="text/css">
 
     <style type="text/css">
