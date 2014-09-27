@@ -74,6 +74,9 @@ class Wargame extends CI_Controller
         $siteUrl = site_url("wargame/unattachedGame/");
 
         if ($game !== false) {
+            $terrain = $this->couchsag->get("terrain-".$game);
+            $mapUrl = $terrain->terrain->mapUrl;
+
             $theGame = $gamesAvail[0];
             $gameFeed = strtolower($game);
             $feed = file_get_contents("http://davidrodal.com/pubs/category/$gameFeed/feed");
@@ -120,7 +123,7 @@ class Wargame extends CI_Controller
         }
         $nest = [];
 
-        $this->parser->parse("wargame/wargameUnattached", compact("plainGenre", "theGame", "games", "nest","siteUrl"));
+        $this->parser->parse("wargame/wargameUnattached", compact("mapUrl", "plainGenre", "theGame", "games", "nest","siteUrl"));
 
     }
 

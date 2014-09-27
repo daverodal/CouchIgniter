@@ -41,12 +41,14 @@
             echo "<a class='scenarioWrapper' href='$href'>" . $scenario->description . "</a>";
 
         }?>
-        </li>
-        <li class='rightGrid'>
         <h3>Historical Context</h3>
 
         <?php echo $theGame->value->histEditLink;
-        echo $theGame->value->longDesc;
+        echo $theGame->value->longDesc;?>
+        </li>
+        <li class='rightGrid'>
+        <img style="width:500px" src="{mapUrl}">
+        <?php
         echo "<h3>Player Notes</h3>";
         echo $theGame->value->playerEditLink;
         echo $theGame->value->playerNotes;
