@@ -6,8 +6,8 @@
  * Link: http://davidrodal.com
  * */
 if(strpos(__FILE__,"/var/www") === false){
-    if(strpos(__FILE__, "/Library/WebServer/Documents") !== false){
-        define ("WARGAMES","/Library/WebServer/Documents/MartianCivilWar/");
+    if(strpos(__FILE__, "/Users/david/Sites/") !== false){
+        define ("WARGAMES","/Users/david/Sites/MartianCivilWar/");
     }else    if(strpos(__FILE__,"/Users/david_rodal") !== false){
         define ("WARGAMES","/Users/david_rodal/MampRoot/Game/");
     }else{
