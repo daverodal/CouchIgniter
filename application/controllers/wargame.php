@@ -266,6 +266,7 @@ class Wargame extends CI_Controller
             $newUnit['class'] = $aUnit->nationality;
             $newUnit['type'] = $aUnit->class;
             $newUnit['unitSize'] = $aUnit->name;
+            $newUnit['unitDesig'] = $aUnit->unitDesig;
             if ($aUnit->name == "infantry-1") {
                 $newUnit['unitSize'] = 'xx';
             }
