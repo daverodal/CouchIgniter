@@ -19,6 +19,10 @@
             background-size: 100%;
 
         }
+        .wordpress-wrapper a,
+        .wordpress-wrapper b{
+            margin: 0 .2em;
+        }
     </style>
 </head>
 <body>
@@ -44,8 +48,10 @@
         }?>
         <h3>Historical Context</h3>
 
+        <div class="wordpress-wrapper">
         <?php echo $theGame->value->histEditLink;
         echo $theGame->value->longDesc;?>
+        </div>
         </li>
         <li class='rightGrid'>
         <img style="width:500px" src="{mapUrl}">
