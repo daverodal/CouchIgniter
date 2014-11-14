@@ -56,10 +56,10 @@
         <li class='rightGrid'>
         <img style="width:500px" src="{mapUrl}">
         <?php
-        echo "<h3>Player Notes</h3>";
+        echo "<h3>Player Notes</h3><div class='wordpress-wrapper'>";
         echo $theGame->value->playerEditLink;
         echo $theGame->value->playerNotes;
-        echo "</li>";
+        echo "</div></li>";
         echo "</ul>";
     } else {
         echo '<ul id = "theGrid" >';
