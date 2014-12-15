@@ -5,6 +5,7 @@
     <script src="<?=base_url("js/jquery-ui-1.11.0.min.js");?>"></script>
 <!--    <script src="--><?//=base_url("js/jquery.ui.touch-punch.min.js");?><!--"></script>-->
     <script src="<?=base_url("js/jquery.panzoom/dist/jquery.panzoom.js");?>"></script>
+    <script src="<?=base_url("js/jquery.panzoom/test/libs/jquery.mousewheel.js");?>"></script>
     <script src="<?=base_url("js/sync.js");?>"></script>
     <?php Battle::getHeader($gameName, $playerData, $arg);?>
 </head>

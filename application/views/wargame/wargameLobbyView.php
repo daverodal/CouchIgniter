@@ -6,11 +6,12 @@
  */
 ?>
 <!doctype html>
-<html>
+<html ng-app="lobbyApp">
 <head>
 <script src="<?= base_url("js/jquery-1.11.1.min.js"); ?>"></script>
 <script src="<?= base_url("js/jquery-ui-1.11.0.min.js"); ?>"></script>
 <script src="<?= base_url("js/sync.js"); ?>"></script>
+<script src="<?= base_url("js/angular.js"); ?>"></script>
 <link href="<?= base_url("js/lobby.css"); ?>" rel="stylesheet" type="text/css">
 <style type="text/css">
 
@@ -22,68 +23,14 @@
 
 </style>
 <script type="text/javascript">
+var DR = {};
+
+
+
     var fetchUrl = "<?=site_url("wargame/fetchLobby/");?>"
     $(document).ready(function(){
         var sync = new Sync(fetchUrl);
-        sync.register("lobbies", function(lobbies){
-            $("#myGames .lobbyRow").remove();
-            $("#myGames .bold").hide();
-            if(lobbies.length > 0){
-                $("#myGames .bold").show();
-            }else{
-                $("#myGames").append("<li style='text-align:center' class='lobbyRow'>you have created no games</li>");
 
-            }
-            var changeLobbyHref;
-            for(var i in lobbies){
-                changeLobbyHref = "<?=site_url('wargame/changeWargame');?>/"+ lobbies[i].id;
-                var line = "<li id='" + lobbies[i].id + "' class='lobbyRow " + lobbies[i].odd + "'>&nbsp;";
-                line += "<a href='<?=site_url('wargame/changeWargame');?>/" + lobbies[i].id + "/'>";
-                line += "<span class='colOne'>" + anchorMe(lobbies[i].name, changeLobbyHref) + "</span>";
-                line += "<span class='colTwo'>" + anchorMe(lobbies[i].gameName, changeLobbyHref) + "</span>";
-                line += "<span class='colThree " + lobbies[i].myTurn + "'>" + lobbies[i].turn + " </span>";
-                line += "<span class='colFour'>" + anchorMe(lobbies[i].date, changeLobbyHref) + "</span>";
-                var pubLink;
-                if(lobbies[i].public == "public"){
-                    pubLink = "<a href='<?=site_url('wargame/makePrivate');?>/" + lobbies[i].id + "'>private</a>";
-                    ;
-                }else{
-                    pubLink = "<a href='<?=site_url('wargame/makePublic');?>/" + lobbies[i].id + "'>public</a>";
-                }
-                line += "<span class='colFive'>"+pubLink + " <a href='<?=site_url('wargame/playAs');?>/" + lobbies[i].id + "'>edit</a> <a href='<?=site_url("wargame/deleteGame");?>/" + lobbies[i].id + "/'>delete</a></span><div class='clear'></div></li>";
-                $("#myGames").append(line);
-            }
-        });
-        sync.register("multiLobbies", function(lobbies){
-            $("#myMultiGames .lobbyRow").remove();
-            $("#myMultiGames .bold").hide();
-            if(lobbies.length > 0){
-                $("#myMultiGames .bold").show();
-            }else{
-                $("#myMultiGames").append("<li style='text-align:center' class='lobbyRow'>you have created no games</li>");
-
-            }
-            var changeLobbyHref;
-            for(var i in lobbies){
-                changeLobbyHref = "<?=site_url('wargame/changeWargame');?>/"+ lobbies[i].id;
-                var line = "<li id='" + lobbies[i].id + "' class='lobbyRow " + lobbies[i].odd + "'>&nbsp;";
-                line += "<a href='<?=site_url('wargame/changeWargame');?>/" + lobbies[i].id + "/'>";
-                line += "<span class='colOne'>" + anchorMe(lobbies[i].name, changeLobbyHref) + "</span>";
-                line += "<span class='colTwo'>" + anchorMe(lobbies[i].gameName, changeLobbyHref) + "</span>";
-                line += "<span class='colThree " + lobbies[i].myTurn + "'>" + lobbies[i].turn + " </span>";
-                line += "<span class='colFour'>" + anchorMe(lobbies[i].date, changeLobbyHref) + "</span>";
-                line += "<span class='colFive'> " + anchorMe(lobbies[i].players, changeLobbyHref) + "</span></a>";
-                var pubLink;
-                if(lobbies[i].public == "public"){
-                    pubLink = "<a href='<?=site_url('wargame/makePrivate');?>/" + lobbies[i].id + "'>private</a>";
-                    ;
-                }else{
-                    pubLink = "<a href='<?=site_url('wargame/makePublic');?>/" + lobbies[i].id + "'>public</a>";
-                }
-                line += "<span class='colSix'>"+pubLink + " <a href='<?=site_url('wargame/playAs');?>/" + lobbies[i].id + "'>edit</a> <a href='<?=site_url("wargame/deleteGame");?>/" + lobbies[i].id + "/'>delete</a></span><div class='clear'></div></li>";
-                $("#myMultiGames").append(line);
-            }
-        });
         sync.register("otherGames", function(lobbies){
             $("#myOtherGames .lobbyRow").remove();
             $("#myOterGames .bold").hide();
@@ -151,7 +98,7 @@
 </script>
 
 </head>
-<body>
+<body ng-controller="LobbyController">
 <div id="content">
     <a class="logout logoutUpper" href="<?= site_url("users/logout"); ?>">Logout</a>
 
@@ -177,6 +124,20 @@
                     <span class="colSix">Actions</span>
                 </li>
                 <li class="bold lobbySpacer">&nbsp;</li>
+                <li ng-class-odd="'odd'" ng-repeat="myMultiGame in myMultiGames" class="lobbyRow">
+                <a ng-href="<?=site_url('wargame/changeWargame');?>/{{myHotGame.id}}/">
+                    <span class="colOne">{{myMultiGame.name}}</span>
+                    <span class="colTwo">{{myMultiGame.gameName}}</span>
+                    <span class="colThree" ng-class="myMultiGame.myTurn">{{myMultiGame.turn}}</span>
+                    <span class="colFour">{{myMultiGame.date}}</span>
+                    <span class='colFive'>{{myMultiGame.players}}</span>
+                </a>
+
+                    <span class="colSix"><a ng-click='publicGame(myMultiGame)' href='' ng-heref="{{myMultiGame.pubLink}}">make {{myMultiGame.pubLinkLabel}}</a> <a ng-href='<?=site_url('wargame/playAs');?>/{{myMultiGame.id}}'>edit</a> <a href='' ng-click="deleteGame(myMultiGame.id)">delete</a>
+</span>
+                    <div class='clear'></div>
+                </li>
+
             </ul>
         </li>
         <li>
@@ -203,6 +164,20 @@
             <span class="colFive">Actions</span>
         </li>
         <li class="bold lobbySpacer">&nbsp;</li>
+        <li ng-class-odd="'odd'" ng-repeat="myHotGame in myHotGames" class="lobbyRow">
+
+
+            <a ng-href="<?=site_url('wargame/changeWargame');?>/{{myHotGame.id}}/">
+            <span class="colOne">{{myHotGame.name}}</span>
+            <span class="colTwo">{{myHotGame.gameName}}</span>
+            <span class="colThree">{{myHotGame.turn}}</span>
+            <span class="colFour">{{myHotGame.date}}</span>
+                <span class='colFive'></span>
+            </a>
+            <a ng-click='publicGame(myHotGame)' href='' ng-heref="{{myHotGame.pubLink}}">make {{myHotGame.pubLinkLabel}}</a> <a ng-href='<?=site_url('wargame/playAs');?>/{{myHotGame.id}}'>edit</a> <a href='' ng-click="deleteGame(myHotGame.id)">delete</a>
+
+        <div class='clear'></div>
+        </li>
     </ul>
     <h2>Public Games: (you can observe but not play)</h2>
     <ul id="publicGames">
@@ -221,4 +196,54 @@
     <a class="logout" href="<?= site_url("users/logout"); ?>">Logout</a>
 </div>
 </body>
-</html>
+<script type="text/javascript">
+
+    var lobbyApp = angular.module('lobbyApp', []);
+    lobbyApp.controller('LobbyController', ['$scope', '$http', 'sync', function($scope, $http, sync){
+
+        sync.register('lobbies', function(lobbies){
+            var myHotLobbies = [];
+            for(var i in lobbies) {
+                var myHotLobby = {};
+                myHotLobby = lobbies[i];
+                myHotLobby.pubLinkLabel = lobbies[i].public === 'public' ? 'private' : 'public';
+                myHotLobbies.push(myHotLobby);
+            }
+            $scope.myHotGames = myHotLobbies;
+            $scope.$apply();
+        });
+
+        sync.register('multiLobbies', function(multiLobbies){
+            var myMultiLobbies = [];
+            for(var i in multiLobbies) {
+                var myHotLobby = {};
+                myHotLobby = multiLobbies[i];
+                myHotLobby.pubLinkLabel = multiLobbies[i].public === 'public' ? 'private' : 'public';
+                myMultiLobbies.push(myHotLobby);
+            }
+            $scope.myMultiGames = myMultiLobbies;
+            $scope.$apply();
+        });
+
+        $scope.myMultiGames = $scope.myHotGames = [];
+
+        $scope.deleteGame = function(id){
+            $http.get('deleteGame/'+id);
+        };
+
+        $scope.publicGame = function(game){
+            if(game.public === "public"){
+                $http.get('makePrivate/'+game.id);
+            }else{
+                $http.get('makePublic/'+game.id);
+            }
+        };
+
+        DR.scope = $scope;
+    }]);
+    lobbyApp.factory('sync',function(){
+        var sync = new Sync(fetchUrl);
+        return sync;
+    });
+    </script>
+    </html>

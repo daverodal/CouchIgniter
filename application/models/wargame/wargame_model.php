@@ -184,7 +184,9 @@ class Wargame_model extends CI_Model
         $filters->namefind = "function(doc,req){if(!req.query.name){return false;} var names = req.query.name;names = names.split(',');for(var i = 0;i < names.length;i++){if(doc._id == names[i]){return true;}}return false;}";
         $filters->lobbyChanges = <<<LobbyChanges
         function(doc,req){
-
+            if(doc._deleted === true){
+                return true;
+            }
             if(!req.query.name){
                 return false;
             }

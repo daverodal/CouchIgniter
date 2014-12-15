@@ -143,7 +143,7 @@ class Wargame extends CI_Controller
             } catch (Exception $e) {
             }
         }
-        redirect("/wargame/play");
+        echo json_encode(["success"=>true, "emsg"=>false]);
     }
 
     function play($poll = false)
@@ -326,7 +326,7 @@ class Wargame extends CI_Controller
         }
         $this->load->model("wargame/wargame_model");
         $ret = $this->wargame_model->makePublic($game);
-        redirect("wargame/play");
+        echo json_encode(["success"=>true, "emsg"=>false]);
     }
 
     public function makePrivate($game = false)
@@ -337,7 +337,7 @@ class Wargame extends CI_Controller
         }
         $this->load->model("wargame/wargame_model");
         $ret = $this->wargame_model->makePrivate($game);
-        redirect("wargame/play");
+        echo json_encode(["success"=>true, "emsg"=>false]);
     }
 
     public function enterMulti($wargame = false, $playerOne = "", $playerTwo = "")
