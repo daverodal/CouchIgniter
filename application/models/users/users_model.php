@@ -331,8 +331,9 @@ gamesAvailReduce;
         $this->_setDB();
         $doc = $this->couchsag->get("gnuGamesAvail");
         if($doc->docType == "gnuGamesAvail"){
-            foreach($games as $name => $game)
-            $doc->games->$name = $game;
+            foreach($games as $name => $game) {
+                $doc->games->$name = $game;
+            }
         }
         $ret = $this->couchsag->update($doc->_id, $doc);
         $this->_restoreDB();
