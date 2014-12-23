@@ -75,7 +75,11 @@ class Wargame extends CI_Controller
 
         if ($game !== false) {
             $terrain = $this->couchsag->get("terrain-".$game);
+
             $mapUrl = $terrain->terrain->mapUrl;
+            if(isset($terrain->terrain->smallMapUrl)){
+                $mapUrl = $terrain->terrain->smallMapUrl;
+            }
 
             $theGame = $gamesAvail[0];
             $gameFeed = strtolower($game);
@@ -755,6 +759,8 @@ class Wargame extends CI_Controller
             return;
         }
 
+        $mapUrl = $battle->terrain->mapUrl;
+        $battle->terrain->smallMapUrl = $this->resizeImage($mapUrl);
         $wargameDoc = $battle->save();
             try {
                 $ter = $this->couchsag->get($wargameDoc->terrainName);
@@ -776,6 +782,26 @@ class Wargame extends CI_Controller
         $ret->ok = true;
         echo json_encode($ret);
 //        redirect("wargame/playAs/$game");
+    }
+
+    public function resizeImage($filename, $new_width = 500)
+    {
+
+// Get new dimensions
+        list($width, $height) = getimagesize($filename);
+
+        $new_height = ($height / $width) * $new_width;
+
+// Resample
+        $image_p = imagecreatetruecolor($new_width, $new_height);
+        $image = imagecreatefrompng($filename);
+        imagecopyresampled($image_p, $image, 0, 0, 0, 0, $new_width, $new_height, $width, $height);
+
+// Output
+        $f = "smallImages/".basename($filename,'.png'). ".png";
+        imagepng($image_p, "js/$f");
+        return dirname($filename)."/".$f;
+
     }
 
     public function unitInit($game = "MartianCivilWar", $arg = false)
