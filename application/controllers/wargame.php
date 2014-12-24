@@ -760,6 +760,11 @@ class Wargame extends CI_Controller
         }
 
         $mapUrl = $battle->terrain->mapUrl;
+        $mapWidth = $battle->terrain->mapWidth;
+        if($mapWidth && $mapWidth !== "auto"){
+            $mapWidth = preg_replace("/[^\d]*(\d*)[^\d]*/","$1", $mapWidth);
+            $battle->terrain->mapUrl = $this->resizeImage($mapUrl, $mapWidth, "images");
+        }
         $battle->terrain->smallMapUrl = $this->resizeImage($mapUrl);
         $wargameDoc = $battle->save();
             try {
@@ -784,21 +789,27 @@ class Wargame extends CI_Controller
 //        redirect("wargame/playAs/$game");
     }
 
-    public function resizeImage($filename, $new_width = 500)
+    public function resizeImage($filename, $new_width = 500, $dir = 'smallImages')
     {
 
 // Get new dimensions
-        list($width, $height) = getimagesize($filename);
-
+        list($width, $height, $type) = getimagesize($filename);
         $new_height = ($height / $width) * $new_width;
 
 // Resample
         $image_p = imagecreatetruecolor($new_width, $new_height);
-        $image = imagecreatefrompng($filename);
+        switch($type){
+            case IMAGETYPE_PNG:
+                $image = imagecreatefrompng($filename);
+                break;
+            case IMAGETYPE_JPEG:
+                $image = imagecreatefromjpeg($filename);
+                break;
+        }
         imagecopyresampled($image_p, $image, 0, 0, 0, 0, $new_width, $new_height, $width, $height);
 
 // Output
-        $f = "smallImages/".basename($filename,'.png'). ".png";
+        $f = "$dir/".basename($filename,'.png'). ".png";
         imagepng($image_p, "js/$f");
         return dirname($filename)."/".$f;
 
