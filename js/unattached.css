@@ -12,7 +12,7 @@
   margin-bottom: 100px; }
 
 #theGrid {
-  max-width: 100em;
+  max-width: 68em;
   margin-left: auto;
   margin-right: auto; }
   #theGrid:after {
@@ -28,7 +28,7 @@
       margin-right: 0; }
 
 #theGameGrid {
-  max-width: 100em;
+  max-width: 68em;
   margin-left: auto;
   margin-right: auto; }
   #theGameGrid:after {
@@ -103,3 +103,9 @@ li.game {
   .attribution:before {
     content: "Image by: ";
     font-style: italic; }
+
+.play-button {
+  font-size: 30px;
+  border-radius: 10px;
+  border: 10px solid #9f9;
+  background: #cfc; }

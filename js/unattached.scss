@@ -3,12 +3,10 @@
 $grid-columns: 6;
 #container{
   max-width: 30em;
-  $max-width: 30em;
   margin-bottom:50px;
 
 }
 #container.wideGame{
-  $max-width: 100em;
   max-width:100em;
   margin-bottom:100px;
 }
@@ -107,3 +105,11 @@ li.game {
   margin-bottom:15px;
   box-shadow: 10px 10px 10px rgba(20, 20, 20, 0.7)
 }
+.play-button{
+  font-size: 30px;
+  border-radius:10px;
+  border: 10px solid #9f9;
+  background: #cfc;
+}
+
+

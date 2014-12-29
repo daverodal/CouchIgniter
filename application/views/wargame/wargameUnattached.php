@@ -39,10 +39,18 @@
         $href = site_url("wargame/unattachedGame/$up");
         echo "<a class='breadcrumb' href='$href'>back</a><br> ";
         echo "";
-        echo "<h2>" . $theGame->value->name . "</h2><p>" . $theGame->value->description . "</p><p class='softVoice'> Click on a scenario below</p>";
+        echo "<h2>" . $theGame->value->name . "</h2>";
+        if($theScenario){echo "<pre>";
+            echo "<h3>Scenario &ldquo;".$theGame->value->scenarios->$theScenario->description."&rdquo;</h3>";
+            $href = site_url("wargame/createWargame/" . rawurlencode($theGame->game) . "/" . $theScenario);
+            echo "<button class='play-button'><a href='$href'>Play &raquo;</a></button>";
+
+        }
+
+        echo "<p>" . $theGame->value->description . "</p><p class='softVoice'> Click on a scenario below</p>";
         foreach ($theGame->value->scenarios as $sKey => $scenario) {
 
-            $href = site_url("wargame/createWargame/" . rawurlencode($theGame->game) . "/" . $sKey);
+            $href = site_url("wargame/unattachedGame/" . rawurlencode($theGame->dir)."/".rawurlencode($theGame->genre)."/".rawurlencode($theGame->game) . "/" . $sKey);
             echo "<a class='scenarioWrapper' href='$href'>" . $scenario->description . "</a>";
 
         }?>

@@ -107,6 +107,27 @@ class Wargame_model extends CI_Model
 
     }
 
+    public function saveTerrainDoc($terrainDocName, $wargameDoc){
+        echo "TerrainDocName $terrainDocName";
+        try {
+            $ter = $this->couchsag->get($terrainDocName);
+        } catch (Exception $e) {
+        };
+        if (!$ter) {
+            echo "not there ";
+            $data = array("_id" => $terrainDocName, "docType" => "terrain", "terrain" => $wargameDoc->terrain);
+            $this->couchsag->create($data);
+        } else {
+
+            echo "delete and create ";
+            $data = array("_id" => $terrainDocName, "docType" => "terrain", "terrain" => $wargameDoc->terrain);
+            /* totally throw the old one away */
+
+            $this->couchsag->delete($terrainDocName, $ter->_rev);
+            $this->couchsag->create($data);
+        }
+        echo "Out ";
+    }
 
     public function leaveWargame($user, $wargame)
     {

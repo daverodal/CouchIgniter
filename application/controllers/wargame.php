@@ -62,7 +62,7 @@ class Wargame extends CI_Controller
         redirect("/wargame/play");
     }
 
-    function unattachedGame($dir = false, $genre = false, $game = false)
+    function unattachedGame($dir = false, $genre = false, $game = false, $theScenario = false)
     {
 
         $this->load->model('users/users_model');
@@ -74,7 +74,16 @@ class Wargame extends CI_Controller
         $siteUrl = site_url("wargame/unattachedGame/");
 
         if ($game !== false) {
-            $terrain = $this->couchsag->get("terrain-".$game);
+            $terrainName = "terrain-".$game;
+            if($theScenario){
+                $terrainName .= ".$theScenario";
+            }
+            try {
+                $terrain = $this->couchsag->get($terrainName);
+            }catch(Exception $e){}
+            if(!$terrain){
+                $terrain = $this->couchsag->get("terrain-".$game);
+            }
 
             $mapUrl = $terrain->terrain->mapUrl;
             if(isset($terrain->terrain->smallMapUrl)){
@@ -128,7 +137,7 @@ class Wargame extends CI_Controller
         }
         $nest = [];
 
-        $this->parser->parse("wargame/wargameUnattached", compact("mapUrl", "plainGenre", "theGame", "games", "nest","siteUrl"));
+        $this->parser->parse("wargame/wargameUnattached", compact("mapUrl","theScenario", "plainGenre", "theGame", "games", "nest","siteUrl"));
 
     }
 
@@ -240,17 +249,7 @@ class Wargame extends CI_Controller
         }
         $this->load->library('battle');
         $units = $doc->wargame->force->units;
-        /* single unit docs */
-//        if(is_numeric($units)){
-//            $num = $units;
-//            $units = array();
-//            for($i = 0;$i< $num;$i++){
-//                $units[] =  $this->couchsag->get("$wargame-id".$i);
-//            }
-//        }
-//        var_dump($units[0]);
-//        $units = array($units[0]);
-//        $units = array("hi",'hell');
+
         $playerData = array($doc->wargame->playerData->$player);
         if (!$units) {
             $units = array();
@@ -451,7 +450,6 @@ class Wargame extends CI_Controller
 
 
         $lastSeq = $this->wargame_model->getLobbyChanges($user, $last_seq);
-        //$seq = $this->couchsag->get("/_design/newFilter/_view/getLobbies?startkey=[\"$user\"]&endkey=[\"$user\",\"zzzzzzzzzzzzzzzzzzzzzzzz\"]");
 
         $seq = $this->couchsag->get("/_design/newFilter/_view/getLobbies?startkey=[\"$user\",\"hot seat\"]&endkey=[\"$user\",\"hot seat\",\"zzzzzzzzzzzzzzzzzzzzzzzz\"]");
         $lobbies = [];
@@ -467,7 +465,7 @@ class Wargame extends CI_Controller
             array_shift($keys);
             $public = array_shift($keys);
             $filename = array_shift($keys);
-//               $key = implode($keys,"  ");
+
             $id = $row->id;
             $dt = new DateTime($row->value[1]);
             $thePlayers = $row->value[2];
@@ -504,7 +502,6 @@ class Wargame extends CI_Controller
             array_shift($keys);
             $public = array_shift($keys);
             $filename = array_shift($keys);
-//               $key = implode($keys,"  ");
             $id = $row->id;
             $dt = new DateTime($row->value[1]);
             $thePlayers = $row->value[2];
@@ -656,23 +653,12 @@ class Wargame extends CI_Controller
 
         $this->load->model("wargame/wargame_model");
         /*  @var  Wargame_model */
-//        file_put_contents("/tmp/perflog","\nGetting poke ".microtime(),FILE_APPEND);
         $doc = $this->wargame_model->getDoc(urldecode($wargame));
         $ter = false;
         if ($doc->wargame->terrainName) {
             $ter = $this->wargame_model->getDoc($doc->wargame->terrainName);
             $doc->wargame->terrain = $ter->terrain;
         }
-        /* single unit docs */
-//        if(is_numeric($doc->wargame->force->units)){
-//            $num = $doc->wargame->force->units;
-//            $doc->wargame->force->units = array();
-//            for($i = 0;$i< $num;$i++){
-//                $doc->wargame->force->units[] =  $this->couchsag->get("$wargame-id".$i);
-//
-//            }
-//        }
-//        file_put_contents("/tmp/perflog","\nGotten poke ".microtime(),FILE_APPEND);
         $this->load->library("battle");
         $game = $doc->gameName;
         $emsg = false;
@@ -686,26 +672,9 @@ class Wargame extends CI_Controller
             $success = false;
             if ($doSave) {
                 $doc->wargame = $battle->save();
-                /* single unit docs */
-//            $num = 0;
-//            foreach($doc->wargame->force->units as $unit){
-//                $num++;
-//                if($unit->dirty){
-//                    $unit->_id = "$wargame-id".$unit->id;
-//                    $this->couchsag->update($unit->_id, $unit);
-//                }
-//
-//            }
-//            $doc->wargame->force->units = $num;
+
                 $this->wargame_model->setDoc($doc);
                 $success = true;
-
-//            file_put_contents("/tmp/perflog","\nsaving poke ".microtime(),FILE_APPEND);
-
-//            $ter = $this->wargame_model->getDoc("terrain-MartianCivilWar");
-//            $ter->terrain = $doc->wargame->terrain;
-//            $this->wargame_model->setDoc($ter);
-//            file_put_contents("/tmp/perflog","\nsaving poked ".microtime(),FILE_APPEND);
 
             }
             if ($doSave === 0) {
@@ -752,12 +721,20 @@ class Wargame extends CI_Controller
         $battle = $this->battle->getBattle($game, null, $arg);
 
 
+        echo "JHoy ";
         if (method_exists($battle, 'terrainGen')) {
-            $battle->terrainGen($terrainDocId);
+            $this->load->model('rest/rest_model');
+            $terrainDoc = $this->rest_model->get($terrainDocId);
+            $mapId = $terrainDoc->hexStr->map;
+            $mapDoc = $this->rest_model->get($mapId);
+            echo "About toooo ':.";
+            $battle->terrainGen($mapDoc, $terrainDoc);
+            echo "did it ";
         }else{
             echo "No TerrainGen ";
             return;
         }
+        echo "die id ";
 
         $mapUrl = $battle->terrain->mapUrl;
         $mapWidth = $battle->terrain->mapWidth;
@@ -767,22 +744,17 @@ class Wargame extends CI_Controller
         }
         $battle->terrain->smallMapUrl = $this->resizeImage($mapUrl);
         $wargameDoc = $battle->save();
-            try {
-                $ter = $this->couchsag->get($wargameDoc->terrainName);
-            } catch (Exception $e) {
-            };
-            if (!$ter) {
-                $data = array("_id" => $wargameDoc->terrainName, "docType" => "terrain", "terrain" => $wargameDoc->terrain);
-                $this->couchsag->create($data);
-            } else {
 
-                $data = array("_id" => $wargameDoc->terrainName, "docType" => "terrain", "terrain" => $wargameDoc->terrain);
-                /* totall throw the old one away */
-//                $ter->terrain = $wargameDoc->terrain;
-//                $this->couchsag->update($data['_id'],$data);
-                $this->couchsag->delete($wargameDoc->terrainName, $ter->_rev);
-                $this->couchsag->create($data);
-            }
+        echo "Thie part ";
+        $this->load->model("wargame/wargame_model");
+        echo "just gettin ";
+        $this->wargame_model->saveTerrainDoc(urldecode($wargameDoc->terrainName.".".$arg), $wargameDoc);
+
+        var_dump($mapDoc->map->isDefault);
+        if($mapDoc->map->isDefault){
+            $this->wargame_model->saveTerrainDoc(urldecode($wargameDoc->terrainName), $wargameDoc);
+
+        }
         $ret = new stdClass();
         $ret->ok = true;
         echo json_encode($ret);
@@ -833,7 +805,15 @@ class Wargame extends CI_Controller
 
 
         if (method_exists($battle, 'terrainInit')) {
-            $battle->terrainInit("terrain-$game");
+            try{
+                $terrainDoc = $this->couchsag->get("terrain-$game.$arg");
+            }catch(Exception $e){}
+            if(!$terrainDoc){
+                try{
+                    $terrainDoc = $this->couchsag->get("terrain-$game");
+                }catch(Exception $e){var_dump($e->getMessage());}
+            }
+            $battle->terrainInit($terrainDoc);
         }
         if (method_exists($battle, 'init')) {
             $battle->init();
@@ -844,6 +824,7 @@ class Wargame extends CI_Controller
         preg_match("/^([0-9]+)-/", $click, $matches);
         $click = $matches[1];
         $doc->wargame->gameRules->phaseClicks[] = $click + 1;
+        /* should probably get rid of this old code for genTerrain */
         if ($doc->wargame->genTerrain) {
             try {
                 $ter = $this->wargame_model->getDoc($doc->wargame->terrainName);
@@ -854,9 +835,8 @@ class Wargame extends CI_Controller
                 $this->couchsag->create($data);
             } else {
                 $data = array("_id" => $doc->wargame->terrainName, "docType" => "terrain", "terrain" => $doc->wargame->terrain);
-                /* totall throw the old one away */
-//                $ter->terrain = $doc->wargame->terrain;
-//                $this->couchsag->update($data['_id'],$data);
+                /* totally throw the old one away */
+
                 $this->couchsag->delete($doc->wargame->terrainName, $ter->_rev);
                 $this->couchsag->create($data);
 
@@ -867,24 +847,7 @@ class Wargame extends CI_Controller
         }
         $doc->chats = array();
         $doc->gameName = $game;
-        /* single Unit docs */
-//        $num = 0;
-//        echo "HEY";
-//        foreach($doc->wargame->force->units as $unit){
-//            echo "around ";
-//            if($unit->dirty){
-//                $num++;
-//                $unit->_id = "$wargame-id".$unit->id;
-//                try{
-//                    $dead = $this->couchsag->get($unit->_id);
-//                    $this->couchsag->delete($dead->_id, $dead->_rev);
-//
-//                }catch(Exception $e){echo "tee ";}
-//                $this->couchsag->update($unit->_id, $unit);
-//            }
-//        }
 
-//        $doc->wargame->force->units = $num;
         $doc = $this->wargame_model->setDoc($doc);
         redirect("wargame/playAs/$game");
 
@@ -922,22 +885,10 @@ class Wargame extends CI_Controller
                 redirect("/wargame/unitInit/$game/$scenario");
             }
             $message = "Name $wargame already used, please enter new name";
-//            redirect("/wargame/unitInit");
         }
         if ($this->input->post()) {
             $message = "Please in put a name (need not be unique)";
         }
         $this->load->view("wargame/wargameCreate", compact("message", "game","scenario"));
     }
-//    public function clock()
-//    {
-//
-//        while (true) {
-//            $date = date("h:i:s A");
-//            $doc = $this->couchsag->get("MainWargame");
-//            $doc->clock = $date;
-//            $success = $this->couchsag->update($doc->_id, $doc);
-//            sleep(1);die();
-//        }
-//    }
 }

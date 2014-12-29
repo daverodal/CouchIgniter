@@ -251,36 +251,40 @@ class Rest extends CI_Controller
 
     function cloneFile($stuff)
     {
+        echo "Yo! ";
         $doc = $this->rest_model->get($stuff);
+        var_dump($doc);
+        $this->_setDB();
         if ($doc->docType == "hexMapData") {
-            echo "MapDatDoc! ";
+            echo "ok";
             unset($doc->_id);
             unset($doc->_rev);
             $hexStr = $doc->map->hexStr;
             $doc->map->hexStr = "";
             $ret = $this->couchsag->create($doc);
-            var_dump($ret);
             $mapId = $ret->body->id;
             $mapRev = $ret->body->rev;
             if ($ret->body->ok === true) {
+                echo "good ";
                 if ($hexStr) {
-                    echo "Got HexStr ";
-                    $hexDoc = $this->couchsag->get($hexStr);
+                    echo "better '";
+                    $hexDoc = $this->rest_model->get($hexStr);
                     unset($hexDoc->_id);
                     unset($hexDoc->_rev);
                     $hexDoc->hexStr->map = $mapId;
                     $hexRet = $this->couchsag->create($hexDoc);
                     if ($hexRet->body->ok) {
+                        echo "Best";
                         $doc->_id = $mapId;
                         $doc->_rev = $mapRev;
-                        echo "Hexret Okay " . $hexRet->body->id;
                         $doc->map->hexStr = $hexRet->body->id;
-                        echo "MapId $mapId ";
-                        $this->couchsag->update($doc->_id, $doc);
+                        var_dump($this->couchsag->update($doc->_id, $doc));
+                        echo "BFF forever ";
                     }
                 }
             }
         }
+        $this->_restoreDB();
     }
 
 
