@@ -721,20 +721,16 @@ class Wargame extends CI_Controller
         $battle = $this->battle->getBattle($game, null, $arg);
 
 
-        echo "JHoy ";
         if (method_exists($battle, 'terrainGen')) {
             $this->load->model('rest/rest_model');
             $terrainDoc = $this->rest_model->get($terrainDocId);
             $mapId = $terrainDoc->hexStr->map;
             $mapDoc = $this->rest_model->get($mapId);
-            echo "About toooo ':.";
             $battle->terrainGen($mapDoc, $terrainDoc);
-            echo "did it ";
         }else{
             echo "No TerrainGen ";
             return;
         }
-        echo "die id ";
 
         $mapUrl = $battle->terrain->mapUrl;
         $mapWidth = $battle->terrain->mapWidth;
@@ -745,12 +741,9 @@ class Wargame extends CI_Controller
         $battle->terrain->smallMapUrl = $this->resizeImage($mapUrl);
         $wargameDoc = $battle->save();
 
-        echo "Thie part ";
         $this->load->model("wargame/wargame_model");
-        echo "just gettin ";
         $this->wargame_model->saveTerrainDoc(urldecode($wargameDoc->terrainName.".".$arg), $wargameDoc);
 
-        var_dump($mapDoc->map->isDefault);
         if($mapDoc->map->isDefault){
             $this->wargame_model->saveTerrainDoc(urldecode($wargameDoc->terrainName), $wargameDoc);
 

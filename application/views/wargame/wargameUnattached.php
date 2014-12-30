@@ -40,7 +40,7 @@
         echo "<a class='breadcrumb' href='$href'>back</a><br> ";
         echo "";
         echo "<h2>" . $theGame->value->name . "</h2>";
-        if($theScenario){echo "<pre>";
+        if($theScenario){
             echo "<h3>Scenario &ldquo;".$theGame->value->scenarios->$theScenario->description."&rdquo;</h3>";
             $href = site_url("wargame/createWargame/" . rawurlencode($theGame->game) . "/" . $theScenario);
             echo "<button class='play-button'><a href='$href'>Play &raquo;</a></button>";

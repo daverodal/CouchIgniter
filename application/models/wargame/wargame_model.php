@@ -160,7 +160,6 @@ class Wargame_model extends CI_Model
 
     public function initDoc()
     {
-        echo "<pre>";
         $views = new StdClass();
         $views->getGamesImIn = new StdClass;
         $views->getGamesImIn->map = "function(doc){/*comment */
@@ -349,8 +348,6 @@ HEREUPDATE;
         try {
             $this->couchsag->create($data);
         } catch (Exception $e) {
-            echo "<pre> EXC";
-            var_dump($e);
         }
     }
 

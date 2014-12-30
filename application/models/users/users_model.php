@@ -66,7 +66,6 @@ class Users_model extends CI_Model
     }
 
     public function initDoc(){
-        echo "<pre>";
         $this->couchsag->sag->setDatabase('users');
 
         try{
@@ -231,10 +230,7 @@ gamesAvailReduce;
             $user = new stdClass();
             $user->id = $usersDoc->userId++;
             $user->password = "2havefun";
-            var_dump($usersDoc->userByEmail);
             $usersDoc->userByEmail->$email = $user;
-            echo "<pre>";
-            var_dump($usersDoc);
             $this->couchsag->update($usersDoc->_id, $usersDoc);
             return $user;
         }

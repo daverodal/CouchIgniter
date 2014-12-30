@@ -175,8 +175,6 @@ class Rest extends CI_Controller
         try {
             $this->rest_model->create($data);
         } catch (Exception $e) {
-            echo "<pre> EXC";
-            var_dump($e);
         }
 
 
