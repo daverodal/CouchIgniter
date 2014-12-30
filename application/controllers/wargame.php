@@ -656,7 +656,9 @@ class Wargame extends CI_Controller
         $doc = $this->wargame_model->getDoc(urldecode($wargame));
         $ter = false;
         if ($doc->wargame->terrainName) {
-            $ter = $this->wargame_model->getDoc($doc->wargame->terrainName);
+            try {
+                $ter = $this->wargame_model->getDoc($doc->wargame->terrainName);
+            }catch(Exception $e){var_dump($e->getMessage());}
             $doc->wargame->terrain = $ter->terrain;
         }
         $this->load->library("battle");
@@ -799,11 +801,13 @@ class Wargame extends CI_Controller
 
         if (method_exists($battle, 'terrainInit')) {
             try{
-                $terrainDoc = $this->couchsag->get("terrain-$game.$arg");
+                $terrainName = "terrain-$game.$arg";
+                $terrainDoc = $this->couchsag->get($terrainName);
             }catch(Exception $e){}
             if(!$terrainDoc){
                 try{
-                    $terrainDoc = $this->couchsag->get("terrain-$game");
+                    $terrainName = "terrain-$game";
+                    $terrainDoc = $this->couchsag->get($terrainName);
                 }catch(Exception $e){var_dump($e->getMessage());}
             }
             $battle->terrainInit($terrainDoc);
@@ -812,6 +816,7 @@ class Wargame extends CI_Controller
             $battle->init();
         }
         $doc->wargame = $battle->save();
+        $doc->wargame->terrainName = $terrainName;
         $click = $doc->_rev;
         $matches = array();
         preg_match("/^([0-9]+)-/", $click, $matches);
