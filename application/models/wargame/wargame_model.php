@@ -119,7 +119,7 @@ class Wargame_model extends CI_Model
             $this->couchsag->create($data);
         } else {
 
-            echo "delete and create ";
+            echo "delete and create $terrainDocName ";
             $data = array("_id" => $terrainDocName, "docType" => "terrain", "terrain" => $wargameDoc->terrain);
             /* totally throw the old one away */
 
