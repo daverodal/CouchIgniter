@@ -3,7 +3,7 @@
 <head>
 <style type="text/css">
     body{
-        background: url('<?=base_url("js/civil-war-public-domain-horse.jpg");?>');
+        background: url('<?=base_url("js/Gen._Ulysses_S._Grant_and_staff_of_fourteen,_recognized_-_Gen._John_G._Barnard,_Col._Theodore_S._Bowers,_Gen._Rufus..._-_NARA_-_524431.png");?>');
         background-repeat: no-repeat;
         background-size:    100%;
 
@@ -24,6 +24,10 @@
     a{
         color:#333;
     }
+    .attribution{
+        position:absolute;
+        bottom:0px;
+    }
 </style>
 </head>
 <body>
@@ -36,6 +40,9 @@ Username<input type="text" name="name"><br>
     <input type="submit">
 </form>
     <a href="/">Or back to front page</a>
+</div>
+<div class="attribution">
+    Mathew Brady [Public domain], <a target='blank' href="http://commons.wikimedia.org/wiki/File%3AGen._Ulysses_S._Grant_and_staff_of_fourteen%2C_recognized_-_Gen._John_G._Barnard%2C_Col._Theodore_S._Bowers%2C_Gen._Rufus..._-_NARA_-_524431.tif">via Wikimedia Commons</a>
 </div>
 </body>
 </html>
