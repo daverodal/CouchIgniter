@@ -3,7 +3,7 @@
 <head>
 <style type="text/css">
     body{
-        background: url('<?=base_url("js/Gen._Ulysses_S._Grant_and_staff_of_fourteen,_recognized_-_Gen._John_G._Barnard,_Col._Theodore_S._Bowers,_Gen._Rufus..._-_NARA_-_524431.png");?>');
+        background: url('<?=base_url("js/Gen._Ulysses_S._Grant_and_portion_of_staff,_Gen._John_A._Rawlins._-_NARA_-_524492.jpg");?>');
         background-repeat: no-repeat;
         background-size:    100%;
 
@@ -42,7 +42,7 @@ Username<input type="text" name="name"><br>
     <a href="/">Or back to front page</a>
 </div>
 <div class="attribution">
-    Mathew Brady [Public domain], <a target='blank' href="http://commons.wikimedia.org/wiki/File%3AGen._Ulysses_S._Grant_and_staff_of_fourteen%2C_recognized_-_Gen._John_G._Barnard%2C_Col._Theodore_S._Bowers%2C_Gen._Rufus..._-_NARA_-_524431.tif">via Wikimedia Commons</a>
+    Mathew Brady [Public domain], <a target='blank' href="http://commons.wikimedia.org/wiki/File%3AGen._Ulysses_S._Grant_and_portion_of_staff%2C_Gen._John_A._Rawlins._-_NARA_-_524492.jpg">via Wikimedia Commons</a>
 </div>
 </body>
 </html>
