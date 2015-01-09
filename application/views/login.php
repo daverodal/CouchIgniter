@@ -3,7 +3,7 @@
 <head>
 <style type="text/css">
     body{
-        background: url('<?=base_url("js/civil-war-public-domain-horse.jpg");?>');
+        background: url('<?=base_url("js/Gen._Ulysses_S._Grant_and_portion_of_staff,_Gen._John_A._Rawlins._-_NARA_-_524492.jpg");?>');
         background-repeat: no-repeat;
         background-size:    100%;
 
@@ -24,6 +24,10 @@
     a{
         color:#333;
     }
+    .attribution{
+        position:absolute;
+        bottom:0px;
+    }
 </style>
 </head>
 <body>
@@ -36,6 +40,9 @@ Username<input type="text" name="name"><br>
     <input type="submit">
 </form>
     <a href="/">Or back to front page</a>
+</div>
+<div class="attribution">
+    Mathew Brady [Public domain], <a target='blank' href="http://commons.wikimedia.org/wiki/File%3AGen._Ulysses_S._Grant_and_portion_of_staff%2C_Gen._John_A._Rawlins._-_NARA_-_524492.jpg">via Wikimedia Commons</a>
 </div>
 </body>
 </html>
