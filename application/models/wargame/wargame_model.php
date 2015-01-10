@@ -528,6 +528,7 @@ HEREUPDATE;
             $mapUnit->maxMove = $unit->maxMove;
             $mapUnit->strength = $unit->strength;
             $mapUnit->supplied = $unit->supplied;
+            $mapUnit->reinforceZone = $unit->reinforceZone;
             $mapUnits[] = $mapUnit;
         }
         $turn = $doc->wargame->gameRules->turn;
