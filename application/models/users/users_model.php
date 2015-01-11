@@ -328,6 +328,9 @@ gamesAvailReduce;
         $doc = $this->couchsag->get("gnuGamesAvail");
         if($doc->docType == "gnuGamesAvail"){
             foreach($games as $name => $game) {
+                if($game->disabled === true){
+                    continue;
+                }
                 $doc->games->$name = $game;
             }
         }
