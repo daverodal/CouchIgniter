@@ -1,4 +1,5 @@
 <head>
+    <meta charset="utf-8">
     <link rel="shortcut icon" href="/favicon.ico" type="image/icon">
 <!--    <link href="--><?//=base_url("js/jquery-ui.css");?><!--" rel="stylesheet" type="text/css"/>-->
     <script src="<?=base_url("js/jquery-1.11.1.min.js");?>"></script>
