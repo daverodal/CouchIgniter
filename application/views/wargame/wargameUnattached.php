@@ -11,6 +11,7 @@
 <head>
     <meta charset="UTF-8">
     <link href="<?= base_url("js/unattached.css"); ?>" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="<?= base_url("js/font-awesome-4.2.0/css/font-awesome.min.css"); ?>">
 
     <style type="text/css">
         body {
@@ -26,7 +27,11 @@
     </style>
 </head>
 <body>
-
+<i class="fa fa-align-justify"></i> lllololol
+<i class="fa fa-bars">love?</i>
+<i class="fa fa-arrows-alt">love?</i>
+<i class="fa fa-spinner fa-spin "></i><span>FullScreen</span>
+<i class="fa fa-question-circle">Rules</i>
 <div id="container" <?= $theGame ? "class='wideGame'" : ''; ?>>
     <?php
 
@@ -62,7 +67,7 @@
         </div>
         </li>
         <li class='rightGrid'>
-        <img style="width:500px" src="{mapUrl}">
+        <img id="mapImage" src="{mapUrl}">
         <?php
         echo "<h3>Player Notes</h3><div class='wordpress-wrapper'>";
         echo $theGame->value->playerEditLink;

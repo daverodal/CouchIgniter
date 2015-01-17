@@ -10,7 +10,21 @@
 #container.wideGame {
   max-width: 100em;
   margin-bottom: 100px; }
+  #container.wideGame #mapImage {
+    width: 280px; }
 
+@media screen and (min-width: 900px) {
+  #container.wideGame {
+    max-width: 100em;
+    margin-bottom: 100px; }
+    #container.wideGame #mapImage {
+      width: 300px; } }
+@media screen and (min-width: 1230px) {
+  #container.wideGame {
+    max-width: 100em;
+    margin-bottom: 100px; }
+    #container.wideGame #mapImage {
+      width: 500px; } }
 #theGrid {
   max-width: 68em;
   margin-left: auto;
