@@ -27,11 +27,6 @@
     </style>
 </head>
 <body>
-<i class="fa fa-align-justify"></i> lllololol
-<i class="fa fa-bars">love?</i>
-<i class="fa fa-arrows-alt">love?</i>
-<i class="fa fa-spinner fa-spin "></i><span>FullScreen</span>
-<i class="fa fa-question-circle">Rules</i>
 <div id="container" <?= $theGame ? "class='wideGame'" : ''; ?>>
     <?php
 
