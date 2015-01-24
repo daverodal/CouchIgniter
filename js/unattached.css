@@ -67,10 +67,21 @@
   border-radius: 10px;
   padding: 5px;
   display: block;
-  margin: 20px 0; }
+  margin: 20px 0 0; }
   .scenarioWrapper:hover, .breadcrumb:hover {
     background: #fff;
     border-color: #999; }
+
+.scenarioWrapper {
+  float: left; }
+
+.clear {
+  clear: both;
+  heigt: 0px;
+  width: 0px;
+  padding: 0px;
+  margin: 0px;
+  border: none; }
 
 div {
   font-size: 22px;
@@ -123,3 +134,9 @@ li.game {
   border-radius: 10px;
   border: 10px solid #9f9;
   background: #cfc; }
+
+.play {
+  background: #cfc;
+  border-color: #9f9; }
+  .play:hover {
+    border-color: #9f9; }
