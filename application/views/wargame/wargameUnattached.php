@@ -127,7 +127,7 @@
             break;
         }
         $scope.game = '<?=$theGame->game;?>';
-        $scope.name = '<?=$theGame->value->name;?>';
+        $scope.name = '<?=addslashes($theGame->value->name);?>';
         $scope.description = '<?=$theGame->value->description;?>';
         $scope.histEditLink = '<?=$theGame->value->histEditLink;?>';
         $scope.lastScenario = $scope.scenario;
