@@ -91,6 +91,30 @@ class Wargame extends CI_Controller
             }
 
             $theGame = $gamesAvail[0];
+            $theScenarios = [];
+            foreach($theGame->value->scenarios as $theScenario => $scenario){
+                $terrainName = "terrain-".$game;
+                if($theScenario){
+                    $terrainName .= ".$theScenario";
+                }
+                try {
+                    $terrain = $this->couchsag->get($terrainName);
+                }catch(Exception $e){}
+                if(!$terrain){
+                    $terrain = $this->couchsag->get("terrain-".$game);
+                }
+
+                $thisScenario = $theGame->value->scenarios->$theScenario;
+                $thisScenario->sName = $theScenario;
+                $thisScenario->mapUrl = $terrain->terrain->mapUrl;
+                $theGame->value->scenarios->$theScenario->mapUrl = $terrain->terrain->mapUrl;
+                if(isset($terrain->terrain->smallMapUrl)){
+                    $thisScenario->mapUrl  = $terrain->terrain->smallMapUrl;
+                }
+                $theScenarios[] = $thisScenario;
+
+            }
+            $theGame->value->scenarios = $theScenarios;
             $gameFeed = strtolower($game);
             $feed = file_get_contents("http://davidrodal.com/pubs/category/$gameFeed/feed");
             if ($feed !== false) {
@@ -107,7 +131,7 @@ class Wargame extends CI_Controller
                         $str = preg_replace('/[[:^print:]]/', '', $str); // should be aA
                         $str = preg_replace("/></","> <", $str);
                         $theGame->value->longDesc = $str;
-                        $theGame->value->histEditLink = "<a target='blank' href='$editLink'>edit</a>";
+                        $theGame->value->histEditLink = $editLink;
                     }
                     if (preg_match("/Player/", $entry->title)) {
                         $content = $entry->children('http://purl.org/rss/1.0/modules/content/');

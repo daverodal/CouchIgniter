@@ -68,10 +68,6 @@ a:hover{
   padding: 5px;
   display:block;
   margin:20px 0 0;
-  &:hover{
-    background:#fff;
-    border-color:#999;
-  }
 }
 .scenarioWrapper{
   float:left;
@@ -85,7 +81,7 @@ a:hover{
   border:none;
 }
 
-div {
+.coolBox {
   font-size: 22px;
   background: rgba(255, 255, 255, .9);
   border: 1px solid #333;
@@ -95,6 +91,14 @@ div {
   box-shadow: 10px 10px 10px rgba(20, 20, 20, .7);
 }
 
+.clearWrapper{
+  background:transparent;
+  border:none;
+  border-radius:0;
+  box-shadow:none;
+  padding:0;
+  margin:0;
+}
 input {
   margin-left: 15px;
 }
