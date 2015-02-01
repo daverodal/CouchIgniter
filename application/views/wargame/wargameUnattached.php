@@ -18,7 +18,11 @@
     <link rel="stylesheet" href="<?= base_url("js/font-awesome-4.2.0/css/font-awesome.min.css"); ?>">
 
     <style type="text/css">
-
+        body {
+            background: url('<?=base_url("js/M110_howitzer.jpg");?>');
+            background-repeat: no-repeat;
+            background-size: 100%;
+        }
     </style>
 </head>
 <body ng-controller="scenarioController">
