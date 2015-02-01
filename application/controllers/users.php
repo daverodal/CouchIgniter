@@ -28,6 +28,9 @@ class Users extends CI_Controller
                 redirect("/");
             }
         }
+        if($user){
+            redirect("/");
+        }
         $this->load->view("login");
 
     }

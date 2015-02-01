@@ -52,8 +52,13 @@ function Sync(baseUrl) {
                      * So we redirect then
                      */
                     if(!(typeof data == "object" && data !== null)){
-                        /* make em login */
-                        window.location = 'login';
+                        /* get way out of app. to root */
+                        window.location = '/';
+                    }
+                    /* detect if logged out and return forward data packet */
+                    if(data.forward){
+                        window.location = data.forward;
+                        return;
                     }
                     for (var i in that.callbacks) {
                         if (data[i]) {

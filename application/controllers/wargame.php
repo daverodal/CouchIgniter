@@ -19,36 +19,19 @@ class Wargame extends CI_Controller
     public function __construct()
     {
         parent::__construct();
+
+        /*
+         * Deal with data request in the action
+         */
+        $action = $this->router->fetch_method();
+        if($action == 'fetch' || $action == 'fetchLobby'){
+            return;
+        }
         $user = $this->session->userdata("user");
         if (!$user) {
+
             redirect("/users/login/");
         }
-    }
-
-    function test()
-    {
-        echo "testing";
-        $this->load->library("battle");
-        include_once("/Documents and Settings/Owner/Desktop/webwargaming/BattleOfMoscow.php");
-        echo "testing";
-
-//        $doc = $this->couchsag->get("/MyWargame");
-//        $doc->alist[] = "alis";
-//        var_dump($doc);
-//        $seq = $this->couchsag->update($doc->_id,$doc);
-
-    }
-
-    function nuke()
-    {
-        return;
-
-        $data = $this->couchsag->get("Splunge");
-        //$data = array("_id" => "Splunge", "docType" => "gamesAvail", "games" => array(array("BattleForAllenCreek")));
-        $data->games[] = array("MartianCivilWar");
-        //array_pop($data->games);
-        $this->couchsag->update("Splunge", $data);
-        $data = $this->couchsag->get("Splunge");
     }
 
     function index()
@@ -449,6 +432,13 @@ class Wargame extends CI_Controller
     public function fetch($last_seq = '')
     {
         $user = $this->session->userdata("user");
+
+        if (!$user) {
+            header("Content-Type: application/json");
+            echo json_encode(['forward'=> site_url('/users/login')]);
+            return;
+        }
+        $user = $this->session->userdata("user");
         $wargame = urldecode($this->session->userdata("wargame"));
 
 
@@ -465,6 +455,11 @@ class Wargame extends CI_Controller
     {
 
         $user = $this->session->userdata("user");
+        if (!$user) {
+            header("Content-Type: application/json");
+            echo json_encode(['forward'=> site_url('/users/login')]);
+            return;
+        }
         $this->load->helper('date');
         $wargame = urldecode($this->session->userdata("wargame"));
 

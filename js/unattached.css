@@ -25,6 +25,15 @@
     margin-bottom: 100px; }
     #container.wideGame #mapImage {
       width: 500px; } }
+body {
+  background: url('<?=base_url("js/M110_howitzer.jpg");?>');
+  background-repeat: no-repeat;
+  background-size: 100%; }
+
+.wordpress-wrapper a,
+.wordpress-wrapper b {
+  margin: 0 .2em; }
+
 #theGrid {
   max-width: 68em;
   margin-left: auto;
@@ -71,6 +80,11 @@
 
 .scenarioWrapper {
   float: left; }
+  .scenarioWrapper.selected {
+    background-color: yellow; }
+
+.scenarioWrapper.selected.long-description {
+  background: #feffcd; }
 
 .clear {
   clear: both;

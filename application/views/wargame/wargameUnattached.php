@@ -18,21 +18,7 @@
     <link rel="stylesheet" href="<?= base_url("js/font-awesome-4.2.0/css/font-awesome.min.css"); ?>">
 
     <style type="text/css">
-        body {
-            background: url('<?=base_url("js/M110_howitzer.jpg");?>');
-            background-repeat: no-repeat;
-            background-size: 100%;
 
-        }
-
-        .wordpress-wrapper a,
-        .wordpress-wrapper b {
-            margin: 0 .2em;
-        }
-
-        .selected {
-            background-color: yellow;
-        }
     </style>
 </head>
 <body ng-controller="scenarioController">
@@ -58,7 +44,8 @@
             <a class='scenarioWrapper play' ng-href='<?= site_url("wargame/createWargame/") ?>/{{game}}/{{scenario.sName}}'>Play &raquo;</a>
             <div class="clear"></div>
         </div>
-        <p class="">{{scenario.longDescription}}</p>
+        <p class="scenarioWrapper long-description selected">{{scenario.longDescription}}</p>
+        <div class="clear"></div>
         <h3>Historical Context</h3>
 
         <div class="coolBox wordpress-wrapper">
