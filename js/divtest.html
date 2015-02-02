@@ -1,0 +1,197 @@
+<html>
+<head>
+    <link href='http://fonts.googleapis.com/css?family=Lato&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+    <style type="text/css">
+        .topDiv {
+            stroke:black;
+            fill:black;
+            background: #55cc55;
+            stroke-width:2;
+            color:black;
+            font-family:sans-serif;
+            border: 3px solid black;
+            border-color: rgb(204, 204, 204) rgb(102, 102, 102) rgb(102, 102, 102) rgb(204, 204, 204);
+            top: 400px;
+            width: 48px;
+            height: 48px;
+            display:inline-block;
+            position: relative;
+        }
+        .shadowMask{
+            position: absolute;
+            top:0px;
+            left:0px;
+            width:48px;
+            height:48px;
+            z-index:3;
+        }
+
+        .unitSize {
+            height: 16px;
+            font-size:16px;
+            text-align:center;
+        }
+
+        .counterWrapper{
+            height:16px;
+        }
+        .counterWrapper svg{
+            margin: 0 auto;
+            width:32px;
+            display:block;
+        }
+        .unitNumbers{
+            height:22px;
+            text-align: center;
+            font-size:15px;
+        }
+    </style>
+</head>
+<body>
+<div class="topDiv">
+    <div class="unitSize">xx</div>
+    <div class="counterWrapper">
+        <svg width="32" height="16">
+            <rect x="0" y="0" width="32" height="16"  fill="transparent" stroke-width="3"></rect>
+            <line x1="0" x2="32" y1="16" y2="0" stroke-width="2"></line>
+        </svg>
+    </div>
+    <div class="unitNumbers">
+        9-5
+    </div>
+</div>
+
+<div class="topDiv other">
+    <div class="shadowMask"></div>
+
+    <div class="unitSize">xx</div>
+    <div class="counterWrapper">
+        <svg width="32" height="16">
+            <rect x="0" y="0" width="32" height="16"  fill="transparent" stroke-width="3"></rect>
+            <line x1="0" x2="33" y1="0" y2="16" stroke-width="2"></line>
+            <line x1="0" x2="32" y1="16" y2="0"  stroke-width="2"></line>
+
+
+            <path fill="transparent" d="M13,13 C13,11 16,11 16,13 C16,11 19,11 19,13" stroke-width="1" />
+        </svg>
+    </div>
+    <div class="unitNumbers">
+        9-5
+    </div>
+</div>
+
+<div class="topDiv otherr">
+    <div class="shadowMask"></div>
+
+    <div class="unitSize">xx</div>
+    <div class="counterWrapper">
+        <svg width="32" height="16">
+            <rect x="0" y="0" width="32" height="16" fill="transparent" stroke-width="3"></rect>
+            <circle cx="16" cy="8" r="4" stroke-width="1" ></circle>
+
+        </svg>
+    </div>
+    <div class="unitNumbers">
+        9-5
+    </div>
+</div>
+
+<div class="topDiv otherr">
+    <div class="shadowMask"></div>
+
+    <div class="unitSize">xx</div>
+    <div class="counterWrapper">
+        <svg width="32" height="16">
+            <clipPath id="cut-off-left">
+                <rect x="0" y="0" width="10" height="16" />
+            </clipPath>
+            <clipPath id="cut-off-right">
+                <rect x="22" y="0" width="10" height="16" />
+            </clipPath>
+            <rect x="0" y="0" width="32" height="16"  fill="transparent" stroke-width="3"></rect>
+            <circle cx="10" cy="8" r="4" stroke-width="2" fill="transparent"  clip-path="url(#cut-off-left)"></circle>
+            <circle cx="22" cy="8" r="4" stroke-width="2" fill="transparent"  clip-path="url(#cut-off-right)"></circle>
+            <line x1="9" x2="23" y1="4" y2="4" stroke-width="2"></line>
+            <line x1="9" x2="23" y1="12" y2="12" stroke-width="2"></line>
+        </svg>
+    </div>
+    <div class="unitNumbers">
+        9-5
+    </div>
+</div>
+
+<div class="topDiv otherr">
+    <div class="shadowMask"></div>
+
+    <div class="unitSize">xx</div>
+    <div class="counterWrapper">
+        <svg width="32" height="16">
+            <clipPath id="cut-off-left">
+                <rect x="0" y="0" width="10" height="16" />
+            </clipPath>
+            <clipPath id="cut-off-right">
+                <rect x="22" y="0" width="10" height="16" />
+            </clipPath>
+            <rect x="0" y="0" width="32" height="16"  fill="transparent" stroke-width="3"></rect>
+            <circle cx="10" cy="8" r="4" stroke-width="2" fill="transparent"  clip-path="url(#cut-off-left)"></circle>
+            <circle cx="22" cy="8" r="4" stroke-width="2" fill="transparent"  clip-path="url(#cut-off-right)"></circle>
+            <line x1="9" x2="23" y1="4" y2="4" stroke-width="2"></line>
+            <line x1="9" x2="23" y1="12" y2="12" stroke-width="2"></line>
+
+            <line x1="0" x2="33" y1="15" y2="0" stroke-width="2"></line>
+
+        </svg>
+    </div>
+    <div class="unitNumbers">
+        9-5
+    </div>
+</div>
+
+<div class="topDiv otherr">
+    <div class="shadowMask"></div>
+
+    <div class="unitSize">xx</div>
+    <div class="counterWrapper">
+        <svg width="32" height="16">
+            <clipPath id="cut-off-left">
+                <rect x="0" y="0" width="10" height="16" />
+            </clipPath>
+            <clipPath id="cut-off-right">
+                <rect x="22" y="0" width="10" height="16" />
+            </clipPath>
+            <rect x="0" y="0" width="32" height="16"  fill="transparent" stroke-width="3"></rect>
+            <circle cx="10" cy="8" r="4" stroke-width="2" fill="transparent"  clip-path="url(#cut-off-left)"></circle>
+            <circle cx="22" cy="8" r="4" stroke-width="2" fill="transparent"  clip-path="url(#cut-off-right)"></circle>
+            <line x1="9" x2="23" y1="4" y2="4" stroke-width="2"></line>
+            <line x1="9" x2="23" y1="12" y2="12" stroke-width="2"></line>
+
+            <line x1="0" x2="32" y1="16" y2="0" stroke-width="2"></line>
+            <line x1="0" x2="32" y1="0" y2="16" stroke-width="2"></line>
+
+        </svg>
+    </div>
+    <div class="unitNumbers">
+        9-5
+    </div>
+</div>
+
+
+<div class="topDiv other">
+    <div class="shadowMask"></div>
+
+    <div class="unitSize">xx</div>
+    <div class="counterWrapper">
+        <svg width="32" height="16">
+            <rect x="0" y="0" width="32" height="16"  fill="transparent" stroke-width="3"></rect>
+            <line x1="0" x2="33" y1="0" y2="16" stroke-width="2"></line>
+            <line x1="0" x2="32" y1="16" y2="0"  stroke-width="2"></line>
+            <line x1="3" x2="29" y1="8" y2="8"></line>
+        </svg>
+    </div>
+    <div class="unitNumbers">
+        9-5
+    </div>
+</div>
+
+</body>
+</html>
