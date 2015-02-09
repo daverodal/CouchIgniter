@@ -28,10 +28,30 @@
         }
         .fa-spinner{
             position:absolute;
-            font-size:60px;
-            margin-left:200px;
+            font-size:200px;
+            margin-left:150px;
             color:#666;
         }
+
+        .spinner-div{
+            opacity:0;  /* make things invisible upon start */
+            -webkit-animation:fadeIn ease-in 1;  /* call our keyframe named fadeIn, use animattion ease-in and repeat it only 1 time */
+            -moz-animation:fadeIn ease-in 1;
+            animation:fadeIn ease-in 1;
+
+            -webkit-animation-fill-mode:forwards;  /* this makes sure that after animation is done we remain at the last keyframe value (opacity: 1)*/
+            -moz-animation-fill-mode:forwards;
+            animation-fill-mode:forwards;
+
+            -webkit-animation-duration:3s;
+            -moz-animation-duration:3s;
+            animation-duration:3s;
+        }
+
+        @-webkit-keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+        @-moz-keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+        @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+
     </style>
 </head>
 <body ng-controller="scenarioController">
@@ -147,17 +167,16 @@
             $scope.lastScenario = a;
         }
     }]).
-        directive('imageonload', function() {
-            return {
-                restrict: 'A',
-                link: function(scope, element, attrs) {
-                    element.bind('load', function() {
-                        debugger;
-                        scope.imageUpdating = false;
-                        scope.$apply();
-                    });
-                }
-            };
-        });;
+    directive('imageonload', function() {
+        return {
+            restrict: 'A',
+            link: function(scope, element, attrs) {
+                element.bind('load', function() {
+                    scope.imageUpdating = false;
+                    scope.$apply();
+                });
+            }
+        };
+    });
 </script>
 </html>
