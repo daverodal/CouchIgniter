@@ -772,8 +772,8 @@ class Wargame extends CI_Controller
         }
         $ret = new stdClass();
         $ret->ok = true;
+        header("Content-Type: application/json");
         echo json_encode($ret);
-//        redirect("wargame/playAs/$game");
     }
 
     public function resizeImage($filename, $new_width = 500, $dir = 'smallImages')
