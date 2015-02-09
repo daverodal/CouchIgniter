@@ -23,6 +23,15 @@
             background-repeat: no-repeat;
             background-size: 100%;
         }
+        .spinner-div{
+            position: absolute;
+        }
+        .fa-spinner{
+            position:absolute;
+            font-size:60px;
+            margin-left:200px;
+            color:#666;
+        }
     </style>
 </head>
 <body ng-controller="scenarioController">
@@ -59,7 +68,8 @@
         </div>
         </li>
         <li class='rightGrid'>
-        <img id="mapImage" ng-src="{{scenario.mapUrl}}">
+        <div class='spinner-div' ng-if="imageUpdating" ><i class="fa fa-spinner fa-spin"></i></div>
+        <img id="mapImage" imageonload ng-src="{{scenario.mapUrl}}">
         <?php
         echo "<h3>Player Notes</h3><div class='coolBox wordpress-wrapper'>";
         echo $theGame->value->playerEditLink;
@@ -123,8 +133,12 @@
         $scope.histEditLink = '<?=$theGame->value->histEditLink;?>';
         $scope.lastScenario = $scope.scenario;
         $scope.scenario.selected = 'selected';
+        $scope.imageUpdating = true;
 
         $scope.clickityclick = function (a) {
+            if($scope.scenario.mapUrl !== a.mapUrl){
+                $scope.imageUpdating = true;
+            }
             if ($scope.lastScenario) {
                 $scope.lastScenario.selected = '';
             }
@@ -132,6 +146,18 @@
             $scope.scenario = a;
             $scope.lastScenario = a;
         }
-    }]);
+    }]).
+        directive('imageonload', function() {
+            return {
+                restrict: 'A',
+                link: function(scope, element, attrs) {
+                    element.bind('load', function() {
+                        debugger;
+                        scope.imageUpdating = false;
+                        scope.$apply();
+                    });
+                }
+            };
+        });;
 </script>
 </html>
