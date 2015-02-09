@@ -79,6 +79,7 @@ a:hover{
 }
 .scenarioWrapper{
   float:left;
+  cursor:pointer;
   &.selected {
     background-color: yellow;
   }
