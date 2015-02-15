@@ -2,7 +2,7 @@
 @import "neat/neat";
 $grid-columns: 6;
 #container{
-  max-width: 30em;
+  max-width: 70%;
   margin-bottom:50px;
 
 }
@@ -42,11 +42,24 @@ $grid-columns: 6;
 }
 
 
-
 #theGrid{
   @include outer-container;
 
   .leftGrid, .rightGrid{
+    @include span-columns(3);
+  }
+}
+$grid-columns: 12;
+
+#theGamesGrid{
+  @include outer-container;
+
+  .gridRow{
+    margin-bottom:50px;
+    padding-top:10px;
+    border-top:3px solid #999;
+  }
+  .leftGrid, .rightGrid, img{
     @include span-columns(3);
   }
 }
@@ -67,7 +80,17 @@ $grid-columns: 6;
 a:hover{
 //  color:#999;
 }
+ .scenarioDescription{
 
+  background: #eee;
+
+  padding: 5px;
+  display:block;
+  margin:20px 0 0;
+   font-size:25px;
+   border-radius:10px;
+
+}
 .scenarioWrapper, .breadcrumb{
 
   background: #eee;

@@ -136,15 +136,46 @@ class Wargame extends CI_Controller
 //            $feed = preg_replace("/\n/","",$feed);
 //            $matches  = array();
 //            $regExp = preg_match("/<content:encoded><!\[CDATA\[(.*)]]><\/content:encoded/", $feed, $matches);
+            $this->parser->parse("wargame/wargameUnattached", compact("mapUrl", "theScenario", "plainGenre", "theGame", "games", "nest","siteUrl"));
         } else {
             foreach ($gamesAvail as $gameAvail) {
+                if($gameAvail->game) {
+                    $terrainName = "terrain-" . $gameAvail->game;
+                    $terrain = "";
+                    try {
+                        $terrain = $this->couchsag->get($terrainName);
+                    } catch (Exception $e) {
+                        echo "EXCEPTION ";
+                    }
+
+                    $mapUrl = $terrain->terrain->mapUrl;
+                    if (isset($terrain->terrain->smallMapUrl)) {
+                        $mapUrl = $terrain->terrain->smallMapUrl;
+                    }
+                    $gameAvail->mapUrl = $mapUrl;
+                }
+
+                $backgroundImage = "M110_howitzer.jpg";
+                $backgroundAttr = 'By Greg Goebel [Public domain], <a target="blank" href="http://commons.wikimedia.org/wiki/File%3AM110_8_inch_self_propelled_howitzer_tank_military.jpg">via
+        Wikimedia Commons</a>';
+                if($genre){
+                    if(preg_match("/18/", $genre)){
+                        $backgroundImage = "1024px-Swedish_18th_century_6_pound_cannon_front.jpg";
+                        $backgroundAttr = 'By MKFI (Own work) [Public domain], <a href="http://commons.wikimedia.org/wiki/File%3ASwedish_18th_century_6_pound_cannon_front.JPG">via Wikimedia Commons</a>';
+                    }
+                    if(preg_match("/19/", $genre)) {
+                        $backgroundImage = "USMC_Officers_stationed_at_Marine_Barracks,_Washington_D.C._in_1896.tiff.jpg";
+                        $backgroundAttr = 'By USMC Historical Photograph (USMC Historical Division Archives) [Public domain], <a href="http://commons.wikimedia.org/wiki/File%3AUSMC_Officers_stationed_at_Marine_Barracks%2C_Washington_D.C._in_1896.tiff">via Wikimedia Commons</a>';
+                    }
+                }
                 $gameAvail->urlGenre = rawurlencode($gameAvail->genre);
                 $games[] = $gameAvail;
-            }
-        }
-        $nest = [];
 
-        $this->parser->parse("wargame/wargameUnattached", compact("mapUrl","theScenario", "plainGenre", "theGame", "games", "nest","siteUrl"));
+            }
+            $this->parser->parse("wargame/wargameUnattached", compact("backgroundAttr", "backgroundImage","theScenario", "plainGenre", "theGame", "games", "nest","siteUrl"));
+        }
+//        echo "<pre>"; var_dump(compact("mapUrl","theScenario", "plainGenre", "theGame", "games", "nest","siteUrl"));die('did');
+
 
     }
 
@@ -816,7 +847,11 @@ class Wargame extends CI_Controller
         $this->load->library("battle");
 
         $this->load->model('users/users_model');
-        $battle = $this->battle->getBattle($game, null, $arg);
+        $opts = [];
+        foreach($_GET as $k=>$v){
+            $opts[] = $k;
+        }
+        $battle = $this->battle->getBattle($game, null, $arg, $opts);
 
 
         if (method_exists($battle, 'terrainInit')) {
@@ -900,7 +935,12 @@ class Wargame extends CI_Controller
             $ret = $this->wargame_model->createWargame($wargame);
             if (is_object($ret) === true) {
                 $this->session->set_userdata(array("wargame" => $ret->body->id));
-                redirect("/wargame/unitInit/$game/$scenario");
+                $opts = "";
+
+                foreach($_GET as $k => $v){
+                    $opts .= "$k=$v&";
+                }
+                redirect("/wargame/unitInit/$game/$scenario?$opts");
             }
             $message = "Name $wargame already used, please enter new name";
         }
