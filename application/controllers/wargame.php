@@ -160,7 +160,7 @@ class Wargame extends CI_Controller
         Wikimedia Commons</a>';
                 if($genre){
                     if(preg_match("/18/", $genre)){
-                        $backgroundImage = "1024px-Swedish_18th_century_6_pound_cannon_front.jpg";
+                        $backgroundImage = "18th_century_gun.jpg";
                         $backgroundAttr = 'By MKFI (Own work) [Public domain], <a href="http://commons.wikimedia.org/wiki/File%3ASwedish_18th_century_6_pound_cannon_front.JPG">via Wikimedia Commons</a>';
                     }
                     if(preg_match("/19/", $genre)) {
