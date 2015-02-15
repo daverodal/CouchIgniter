@@ -4,10 +4,12 @@
   box-sizing: border-box; }
 
 #container {
-  max-width: 70%;
-  margin-bottom: 50px; }
+  width: 60%;
+  margin-bottom: 50px;
+  margin: 0 auto; }
 
 #container.wideGame {
+  width: 90%;
   max-width: 100em;
   margin-bottom: 100px; }
   #container.wideGame #mapImage {
@@ -38,6 +40,7 @@
     display: table;
     clear: both; }
   #theGrid .leftGrid, #theGrid .rightGrid {
+    padding-top: 20px;
     float: left;
     display: block;
     margin-right: 4.82916%;
@@ -57,12 +60,20 @@
     margin-bottom: 50px;
     padding-top: 10px;
     border-top: 3px solid #999; }
-  #theGamesGrid .leftGrid, #theGamesGrid .rightGrid, #theGamesGrid img {
+  #theGamesGrid .leftGrid, #theGamesGrid .rightGrid {
     float: left;
     display: block;
     margin-right: 2.35765%;
-    width: 23.23176%; }
-    #theGamesGrid .leftGrid:last-child, #theGamesGrid .rightGrid:last-child, #theGamesGrid img:last-child {
+    width: 40.29137%;
+    word-wrap: break-word; }
+    #theGamesGrid .leftGrid:last-child, #theGamesGrid .rightGrid:last-child {
+      margin-right: 0; }
+  #theGamesGrid img {
+    float: left;
+    display: block;
+    margin-right: 2.35765%;
+    width: 48.82117%; }
+    #theGamesGrid img:last-child {
       margin-right: 0; }
 
 #theGameGrid {

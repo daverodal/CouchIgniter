@@ -2,11 +2,12 @@
 @import "neat/neat";
 $grid-columns: 6;
 #container{
-  max-width: 70%;
+  width: 60%;
   margin-bottom:50px;
-
+  margin:0 auto;
 }
 #container.wideGame{
+  width:90%;
   max-width:100em;
   margin-bottom:100px;
   #mapImage{
@@ -46,6 +47,7 @@ $grid-columns: 6;
   @include outer-container;
 
   .leftGrid, .rightGrid{
+    padding-top:20px;
     @include span-columns(3);
   }
 }
@@ -59,8 +61,12 @@ $grid-columns: 12;
     padding-top:10px;
     border-top:3px solid #999;
   }
-  .leftGrid, .rightGrid, img{
-    @include span-columns(3);
+  .leftGrid, .rightGrid{
+    @include span-columns(5);
+    word-wrap: break-word;
+  }
+   img{
+    @include span-columns(6);
   }
 }
 $grid-columns: 6;

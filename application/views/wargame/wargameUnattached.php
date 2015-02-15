@@ -22,6 +22,7 @@
             background: url('<?=base_url("js/$backgroundImage");?>');
             background-repeat: no-repeat;
             background-size: 100%;
+            background-attachment:fixed;
         }
         .spinner-div{
             position: absolute;
@@ -129,13 +130,13 @@
         echo "</ul>";
     } else {
         if ($games && $games[0]->game) {
+            echo "<h2>$plainGenre</h2>";
             echo '<ul id = "theGamesGrid" >';
             $href = site_url("wargame/unattachedGame/");
             echo "<a class='breadcrumb' href='$href'>back</a><br>";
             ?>
             {games}
             <li class="gridRow">
-                <a class="leftGrid" href="{siteUrl}/{dir}/{urlGenre}/{game}">{genre}</a>
                 <a class="rightGrid" href="{siteUrl}/{dir}/{urlGenre}/{game}">{game}</a>
                 <a href="{siteUrl}/{dir}/{urlGenre}/{game}"><img src="{mapUrl}"></a>
                 <div class="clear"></div>
@@ -168,7 +169,7 @@
 </div>
 
 <footer class="unattached attribution">
-    ss<?=$backgroundAttr;?>ff
+    <?=$backgroundAttr;?>
 </footer>
 </body>
 <script>
