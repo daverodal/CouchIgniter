@@ -135,8 +135,8 @@
             echo "<a class='breadcrumb' href='$href'>back</a>";
             ?>
             Or
-            <a class="breadcrumb" href="<?= site_url("wargame/leaveGame"); ?>">back to lobby</a>
-            <a class="breadcrumb" href="<?= site_url("users/logout"); ?>">Logout</a>
+            <a href="<?= site_url("wargame/leaveGame"); ?>">back to lobby</a>
+            <a href="<?= site_url("users/logout"); ?>">Logout</a>
 
             <?php
             echo "</header>";
@@ -150,6 +150,7 @@
             </li>
             {/games}
         <?php
+            echo "</ul>";
         } else {
             echo '<ul id = "theGrid" >';
             ?>
@@ -159,13 +160,15 @@
                 <a class="rightGrid" href="{siteUrl}/{dir}/{urlGenre}">{value} Available</a>
             </li>
             {/games}
+                </ul> Or
+    <a href="<?= site_url("wargame/leaveGame"); ?>">back to lobby</a>
+    <a href="<?= site_url("users/logout"); ?>">Logout</a>
+
         <?php
         }
 
-        echo "</ul>";
     }
     ?>
-
     <div ng-controller="RecursiveController">
         <recursive-rules data="[]"></recursive-rules>
     </div>
