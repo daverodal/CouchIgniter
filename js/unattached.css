@@ -4,7 +4,7 @@
   box-sizing: border-box; }
 
 #container {
-  max-width: 30em;
+  max-width: 70%;
   margin-bottom: 50px; }
 
 #container.wideGame {
@@ -45,6 +45,26 @@
     #theGrid .leftGrid:last-child, #theGrid .rightGrid:last-child {
       margin-right: 0; }
 
+#theGamesGrid {
+  max-width: 68em;
+  margin-left: auto;
+  margin-right: auto; }
+  #theGamesGrid:after {
+    content: "";
+    display: table;
+    clear: both; }
+  #theGamesGrid .gridRow {
+    margin-bottom: 50px;
+    padding-top: 10px;
+    border-top: 3px solid #999; }
+  #theGamesGrid .leftGrid, #theGamesGrid .rightGrid, #theGamesGrid img {
+    float: left;
+    display: block;
+    margin-right: 2.35765%;
+    width: 23.23176%; }
+    #theGamesGrid .leftGrid:last-child, #theGamesGrid .rightGrid:last-child, #theGamesGrid img:last-child {
+      margin-right: 0; }
+
 #theGameGrid {
   max-width: 68em;
   margin-left: auto;
@@ -64,6 +84,14 @@
 .softVoice {
   color: #999;
   font-size: 70%; }
+
+.scenarioDescription {
+  background: #eee;
+  padding: 5px;
+  display: block;
+  margin: 20px 0 0;
+  font-size: 25px;
+  border-radius: 10px; }
 
 .scenarioWrapper, .breadcrumb {
   background: #eee;

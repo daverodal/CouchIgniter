@@ -27,8 +27,8 @@
         }
 
         .unitSize {
-            height: 16px;
-            font-size:16px;
+            height: 11px;
+            font-size:13px;
             text-align:center;
         }
 
@@ -41,19 +41,35 @@
             display:block;
         }
         .unitNumbers{
-            height:22px;
+            height:21px;
             text-align: center;
-            font-size:15px;
+            font-size:21px;
+            padding-top:1px;
+            letter-spacing: .5px;
+        }
+        .topDiv.smallUnit{
+            width:32px;
+            height:32px;
+        }
+        .orange{
+            background:orange;
         }
     </style>
 </head>
 <body>
+<div class="orange">
+<svg width="20" height="10" viewBox="0 0 200 100">
+    <rect x="0" y="0" width="200" height="100"  fill="transparent" stroke-width="3" stroke="black"></rect>
+    <line x1="0" x2="200" y1="100" y2="0" stroke-width="2" stroke="black"></line>
+</svg>
+    </div>
+<br>
 <div class="topDiv">
     <div class="unitSize">xx</div>
     <div class="counterWrapper">
         <svg width="32" height="16">
             <rect x="0" y="0" width="32" height="16"  fill="transparent" stroke-width="3"></rect>
-            <line x1="0" x2="32" y1="16" y2="0" stroke-width="2"></line>
+            <line x1="0" x2="32.5" y1="15.5" y2="0" stroke-width="2"></line>
         </svg>
     </div>
     <div class="unitNumbers">
@@ -80,19 +96,19 @@
     </div>
 </div>
 
-<div class="topDiv otherr">
+<div class="topDiv smallUnit">
     <div class="shadowMask"></div>
 
     <div class="unitSize">xx</div>
     <div class="counterWrapper">
-        <svg width="32" height="16">
+        <svg width="20" height="10" viewBox="0 0 32 16">
             <rect x="0" y="0" width="32" height="16" fill="transparent" stroke-width="3"></rect>
             <circle cx="16" cy="8" r="4" stroke-width="1" ></circle>
 
         </svg>
     </div>
     <div class="unitNumbers">
-        9-5
+        6-3
     </div>
 </div>
 
@@ -116,7 +132,7 @@
         </svg>
     </div>
     <div class="unitNumbers">
-        9-5
+        13-8
     </div>
 </div>
 

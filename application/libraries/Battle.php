@@ -73,7 +73,7 @@ class Battle
         $file = file_get_contents(WARGAMES."/".$dir."/info.json");
         return json_decode($file);
     }
-    public static  function getBattle($name = false,$doc = null, $arg = false){
+    public static  function getBattle($name = false,$doc = null, $arg = false, $options = false){
         try{
         if(self::$theBattle){
             return self::$theBattle;
@@ -91,6 +91,12 @@ class Battle
                 if(!isset($scenarios->$pKey)){
                     $scenarios->$pKey = $pValue;
                 }
+            }
+            if($options){
+                foreach($options as $name){
+                    $scenarios->$name = true;
+                }
+
             }
             $thisBattle = new $className($doc, $arg, $scenarios, $game);
         }else{
