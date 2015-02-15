@@ -130,10 +130,17 @@
         echo "</ul>";
     } else {
         if ($games && $games[0]->game) {
-            echo "<h2>$plainGenre</h2>";
-            echo '<ul id = "theGamesGrid" >';
+            echo "<header class='coolBox'><h2>$plainGenre</h2>";
             $href = site_url("wargame/unattachedGame/");
-            echo "<a class='breadcrumb' href='$href'>back</a><br>";
+            echo "<a class='breadcrumb' href='$href'>back</a>";
+            ?>
+            Or
+            <a class="breadcrumb" href="<?= site_url("wargame/leaveGame"); ?>">back to lobby</a>
+            <a class="breadcrumb" href="<?= site_url("users/logout"); ?>">Logout</a>
+
+            <?php
+            echo "</header>";
+            echo '<ul id = "theGamesGrid" >';
             ?>
             {games}
             <li class="gridRow">
@@ -162,10 +169,6 @@
     <div ng-controller="RecursiveController">
         <recursive-rules data="[]"></recursive-rules>
     </div>
-    <br><br><br>
-    Or
-    <a href="<?= site_url("users/logout"); ?>">Logout</a>
-    <a href="<?= site_url("wargame/leaveGame"); ?>">back to lobby</a>
 </div>
 
 <footer class="unattached attribution">

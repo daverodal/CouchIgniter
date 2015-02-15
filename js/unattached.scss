@@ -3,8 +3,21 @@
 $grid-columns: 6;
 #container{
   width: 60%;
+  max-width:650px;
   margin-bottom:50px;
   margin:0 auto;
+  header{
+    border:1px solid black;
+    border-radius:10px;
+    width:20%;
+    position:fixed;
+    left:0px;
+    top:0px;
+    h2{
+      display:inline-block;
+    }
+  }
+
 }
 #container.wideGame{
   width:90%;
