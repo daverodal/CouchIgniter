@@ -64,8 +64,8 @@ class Wargame extends CI_Controller
                 $backgroundAttr = 'By MKFI (Own work) [Public domain], <a href="http://commons.wikimedia.org/wiki/File%3ASwedish_18th_century_6_pound_cannon_front.JPG">via Wikimedia Commons</a>';
             }
             if(preg_match("/19%27th/", $genre)) {
-                $backgroundImage = "USMC_Officers_stationed_at_Marine_Barracks,_Washington_D.C._in_1896.tiff.jpg";
-                $backgroundAttr = 'By USMC Historical Photograph (USMC Historical Division Archives) [Public domain], <a href="http://commons.wikimedia.org/wiki/File%3AUSMC_Officers_stationed_at_Marine_Barracks%2C_Washington_D.C._in_1896.tiff">via Wikimedia Commons</a>';
+                $backgroundImage = "1280px-1864_Johnson_s_Map_of_India_(Hindostan_or_British_India)_-_Geographicus_-_India-j-64.jpg";
+                $backgroundAttr = 'Alvin Jewett Johnson [Public domain], <a href="http://commons.wikimedia.org/wiki/File%3A1864_Johnson&#039;s_Map_of_India_(Hindostan_or_British_India)_-_Geographicus_-_India-j-64.jpg">via Wikimedia Commons</a>';
             }
             if(preg_match("/20%27th/", $genre)){
                 $backgroundImage = "M110_howitzer.jpg";
