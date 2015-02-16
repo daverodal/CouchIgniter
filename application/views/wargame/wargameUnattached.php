@@ -144,7 +144,7 @@
             ?>
             {games}
             <li class="gridRow">
-                <a class="rightGrid" href="{siteUrl}/{dir}/{urlGenre}/{game}">{game}</a>
+                <div class="rightGrid"><p><a href="{siteUrl}/{dir}/{urlGenre}/{game}">{name}</a></p><p>{description}</p></div>
                 <a href="{siteUrl}/{dir}/{urlGenre}/{game}"><img src="{mapUrl}"></a>
                 <div class="clear"></div>
             </li>

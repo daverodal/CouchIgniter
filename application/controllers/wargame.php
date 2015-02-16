@@ -169,7 +169,10 @@ class Wargame extends CI_Controller
                     if (isset($terrain->terrain->smallMapUrl)) {
                         $mapUrl = $terrain->terrain->smallMapUrl;
                     }
+                    $gameAvail->name = $gameAvail->value->name;
                     $gameAvail->mapUrl = $mapUrl;
+                    $gameAvail->longDescription = $gameAvail->value->longDescription;
+                    $gameAvail->description = $gameAvail->value->description;
                 }
 
                 $gameAvail->urlGenre = rawurlencode($gameAvail->genre);
