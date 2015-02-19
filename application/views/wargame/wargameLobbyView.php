@@ -21,6 +21,44 @@
         background-position: center top;
     }
 
+    .tabbable .nav-tabs{
+        padding: 5px 10px 15px;
+        border-radius: 10px;
+        background: white;
+        color: black;
+        border-bottom: 2px solid black;
+        border-radius: 0;
+        padding: 0;
+
+    }
+
+    .tabbable .nav-tabs li{
+
+        list-style: none;
+        display: inline-block;
+        color: black;
+        margin-bottom: -3px;
+        background: transparent;
+        padding: 15px;
+        border: 1px solid black;
+        border-radius: 10px 10px 0px 0px;
+        border-color: transparent;
+    }
+    .tabbable .nav-tabs li.active{
+         border-bottom: transparent;
+         background: white;
+         border-color: black;
+     }
+    .tabbable .nav-tabs li a{
+        color:black;
+    }
+    .thanks h1{
+        font-size:1.3em;
+    }
+    .thanks h2{
+        font-size:1.1em;
+    }
+
 </style>
 <script type="text/javascript">
     var DR = {};
@@ -29,51 +67,101 @@
 </script>
 
 </head>
-<body ng-controller="LobbyController">
-<div id="content">
-    <a class="logout logoutUpper" href="<?= site_url("users/logout"); ?>">Logout</a>
+<body >
+<my-tabs>
+    <my-pane title="Lobby">
+        <div id="content" ng-controller="LobbyController">
+            <a class="logout logoutUpper" href="<?= site_url("users/logout"); ?>">Logout</a>
 
-    <?php if ($myName == "Markarian") { ?>
-        <h1><a href="<?= site_url("admin"); ?>">Admin </a></h1>
-    <?php } ?>
-    <h2>Welcome {myName}</h2>
+            <?php if ($myName == "Markarian") { ?>
+                <h1><a href="<?= site_url("admin"); ?>">Admin </a></h1>
+            <?php } ?>
+            <h2>Welcome {myName}</h2>
 
-    <h3>You can <a id="create" href="<?= site_url("wargame/unattachedGame"); ?>">Browse or Start a new Wargame</a></h3>
-    Or play an existing game:<br>
+            <h3>You can <a id="create" href="<?= site_url("wargame/unattachedGame"); ?>">Browse or Start a new Wargame</a></h3>
+            Or play an existing game:<br>
 
-    <h1>Multi Player Games</h1>
-    <ul id="multiPlayerGames">
-        <li>
-            <h2>Multi games you created:</h2>
-            <ul id="myMultiGames">
+            <h1>Multi Player Games</h1>
+            <ul id="multiPlayerGames">
+                <li>
+                    <h2>Multi games you created:</h2>
+                    <ul id="myMultiGames">
+                        <li class="bold lobbyHeader">
+                            <span class="colOne">Name</span>
+                            <span class="colTwo">Game</span>
+                            <span class="colThree">Turn</span>
+                            <span class="colFour">Date</span>
+                            <span class="colFive">Players Involved</span>
+                            <span class="colSix">Actions</span>
+                        </li>
+                        <li class="bold lobbySpacer">&nbsp;</li>
+                        <li ng-class-odd="'odd'" ng-repeat="myMultiGame in myMultiGames" class="lobbyRow">
+                            <a ng-href="<?=site_url('wargame/changeWargame');?>/{{myMultiGame.id}}/">
+                                <span class="colOne">{{myMultiGame.name}}</span>
+                                <span class="colTwo">{{myMultiGame.gameName}}</span>
+                                <span class="colThree" ng-class="myMultiGame.myTurn">{{myMultiGame.turn}}</span>
+                                <span class="colFour">{{myMultiGame.date}}</span>
+                                <span class='colFive'>{{myMultiGame.players}}</span>
+                            </a>
+
+                    <span class="colSix"><a ng-click='publicGame(myMultiGame)' href='' ng-heref="{{myMultiGame.pubLink}}">make {{myMultiGame.pubLinkLabel}}</a> <a ng-href='<?=site_url('wargame/playAs');?>/{{myMultiGame.id}}'>edit</a> <a href='' ng-click="deleteGame(myMultiGame.id)">delete</a>
+</span>
+                            <div class='clear'></div>
+                        </li>
+
+                    </ul>
+                </li>
+                <li>
+                    <h2>Games you were invited to:</h2>
+                    <ul id="myOtherGames">
+                        <li class="lobbyHeader bold">
+                            <span class="colOne">Name</span>
+                            <span class="colTwo">Game</span>
+                            <span class="colThree">Turn</span>
+                            <span class="colFour">Date</span>
+                            <span class="colFive">Players Involved</span>
+                        </li>
+                        <li class="lobbySpacer">&nbsp;</li>
+                        <li ng-class-odd="'odd'" ng-repeat="myOtherGame in myOtherGames" class="lobbyRow">
+                            <a ng-href="<?=site_url('wargame/changeWargame');?>/{{myOtherGame.id}}/">
+                                <span class="colOne">{{myOtherGame.name}}</span>
+                                <span class="colTwo">{{myOtherGame.gameName}}</span>
+                                <span class="colThree" ng-class="myOtherGame.myTurn">It's {{myOtherGame.turn}} Turn</span>
+                                <span class="colFour">{{myOtherGame.date}}</span>
+                                <span class='colFive'>{{myOtherGame.players}}</span>
+                            </a>
+                            <div class='clear'></div>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <h2>HOTSEAT games you created:</h2>
+            <ul id="myGames">
                 <li class="bold lobbyHeader">
                     <span class="colOne">Name</span>
                     <span class="colTwo">Game</span>
                     <span class="colThree">Turn</span>
                     <span class="colFour">Date</span>
-                    <span class="colFive">Players Involved</span>
-                    <span class="colSix">Actions</span>
+                    <span class="colFive">Actions</span>
                 </li>
                 <li class="bold lobbySpacer">&nbsp;</li>
-                <li ng-class-odd="'odd'" ng-repeat="myMultiGame in myMultiGames" class="lobbyRow">
-                <a ng-href="<?=site_url('wargame/changeWargame');?>/{{myMultiGame.id}}/">
-                    <span class="colOne">{{myMultiGame.name}}</span>
-                    <span class="colTwo">{{myMultiGame.gameName}}</span>
-                    <span class="colThree" ng-class="myMultiGame.myTurn">{{myMultiGame.turn}}</span>
-                    <span class="colFour">{{myMultiGame.date}}</span>
-                    <span class='colFive'>{{myMultiGame.players}}</span>
-                </a>
+                <li ng-class-odd="'odd'" ng-repeat="myHotGame in myHotGames" class="lobbyRow">
 
-                    <span class="colSix"><a ng-click='publicGame(myMultiGame)' href='' ng-heref="{{myMultiGame.pubLink}}">make {{myMultiGame.pubLinkLabel}}</a> <a ng-href='<?=site_url('wargame/playAs');?>/{{myMultiGame.id}}'>edit</a> <a href='' ng-click="deleteGame(myMultiGame.id)">delete</a>
-</span>
+
+                    <a ng-href="<?=site_url('wargame/changeWargame');?>/{{myHotGame.id}}/">
+                        <span class="colOne">{{myHotGame.name}}</span>
+                        <span class="colTwo">{{myHotGame.gameName}}</span>
+                        <span class="colThree">{{myHotGame.turn}}</span>
+                        <span class="colFour">{{myHotGame.date}}</span>
+                        <span class='colFive'></span>
+                    </a>
+                    <a ng-click='publicGame(myHotGame)' href='' ng-heref="{{myHotGame.pubLink}}">make {{myHotGame.pubLinkLabel}}</a> <a ng-href='<?=site_url('wargame/playAs');?>/{{myHotGame.id}}'>edit</a> <a href='' ng-click="deleteGame(myHotGame.id)">delete</a>
+
                     <div class='clear'></div>
                 </li>
-
             </ul>
-        </li>
-        <li>
-            <h2>Games you were invited to:</h2>
-            <ul id="myOtherGames">
+            <h2>Public Games: (you can observe but not play)</h2>
+            <ul id="publicGames">
                 <li class="lobbyHeader bold">
                     <span class="colOne">Name</span>
                     <span class="colTwo">Game</span>
@@ -82,77 +170,84 @@
                     <span class="colFive">Players Involved</span>
                 </li>
                 <li class="lobbySpacer">&nbsp;</li>
-                <li ng-class-odd="'odd'" ng-repeat="myOtherGame in myOtherGames" class="lobbyRow">
-                    <a ng-href="<?=site_url('wargame/changeWargame');?>/{{myOtherGame.id}}/">
-                        <span class="colOne">{{myOtherGame.name}}</span>
-                        <span class="colTwo">{{myOtherGame.gameName}}</span>
-                        <span class="colThree" ng-class="myOtherGame.myTurn">It's {{myOtherGame.turn}} Turn</span>
-                        <span class="colFour">{{myOtherGame.date}}</span>
-                        <span class='colFive'>{{myOtherGame.players}}</span>
+
+                <li ng-class-odd="'odd'" ng-repeat="myPublicGame in myPublicGames" class="lobbyRow">
+                    <a ng-href="<?=site_url('wargame/changeWargame');?>/{{myPublicGame.id}}/">
+                        <span class="colOne">{{myPublicGame.name}}</span>
+                        <span class="colTwo">{{myPublicGame.gameName}}</span>
+                        <span class="colThree" ng-class="myPublicGame.myTurn">It's {{myPublicGame.turn}} Turn</span>
+                        <span class="colFour">{{myPublicGame.date}}</span>
+                        <span class='colFive'>{{myPublicGame.players}}</span>
                     </a>
                     <div class='clear'></div>
                 </li>
+
+
             </ul>
-        </li>
-    </ul>
-    <h2>HOTSEAT games you created:</h2>
-    <ul id="myGames">
-        <li class="bold lobbyHeader">
-            <span class="colOne">Name</span>
-            <span class="colTwo">Game</span>
-            <span class="colThree">Turn</span>
-            <span class="colFour">Date</span>
-            <span class="colFive">Actions</span>
-        </li>
-        <li class="bold lobbySpacer">&nbsp;</li>
-        <li ng-class-odd="'odd'" ng-repeat="myHotGame in myHotGames" class="lobbyRow">
+            <footer class="attribution">
+                By Paul Mercuri [Public domain or Public domain], <a target='blank' href="http://commons.wikimedia.org/wiki/File%3AArmored_Knight_Mounted_on_Cloaked_Horse.JPG">via Wikimedia Commons</a>`
+            </footer>
+            <a class="logout" href="<?= site_url("users/logout"); ?>">Logout</a>
+        </div>
 
-
-            <a ng-href="<?=site_url('wargame/changeWargame');?>/{{myHotGame.id}}/">
-            <span class="colOne">{{myHotGame.name}}</span>
-            <span class="colTwo">{{myHotGame.gameName}}</span>
-            <span class="colThree">{{myHotGame.turn}}</span>
-            <span class="colFour">{{myHotGame.date}}</span>
-                <span class='colFive'></span>
-            </a>
-            <a ng-click='publicGame(myHotGame)' href='' ng-heref="{{myHotGame.pubLink}}">make {{myHotGame.pubLinkLabel}}</a> <a ng-href='<?=site_url('wargame/playAs');?>/{{myHotGame.id}}'>edit</a> <a href='' ng-click="deleteGame(myHotGame.id)">delete</a>
-
-        <div class='clear'></div>
-        </li>
-    </ul>
-    <h2>Public Games: (you can observe but not play)</h2>
-    <ul id="publicGames">
-        <li class="lobbyHeader bold">
-            <span class="colOne">Name</span>
-            <span class="colTwo">Game</span>
-            <span class="colThree">Turn</span>
-            <span class="colFour">Date</span>
-            <span class="colFive">Players Involved</span>
-        </li>
-        <li class="lobbySpacer">&nbsp;</li>
-
-        <li ng-class-odd="'odd'" ng-repeat="myPublicGame in myPublicGames" class="lobbyRow">
-            <a ng-href="<?=site_url('wargame/changeWargame');?>/{{myPublicGame.id}}/">
-                <span class="colOne">{{myPublicGame.name}}</span>
-                <span class="colTwo">{{myPublicGame.gameName}}</span>
-                <span class="colThree" ng-class="myPublicGame.myTurn">It's {{myPublicGame.turn}} Turn</span>
-                <span class="colFour">{{myPublicGame.date}}</span>
-                <span class='colFive'>{{myPublicGame.players}}</span>
-            </a>
-            <div class='clear'></div>
-        </li>
-
-
-    </ul>
-    <footer class="attribution">
-        By Paul Mercuri [Public domain or Public domain], <a target='blank' href="http://commons.wikimedia.org/wiki/File%3AArmored_Knight_Mounted_on_Cloaked_Horse.JPG">via Wikimedia Commons</a>`
-    </footer>
-    <a class="logout" href="<?= site_url("users/logout"); ?>">Logout</a>
-</div>
+    </my-pane>
+    <my-pane title="Thanks" class="thanks">
+        <h1>Thanks go out to theses people and institutions.</h1>
+        <h2>Mark Butler richard.mark.butler@gmail.com http://www.webwargaming.org/</h2>
+        From wence the original code came from.
+        <br>
+        <h2>Lance Runolfsson lancerunolfsson@gmail.com https://sites.google.com/site/lancerunolfsson/home </h2>
+        The creator of Gross Jagersdorm, and many of the games here.
+        <h2>Wikimedia commons. http://commons.wikimedia.org/wiki/Main_Page</h2>
+        From where I got many of the images.
+        <h2>Wikipedia.org http://www.wikipedia.org/</h2>
+        Much of the game info was found there.
+    </my-pane>
+</my-tabs>
 </body>
 <script type="text/javascript">
 
     var lobbyApp = angular.module('lobbyApp', []);
+    lobbyApp.directive('myTabs', function() {
+        return {
+            restrict: 'E',
+            transclude: true,
+            scope: {},
+            controller: function($scope) {
+                var panes = $scope.panes = [];
+
+                $scope.select = function(pane) {
+                    angular.forEach(panes, function(pane) {
+                        pane.selected = false;
+                    });
+                    pane.selected = true;
+                };
+
+                this.addPane = function(pane) {
+                    if (panes.length === 0) {
+                        $scope.select(pane);
+                    }
+                    panes.push(pane);
+                };
+            },
+            template: '<div class="tabbable">            <ul class="nav nav-tabs">        <li ng-repeat="pane in panes" ng-class="{active:pane.selected}">        <a href="" ng-click="select(pane)">{{pane.title}}</a>    </li>    </ul>    <div class="tab-content" ng-transclude></div>    </div>'
+        };
+    })
+        .directive('myPane', function() {
+            return {
+                require: '^myTabs',
+                restrict: 'E',
+                transclude: true,
+                scope: {
+                    title: '@'
+                },
+                link: function(scope, element, attrs, tabsCtrl) {
+                    tabsCtrl.addPane(scope);
+                },
+                template: '<div class="tab-pane" ng-show="selected" ng-transclude></div>'
+            };
+        });
+
     lobbyApp.controller('LobbyController', ['$scope', '$http', 'sync', function($scope, $http, sync){
 
         sync.register('lobbies', function(lobbies){
