@@ -172,3 +172,59 @@ ul .lobbyRow:hover {
   border-radius: 10px;
   margin-bottom:15px;
 }
+
+
+.tabbable {
+  .nav-tabs {
+    padding: 5px 10px 15px;
+    border-radius: 10px;
+    background: white;
+    color: black;
+    border-bottom: 2px solid black;
+    border-radius: 0;
+    padding: 0;
+    li {
+
+      list-style: none;
+      display: inline-block;
+      color: black;
+      margin-bottom: -3px;
+      background: transparent;
+      padding: 15px;
+      border: 1px solid black;
+      border-radius: 10px 10px 0px 0px;
+      border-color: transparent;
+      &.active {
+        border-bottom: transparent;
+        background: white;
+        border-color: black;
+      }
+      a {
+        color: black;
+      }
+
+    }
+  }
+  .Thanks h1{
+    font-size:1.3em;
+  }
+  .Thanks h2{
+    font-size:1.1em;
+  }
+  .Welcome{
+    font-size:1.2em;
+  }
+}
+
+
+.coolBox {
+  font-size: 22px;
+  background: rgba(255, 255, 255, .9);
+  border: 1px solid #333;
+  border-radius: 15px;
+  margin: 40px;
+  padding: 20px;
+  box-shadow: 10px 10px 10px rgba(20, 20, 20, .7);
+  width:50%;
+  margin:0 auto;
+}

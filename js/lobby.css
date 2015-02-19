@@ -256,3 +256,45 @@ ul .lobbyRow:hover {
   .attribution:before {
     content: "Image by: ";
     font-style: italic; }
+
+.tabbable .nav-tabs {
+  padding: 5px 10px 15px;
+  border-radius: 10px;
+  background: white;
+  color: black;
+  border-bottom: 2px solid black;
+  border-radius: 0;
+  padding: 0; }
+  .tabbable .nav-tabs li {
+    list-style: none;
+    display: inline-block;
+    color: black;
+    margin-bottom: -3px;
+    background: transparent;
+    padding: 15px;
+    border: 1px solid black;
+    border-radius: 10px 10px 0px 0px;
+    border-color: transparent; }
+    .tabbable .nav-tabs li.active {
+      border-bottom: transparent;
+      background: white;
+      border-color: black; }
+    .tabbable .nav-tabs li a {
+      color: black; }
+.tabbable .Thanks h1 {
+  font-size: 1.3em; }
+.tabbable .Thanks h2 {
+  font-size: 1.1em; }
+.tabbable .Welcome {
+  font-size: 1.2em; }
+
+.coolBox {
+  font-size: 22px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid #333;
+  border-radius: 15px;
+  margin: 40px;
+  padding: 20px;
+  box-shadow: 10px 10px 10px rgba(20, 20, 20, 0.7);
+  width: 50%;
+  margin: 0 auto; }

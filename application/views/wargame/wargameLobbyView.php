@@ -21,43 +21,7 @@
         background-position: center top;
     }
 
-    .tabbable .nav-tabs{
-        padding: 5px 10px 15px;
-        border-radius: 10px;
-        background: white;
-        color: black;
-        border-bottom: 2px solid black;
-        border-radius: 0;
-        padding: 0;
 
-    }
-
-    .tabbable .nav-tabs li{
-
-        list-style: none;
-        display: inline-block;
-        color: black;
-        margin-bottom: -3px;
-        background: transparent;
-        padding: 15px;
-        border: 1px solid black;
-        border-radius: 10px 10px 0px 0px;
-        border-color: transparent;
-    }
-    .tabbable .nav-tabs li.active{
-         border-bottom: transparent;
-         background: white;
-         border-color: black;
-     }
-    .tabbable .nav-tabs li a{
-        color:black;
-    }
-    .thanks h1{
-        font-size:1.3em;
-    }
-    .thanks h2{
-        font-size:1.1em;
-    }
 
 </style>
 <script type="text/javascript">
@@ -69,7 +33,13 @@
 </head>
 <body >
 <my-tabs>
-    <my-pane title="Lobby">
+    <my-pane title="Welcome" is-selected="true">
+        <div class="coolBox">
+            This is the new destination of the game. Important messages will appear here. You may
+            proceed to the main lobby by clicking on "Lobby" above.
+        </div>
+    </my-pane>
+    <my-pane title="Lobby" >
         <div id="content" ng-controller="LobbyController">
             <a class="logout logoutUpper" href="<?= site_url("users/logout"); ?>">Logout</a>
 
@@ -224,13 +194,14 @@
                 };
 
                 this.addPane = function(pane) {
-                    if (panes.length === 0) {
+                    debugger;
+                    if (panes.length === 0 || pane.isSelected) {
                         $scope.select(pane);
                     }
                     panes.push(pane);
                 };
             },
-            template: '<div class="tabbable">            <ul class="nav nav-tabs">        <li ng-repeat="pane in panes" ng-class="{active:pane.selected}">        <a href="" ng-click="select(pane)">{{pane.title}}</a>    </li>    </ul>    <div class="tab-content" ng-transclude></div>    </div>'
+            template: '<div class="tabbable"><ul class="nav nav-tabs"><li ng-repeat="pane in panes" ng-class="{active:pane.selected}"><a href="" ng-click="select(pane)">{{pane.title}}</a></li></ul><div class="tab-content" ng-transclude></div></div>'
         };
     })
         .directive('myPane', function() {
@@ -239,12 +210,13 @@
                 restrict: 'E',
                 transclude: true,
                 scope: {
-                    title: '@'
+                    title: '@',
+                    isSelected: '@'
                 },
                 link: function(scope, element, attrs, tabsCtrl) {
                     tabsCtrl.addPane(scope);
                 },
-                template: '<div class="tab-pane" ng-show="selected" ng-transclude></div>'
+                template: '<div class="tab-pane" ng-class="title" ng-show="selected" ng-transclude></div>'
             };
         });
 
