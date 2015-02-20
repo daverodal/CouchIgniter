@@ -360,6 +360,7 @@ HEREUPDATE;
             $data->createDate = date("r");
             $data->createUser = $this->session->userdata("user");
             $data->playerStatus = "created";
+            $data->visibility = "public";
             $ret = $this->couchsag->create($data);
         } catch (Exception $e) {
             ;

@@ -33,13 +33,13 @@
 </head>
 <body >
 <my-tabs>
-    <my-pane title="Welcome" is-selected="true">
+    <my-pane title="Welcome">
         <div class="coolBox">
             This is the new destination of the game. Important messages will appear here. You may
             proceed to the main lobby by clicking on "Lobby" above.
         </div>
     </my-pane>
-    <my-pane title="Lobby" >
+    <my-pane title="Lobby"  is-selected="true" >
         <div id="content" ng-controller="LobbyController">
             <a class="logout logoutUpper" href="<?= site_url("users/logout"); ?>">Logout</a>
 
@@ -197,7 +197,11 @@
 
                 this.addPane = function(pane) {
                     debugger;
-                    if (panes.length === 0 || pane.isSelected) {
+
+                    if (panes.length === 0 ) {
+                        $scope.select(pane);
+                    }
+                    if((pane.isSelected && !location.hash) || ('#'+pane.title == location.hash)){
                         $scope.select(pane);
                     }
                     panes.push(pane);
@@ -216,6 +220,7 @@
                     isSelected: '@'
                 },
                 link: function(scope, element, attrs, tabsCtrl) {
+                    debugger;
                     tabsCtrl.addPane(scope);
                 },
                 template: '<div class="tab-pane" ng-class="title" ng-show="selected" ng-transclude></div>'

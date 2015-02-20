@@ -25,7 +25,7 @@ class Users extends CI_Controller
 //            $this->session->set_userdata(array("wargame" => "MainWargame"));
 //            $this->load->model('wargame/wargame_model');
 //            $this->wargame_model->enterWargame($user, "MainWargame");
-                redirect("/");
+                redirect("/wargame/play#welcome");
             }
         }
         if($user){
