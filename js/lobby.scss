@@ -180,7 +180,7 @@ ul .lobbyRow:hover {
     border-radius: 10px;
     background: white;
     color: black;
-    border-bottom: 2px solid black;
+    border-bottom: 3px solid #999;
     border-radius: 0;
     padding: 0;
     li {
@@ -188,16 +188,16 @@ ul .lobbyRow:hover {
       list-style: none;
       display: inline-block;
       color: black;
-      margin-bottom: -3px;
+      margin-bottom: -6px;
       background: transparent;
       padding: 15px;
-      border: 1px solid black;
+      border: 3px solid #999;
       border-radius: 10px 10px 0px 0px;
       border-color: transparent;
       &.active {
         border-bottom: transparent;
         background: white;
-        border-color: black;
+        border-color: #999;
       }
       a {
         color: black;

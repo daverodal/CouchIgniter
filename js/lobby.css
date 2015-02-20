@@ -262,23 +262,23 @@ ul .lobbyRow:hover {
   border-radius: 10px;
   background: white;
   color: black;
-  border-bottom: 2px solid black;
+  border-bottom: 3px solid #999;
   border-radius: 0;
   padding: 0; }
   .tabbable .nav-tabs li {
     list-style: none;
     display: inline-block;
     color: black;
-    margin-bottom: -3px;
+    margin-bottom: -6px;
     background: transparent;
     padding: 15px;
-    border: 1px solid black;
+    border: 3px solid #999;
     border-radius: 10px 10px 0px 0px;
     border-color: transparent; }
     .tabbable .nav-tabs li.active {
       border-bottom: transparent;
       background: white;
-      border-color: black; }
+      border-color: #999; }
     .tabbable .nav-tabs li a {
       color: black; }
 .tabbable .Thanks h1 {

@@ -196,7 +196,6 @@
                 };
 
                 this.addPane = function(pane) {
-                    debugger;
 
                     if (panes.length === 0 ) {
                         $scope.select(pane);
@@ -220,7 +219,6 @@
                     isSelected: '@'
                 },
                 link: function(scope, element, attrs, tabsCtrl) {
-                    debugger;
                     tabsCtrl.addPane(scope);
                 },
                 template: '<div class="tab-pane" ng-class="title" ng-show="selected" ng-transclude></div>'
