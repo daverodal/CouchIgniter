@@ -162,16 +162,18 @@
 
     </my-pane>
     <my-pane title="Thanks" class="thanks">
+        <div class="coolBox">
         <h1>Thanks go out to theses people and institutions.</h1>
         <h2>Mark Butler richard.mark.butler@gmail.com http://www.webwargaming.org/</h2>
         From wence the original code came from.
         <br>
         <h2>Lance Runolfsson lancerunolfsson@gmail.com https://sites.google.com/site/lancerunolfsson/home </h2>
-        The creator of Gross Jagersdorm, and many of the games here.
+        The creator of Gross Jagersdorf, and many of the games here.
         <h2>Wikimedia commons. http://commons.wikimedia.org/wiki/Main_Page</h2>
         From where I got many of the images.
         <h2>Wikipedia.org http://www.wikipedia.org/</h2>
         Much of the game info was found there.
+        </div>
     </my-pane>
 </my-tabs>
 </body>
