@@ -163,7 +163,7 @@
     </my-pane>
     <my-pane title="Thanks" class="thanks">
         <div class="coolBox">
-        <h1>Thanks go out to theses people and institutions.</h1>
+        <h1>Thanks go out to these people and institutions.</h1>
         <h2>Mark Butler richard.mark.butler@gmail.com http://www.webwargaming.org/</h2>
         From wence the original code came from.
         <br>
