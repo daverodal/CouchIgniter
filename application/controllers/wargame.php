@@ -388,7 +388,7 @@ class Wargame extends CI_Controller
         echo json_encode(["success"=>true, "emsg"=>false]);
     }
 
-    public function enterMulti($wargame = false, $playerOne = "", $playerTwo = "")
+    public function enterMulti($wargame = false, $playerOne = "", $playerTwo = "", $visibility="")
     {
         $user = $this->session->userdata("user");
         if (!$wargame) {
@@ -397,6 +397,12 @@ class Wargame extends CI_Controller
         }
         $this->load->model('wargame/wargame_model');
         $doc = $this->wargame_model->getDoc($wargame);
+        if(!$visibility){
+            $visibility = $doc->visibility;
+        }
+        if(!$visibility){
+            $visibility = "public";
+        }
         if (!doc || $doc->createUser != $user) {
             redirect("wargame/play");
         }
@@ -427,7 +433,7 @@ class Wargame extends CI_Controller
             $others = $users;
 
             $arg = $doc->wargame->arg;
-            $this->parser->parse("wargame/wargameMulti", compact("game", "users", "wargame", "me", "path", "others", "arg"));
+            $this->parser->parse("wargame/wargameMulti", compact("visibility", "game", "users", "wargame", "me", "path", "others", "arg"));
             return;
         }
 
@@ -436,7 +442,7 @@ class Wargame extends CI_Controller
         if ($playerTwo == "") {
             $playerTwo = $user;
         }
-        $this->wargame_model->enterMulti($wargame, $playerOne, $playerTwo);
+        $this->wargame_model->enterMulti($wargame, $playerOne, $playerTwo, $visibility);
         redirect("wargame/changeWargame/$wargame");
     }
 

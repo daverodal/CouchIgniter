@@ -58,7 +58,7 @@ class Wargame_model extends CI_Model
         $this->couchsag->update($doc->_id, $doc);
         return true;
     }
-    public function enterMulti($wargame, $playerOne, $playerTwo)
+    public function enterMulti($wargame, $playerOne, $playerTwo, $visibility)
     {
         $user = $this->session->userdata("user");
         try {
@@ -70,6 +70,7 @@ class Wargame_model extends CI_Model
             return false;
         }
         $doc->playerStatus = "multi";
+        $doc->visibility = $visibility;
         $doc->wargame->players = array("", $playerOne, $playerTwo);
         $doc->wargame->gameRules->turnChange = true;
         $this->couchsag->update($doc->_id, $doc);
@@ -360,7 +361,6 @@ HEREUPDATE;
             $data->createDate = date("r");
             $data->createUser = $this->session->userdata("user");
             $data->playerStatus = "created";
-            $data->visibility = "public";
             $ret = $this->couchsag->create($data);
         } catch (Exception $e) {
             ;
