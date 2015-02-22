@@ -28,10 +28,15 @@ $playerTwo = $force_name[2];?>
     <div class="center">&laquo;&laquo;vs&raquo;&raquo;</div>
     <div class="clear"></div>
     <div class="right">
-        <ul ng-if="player.myName">
+        <ul ng-if="player.myName == playerOne.myName">
             {users}
             <li><a ng-class="player.otherColor" href="{path}/{wargame}/{me}/{key}/{{publicGame}}">{key}</a></li>
             {/users}
+        </ul>
+        <ul ng-if="player.myName == playerTwo.myName">
+            {others}
+            <li><a ng-class="player.otherColor" href="{path}/{wargame}/{key}/{me}/{{publicGame}}">{key}</a></li>
+            {/others}
         </ul>
     </div>
     <div class="clear"></div>
