@@ -287,6 +287,11 @@ ul .lobbyRow:hover {
   font-size: 1.1em; }
 .tabbable .Welcome {
   font-size: 1.2em; }
+  .tabbable .Welcome h1 {
+    font-size: .8em; }
+  .tabbable .Welcome h2 {
+    font-size: 1.0em;
+    font-style: italic; }
   .tabbable .Welcome .coolBox {
     margin-top: 300px; }
 
