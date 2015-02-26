@@ -85,7 +85,7 @@ class Wargame extends CI_Controller
                 $terrain = $this->couchsag->get("terrain-".$game);
             }
 
-            $mapUrl = $terrain->terrain->mapUrl;
+            $bigMapUrl = $mapUrl = $terrain->terrain->mapUrl;
             if(isset($terrain->terrain->smallMapUrl)){
                 $mapUrl = $terrain->terrain->smallMapUrl;
             }
@@ -108,6 +108,7 @@ class Wargame extends CI_Controller
                 $thisScenario->sName = $theScenario;
                 $thisScenario->mapUrl = $terrain->terrain->mapUrl;
                 $theGame->value->scenarios->$theScenario->mapUrl = $terrain->terrain->mapUrl;
+                $thisScenario->bigMapUrl = $terrain->terrain->mapUrl;
                 if(isset($terrain->terrain->smallMapUrl)){
                     $thisScenario->mapUrl  = $terrain->terrain->smallMapUrl;
                 }
@@ -153,7 +154,7 @@ class Wargame extends CI_Controller
 //            $feed = preg_replace("/\n/","",$feed);
 //            $matches  = array();
 //            $regExp = preg_match("/<content:encoded><!\[CDATA\[(.*)]]><\/content:encoded/", $feed, $matches);
-            $this->parser->parse("wargame/wargameUnattached", compact("backgroundImage", "backgroundAttr", "mapUrl", "theScenario", "plainGenre", "theGame", "games", "nest","siteUrl"));
+            $this->parser->parse("wargame/wargameUnattached", compact("backgroundImage", "backgroundAttr","bigMapUrl", "mapUrl", "theScenario", "plainGenre", "theGame", "games", "nest","siteUrl"));
         } else {
             foreach ($gamesAvail as $gameAvail) {
                 if($gameAvail->game) {

@@ -177,6 +177,20 @@
     </my-pane>
 </my-tabs>
 </body>
+<script type="text/ng-template"  id="/tabs.html">
+    <div class="tabbable">
+        <ul class="nav nav-tabs">
+            <li ng-repeat="pane in panes" ng-class="{active:pane.selected}">
+                <a href="" ng-click="select(pane)">{{pane.title}}</a>
+            </li>
+        </ul>
+        <div class="tab-content" ng-transclude>
+        </div>
+    </div>
+</script>
+<script type="text/ng-template"  id="/tab-pane.html">
+    <div class="tab-pane" ng-class="title" ng-show="selected" ng-transclude></div>
+</script>
 <script type="text/javascript">
 
     var lobbyApp = angular.module('lobbyApp', []);
@@ -206,7 +220,7 @@
                     panes.push(pane);
                 };
             },
-            template: '<div class="tabbable"><ul class="nav nav-tabs"><li ng-repeat="pane in panes" ng-class="{active:pane.selected}"><a href="" ng-click="select(pane)">{{pane.title}}</a></li></ul><div class="tab-content" ng-transclude></div></div>'
+            templateUrl: '/tabs.html'
         };
     })
         .directive('myPane', function() {
@@ -221,7 +235,7 @@
                 link: function(scope, element, attrs, tabsCtrl) {
                     tabsCtrl.addPane(scope);
                 },
-                template: '<div class="tab-pane" ng-class="title" ng-show="selected" ng-transclude></div>'
+                templateUrl: '/tab-pane.html'
             };
         });
 
