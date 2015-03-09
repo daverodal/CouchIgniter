@@ -305,3 +305,14 @@ ul .lobbyRow:hover {
   box-shadow: 10px 10px 10px rgba(20, 20, 20, 0.7);
   width: 50%;
   margin: 0 auto; }
+
+.wideCoolBox {
+  font-size: 22px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid #333;
+  border-radius: 15px;
+  margin: 40px;
+  padding: 20px;
+  box-shadow: 10px 10px 10px rgba(20, 20, 20, 0.7);
+  width: 90%;
+  margin: 0 auto; }
