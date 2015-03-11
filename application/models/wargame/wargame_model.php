@@ -551,6 +551,7 @@ HEREUPDATE;
             $u->maxMove = $unit->maxMove;
             $u->forceId = $unit->forceId;
             $u->forceMarch = $unit->forceMarch;
+            $u->isDisrupted = $unit->isDisrupted;
             if ($unit->reinforceTurn > $turn) {
                 $u->reinforceTurn = $unit->reinforceTurn;
             }
