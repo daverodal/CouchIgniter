@@ -56,6 +56,9 @@
     <my-pane title="Welcome">
         <div class="coolBox">
           <h1>Welcome to davidrodal.com.</h1>
+            <h2> New Pre Pre Alpha game, Troops!</h2>
+            <h2><a href="<?= site_url("wargame/unattachedGame/Troops/early%2020%27th%20century%20tactical/Troops"); ?>">Browse to it here if you like.</a></h2>
+
             <h2> New licence info.</h2>
             <h2>There is a NEW scenario for "Chawinda 1965" available.</h2>
 
