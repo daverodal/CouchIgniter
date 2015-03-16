@@ -425,6 +425,7 @@ class Wargame extends CI_Controller
             redirect("wargame/play");
         }
 
+        $scenario = $doc->wargame->scenario;
         if ($playerOne == "") {
             $this->load->model('users/users_model');
             $users = $this->users_model->getUsersByUsername();
@@ -450,8 +451,9 @@ class Wargame extends CI_Controller
             $me = $user;
             $others = $users;
 
+            $players = ["neutral", $scenario->playerOne,$scenario->playerTwo];
             $arg = $doc->wargame->arg;
-            $this->parser->parse("wargame/wargameMulti", compact("visibility", "game", "users", "wargame", "me", "path", "others", "arg"));
+            $this->parser->parse("wargame/wargameMulti", compact("players","visibility", "game", "users", "wargame", "me", "path", "others", "arg"));
             return;
         }
 
