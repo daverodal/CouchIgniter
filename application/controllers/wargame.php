@@ -166,11 +166,6 @@ class Wargame extends CI_Controller
                     }
                 }
             }
-
-//            $feed = file_get_contents('http://localhost/~david/wordpress/?feed=rss2&s=Lobositz');
-//            $feed = preg_replace("/\n/","",$feed);
-//            $matches  = array();
-//            $regExp = preg_match("/<content:encoded><!\[CDATA\[(.*)]]><\/content:encoded/", $feed, $matches);
             $this->parser->parse("wargame/wargameUnattached", compact("backgroundImage", "backgroundAttr","bigMapUrl", "mapUrl", "theScenario", "plainGenre", "theGame", "games", "nest","siteUrl"));
         } else {
             foreach ($gamesAvail as $gameAvail) {
@@ -291,7 +286,14 @@ class Wargame extends CI_Controller
                 $otherGames[] = array("name" => $name, 'date' => $row->value[1], "id" => $id, "creator" => $creator, "gameType" => $gameType, "turn" => $playerTurn, "players" => $players, "myTurn" => $myTurn);
             }
             $myName = $user;
-            $this->parser->parse("wargame/wargameLobbyView", compact("lobbies", "otherGames", "myName"));
+
+
+
+            $xml = $this->_getFeed("http://davidrodal.com/pubs/category/welcome/feed");
+            $item = $xml->channel->item[0];
+            $content = $item->children('http://purl.org/rss/1.0/modules/content/');
+            $item->content = $content->encoded;
+            $this->parser->parse("wargame/wargameLobbyView", compact("item", "lobbies", "otherGames", "myName"));
             return;
 
         }
@@ -351,6 +353,13 @@ class Wargame extends CI_Controller
     }
 
 
+    private function _getFeed($url){
+        $feed = file_get_contents($url);
+        if ($feed !== false) {
+            $xml = new SimpleXmlElement($feed);
+            return $xml;
+        }
+    }
     function changeWargame($newWargame = false)
     {
         $user = $this->session->userdata("user");
