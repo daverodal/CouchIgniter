@@ -260,7 +260,7 @@ ul .lobbyRow:hover {
 .tabbable .nav-tabs {
   padding: 5px 10px 15px;
   border-radius: 10px;
-  background: white;
+  background: transparent;
   color: black;
   border-bottom: 3px solid #999;
   border-radius: 0;
@@ -316,3 +316,5 @@ ul .lobbyRow:hover {
   box-shadow: 10px 10px 10px rgba(20, 20, 20, 0.7);
   width: 90%;
   margin: 0 auto; }
+
+/*# sourceMappingURL=lobby.css.map */
