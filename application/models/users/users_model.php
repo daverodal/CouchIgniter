@@ -30,7 +30,8 @@ class Users_model extends CI_Model
 
     private function _setDB(){
         $this->prevDB = $this->couchsag->sag->currentDatabase();
-        $this->couchsag->sag->setDatabase('users');
+        $dbName = $this->config->item('user_db');
+        $this->couchsag->sag->setDatabase($dbName);
 
     }
     private function _restoreDB(){
@@ -83,7 +84,9 @@ class Users_model extends CI_Model
     }
 
     public function initDoc(){
-        $this->couchsag->sag->setDatabase('users');
+
+        $dbName = $this->config->item('user_db');
+        $this->couchsag->sag->setDatabase($dbName);
 
         try{
             echo "is Users doc presesnt?\n";
@@ -190,8 +193,6 @@ byId;
         }
 
 byUsername;
-        $getAvailGames = new stdClass();
-        $getAvailGames->map = "function(doc){if(doc.docType == 'gamesAvail'){if(doc.games){for(var i in doc.games){emit(doc.games[i],doc.games[i]);}}}}";
 
         $gnuGetAvailGames = new stdClass();
         $gnuGetAvailGames->map = <<<gamesAvail
@@ -206,6 +207,22 @@ byUsername;
             }
 
 gamesAvail;
+        $getCustomScenarios = new stdClass();
+        $getCustomScenarios->map = <<<customScenarios
+            function(doc){
+                if(doc.docType == 'scenariosAvail'){
+                    if(doc.games){
+                        for(var i in doc.games){
+                          for(var s in doc.games[i].scenarios){
+                            emit([doc.games[i].path,doc.games[i].genre,i,s],doc.games[i].scenarios[s]);
+                          }
+                        }
+                    }
+                }
+            }
+
+customScenarios;
+
         $gnuGetAvailGames->reduce = <<<gamesAvailReduce
             function(keys, values, rereduce) {
                 if (rereduce) {
@@ -222,8 +239,8 @@ gamesAvailReduce;
         $views['userByEmail'] = $users;
         $views['userById'] = $userById;
         $views['userByUsername'] = $userByUsername;
-        $views['getAvailGames'] = $getAvailGames;
         $views['gnuGetAvailGames'] = $gnuGetAvailGames;
+        $views['getCustomScenarios'] = $getCustomScenarios;
 
 //        $data = array("_id" => "_design/newFilter", "views" => $views, "filters" => $filters, "updates"=> $updates);
         $data = array("_id" => "_design/newFilter", "views" => $views);
@@ -414,6 +431,45 @@ gamesAvailReduce;
 
         return $games;
     }
+    public function getCustomScenarios($dir = false, $genre = false, $game = false){
+        $reduceArgs = "group=true&group_level=2";
+        if($dir !== false){
+            $reduceArgs = "group=true&group_level=2&startkey=[\"$dir\"]&endkey=[\"$dir\",\"zzzzzzzzzzzzzzzzzzzzzzzz\"]";
+            if($dir === true){
+                $reduceArgs = "reduce=false";
+            }
+            if($genre !== false){
+                $reduceArgs = "reduce=false&startkey=[\"$dir\",\"$genre\"]&endkey=[\"$dir\",\"$genre\",\"zzzzzzzzzzzzzzzzzzzzzzzz\"]";
+                if($game !== false){
+                    $reduceArgs = "reduce=false&startkey=[\"$dir\",\"$genre\",\"$game\"]&endkey=[\"$dir\",\"$genre\",\"$game\",\"zzzzzzzzzzzzzzzzzzzzzzzz\"]";
+                }
+            }
+        }
+        $this->_setDB();
+
+        $seq = $this->couchsag->get("/_design/newFilter/_view/getCustomScenarios?$reduceArgs");
+        $this->_restoreDB();
+        $rows = $seq->rows;
+        $games = [];
+
+        foreach($rows as $row){
+            if($dir === true){
+                $game = $row->value;
+                $game->key = $row->key;
+            }else{
+                $game = new stdClass();
+                $game->dir = $row->key[0];
+                $game->genre = $row->key[1];
+                $game->game = $row->key[2];
+                $game->scenario = $row->key[3];
+                $game->value = $row->value;
+            }
+            $games[] = $game;
+        }
+
+        return $games;
+    }
+
     public function getGame($gameName){
         $games = $this->getAvailGames(true);
         foreach($games as $game){

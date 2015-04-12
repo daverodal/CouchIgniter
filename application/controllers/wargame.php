@@ -132,6 +132,30 @@ class Wargame extends CI_Controller
                 $theScenarios[] = $thisScenario;
 
             }
+            $customScenarios = $this->users_model->getCustomScenarios($dir, $genre, $game);
+            foreach($customScenarios as $customScenario){
+                $terrainName = "terrain-".$game;
+                $theScenario = $customScenario->scenario;
+                if($theScenario){
+                    $terrainName .= ".$theScenario";
+                }
+                try {
+                    $terrain = $this->couchsag->get($terrainName);
+                }catch(Exception $e){}
+                if(!$terrain){
+                    $terrain = $this->couchsag->get("terrain-".$game);
+                }
+                $thisScenario = $customScenario->value;
+                $thisScenario->sName = $theScenario;
+                $thisScenario->mapUrl = $terrain->terrain->mapUrl;
+//                $theGame->value->scenarios->$theScenario->mapUrl = $terrain->terrain->mapUrl;
+                $thisScenario->bigMapUrl = $terrain->terrain->mapUrl;
+                if(isset($terrain->terrain->smallMapUrl)){
+                    $thisScenario->mapUrl  = $terrain->terrain->smallMapUrl;
+                }
+                $theScenarios[] = $thisScenario;
+            }
+
             $theGame->value->scenarios = $theScenarios;
             $gameFeed = strtolower($game);
             $feed = file_get_contents("http://davidrodal.com/pubs/category/$gameFeed/feed");

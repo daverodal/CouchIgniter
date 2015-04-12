@@ -22,7 +22,9 @@ class Rest_model extends CI_Model
     private function _setDB()
     {
         $this->prevDB = $this->couchsag->sag->currentDatabase();
-        $this->couchsag->sag->setDatabase('rest');
+        $dbName = $this->config->item('rest_db');
+
+        $this->couchsag->sag->setDatabase($dbName);
 
     }
 
