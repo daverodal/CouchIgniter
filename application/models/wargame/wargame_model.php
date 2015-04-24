@@ -615,12 +615,18 @@ HEREUPDATE;
                 }
                 $matches = array();
                 preg_match("/m(\d*)$/",$key,$matches);
+                if(strlen($matches[1]) < 1){
+                    continue;
+                }
                 $unitId = $matches[1];
                     if(!isset($sentBreadcrumbs->$unitId)){
                         $sentBreadcrumbs->$unitId = [];
                     }
                     $sentMoves = $sentBreadcrumbs->$unitId;
                     foreach($moves as $move){
+                        if(!isset($move->fromHex)){
+                            continue;
+                        }
                         if($move->fromHex === "0000"){
                             continue;
                         }
