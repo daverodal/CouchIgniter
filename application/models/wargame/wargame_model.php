@@ -235,7 +235,7 @@ class Wargame_model extends CI_Model
                 return false;
             }
 
-            if(doc.createUser != player && doc.wargame.players[1] != player && doc.wargame.players[2] != player){
+            if(doc.visibility !== "public" && doc.createUser != player && doc.wargame.players[1] != player && doc.wargame.players[2] != player){
                 return false;
             }
             if(doc.wargame.gameRules.turnChange){
