@@ -569,9 +569,6 @@ HEREUPDATE;
                 $pointsLeft = preg_replace("/(\.[1-9]*)0*/","$1",$pointsLeft);
                 $moveRules->moves->{$k}->pointsLeft = $pointsLeft;
                 unset($moveRules->moves->$k->isValid);
-
-//                unset($moveRules->moves->$k->isOccupied);
-
             }
             if (false && $moveRules->path) {
                 foreach ($moveRules->path as $hexName) {
@@ -607,9 +604,9 @@ HEREUPDATE;
         $sentBreadcrumbs = new stdClass();
         if ($doc->wargame->mapData->breadcrumbs) {
             $breadcrumbs = $doc->wargame->mapData->breadcrumbs;
-            $breadcrumbKey = "/$turn"."t".$gameRules->phase."p".$gameRules->mode."m/";
+            $breadcrumbKey = "/$turn"."t".$attackingId."a/";
 
-            foreach($breadcrumbs as $key => $moves){
+            foreach($breadcrumbs as $key => $crumbs){
                 if(!preg_match($breadcrumbKey, $key)){
                     continue;
                 }
@@ -623,24 +620,40 @@ HEREUPDATE;
                         $sentBreadcrumbs->$unitId = [];
                     }
                     $sentMoves = $sentBreadcrumbs->$unitId;
-                    foreach($moves as $move){
-                        if(!isset($move->fromHex)){
-                            continue;
+                    foreach($crumbs as $crumb){
+                        if(!isset($crumb->type)){
+                            $type = "move";
+                        }else{
+                            $type = $crumb->type;
                         }
-                        if($move->fromHex === "0000"){
-                            continue;
+                        switch($type){
+                            case "move":
+                                if($crumb->fromHex === "0000"){
+                                    continue;
+                                }
+                                $fromHex = new Hexagon($crumb->fromHex);
+                                $mapGrid->setHexagonXY($fromHex->x, $fromHex->y);
+                                $crumb->fromX = intval($mapGrid->getPixelX());
+                                $crumb->fromY = intval($mapGrid->getPixelY());
+
+                                $toHex = new Hexagon($crumb->toHex);
+                                $mapGrid->setHexagonXY($toHex->x, $toHex->y);
+                                $crumb->toX = intval($mapGrid->getPixelX());
+                                $crumb->toY = intval($mapGrid->getPixelY());
+                                break;
+                            case "combatResult":
+                                if($crumb->hex){
+                                    $hex = new Hexagon($crumb->hex);
+                                    $mapGrid->setHexagonXY($hex->x, $hex->y);
+                                    $crumb->hexX = intval($mapGrid->getPixelX());
+                                    $crumb->hexY = intval($mapGrid->getPixelY());
+                                }
+
+                                break;
                         }
-                        $fromHex = new Hexagon($move->fromHex);
-                        $mapGrid->setHexagonXY($fromHex->x, $fromHex->y);
-                        $move->fromX = intval($mapGrid->getPixelX());
-                        $move->fromY = intval($mapGrid->getPixelY());
 
-                        $toHex = new Hexagon($move->toHex);
-                        $mapGrid->setHexagonXY($toHex->x, $toHex->y);
-                        $move->toX = intval($mapGrid->getPixelX());
-                        $move->toY = intval($mapGrid->getPixelY());
 
-                        $sentMoves[] = $move;
+                        $sentMoves[] = $crumb;
                     }
                     $sentBreadcrumbs->$unitId = $sentMoves;
                 }
