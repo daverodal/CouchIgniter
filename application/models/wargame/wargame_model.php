@@ -435,10 +435,14 @@ HEREUPDATE;
         global $mode_name, $phase_name;
         $time = false;
         $timeBranch = false;
+        $timeFork = false;
         if ($_GET['timeTravel']) {
             $time = $_GET['timeTravel'];
             if ($_GET['branch']) {
                 $timeBranch = true;
+            }
+            if ($_GET['fork']) {
+                $timeFork = true;
             }
         }
 
@@ -487,6 +491,23 @@ HEREUPDATE;
             $doc->wargame->gameRules->flashMessages[] = "Time Travel to click $time";
             $this->couchsag->update($doc->_id, $doc);
             $last_seq = 0;
+        }
+
+        if($timeFork){
+            $doc->wargame->gameRules->flashMessages[] = "Time Travel to click $time";
+            $doc->forkedFrom = $doc->_id;
+            unset($doc->_id);
+            unset($doc->_rev);
+            $doc->name .= "Clone $time";
+            $ret = $this->couchsag->create($doc);
+            $last_seq = 0;
+
+            if (is_object($ret) === true) {
+                $wargame = $ret->body->id;
+                $this->session->set_userdata(array("wargame" => $wargame));
+            }
+            $doc = $this->couchsag->get($wargame);
+
         }
 
         $click = $doc->_rev;

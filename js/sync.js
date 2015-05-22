@@ -44,6 +44,11 @@ function Sync(baseUrl) {
           this.timeBranch = false;
           this.timeTravel = false;
         }
+        if(this.timeFork){
+            travel += "&fork=true";
+            this.timeFork = false;
+            this.timeTravel = false;
+        }
         this.current = $.ajax(
             {url:this.baseUrl + "/" + last_seq+travel,
                 type:"POST",
