@@ -132,7 +132,7 @@
         <h3>Historical Context</h3>
 
         <div class="coolBox wordpress-wrapper">
-        <a target='_blank' ng-href="{{histEditLink}}">Edit</a>
+        <a ng-if="editor" target='_blank' ng-href="{{histEditLink}}">Edit</a>
         <?php //echo $theGame->value->histEditLink;
         echo $theGame->value->longDesc; ?>
         </div>
@@ -209,6 +209,7 @@
             break;
         }
         $scope.game = '<?=$theGame->game;?>';
+        $scope.editor = '<?=$editor;?>';
         $scope.name = '<?=addslashes($theGame->value->name);?>';
         $scope.description = '<?=$theGame->value->description;?>';
         $scope.histEditLink = '<?=$theGame->value->histEditLink;?>';

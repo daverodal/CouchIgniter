@@ -72,6 +72,11 @@ class Wargame extends CI_Controller
         $games = array();
         $theGame = false;
         $siteUrl = site_url("wargame/unattachedGame/");
+        $editor = false;
+        if($this->session->userdata("editor")){
+            $editor = true;
+        }
+
 
         $backgroundImage = "Egyptian_Pharaoh_in_a_War-Chariot,_Warrior,_and_Horses._(1884)_-_TIMEA.jpg";
         $backgroundAttr = 'By Unknown author [<a href="http://creativecommons.org/licenses/by-sa/2.5">CC BY-SA 2.5</a>], <a href="http://commons.wikimedia.org/wiki/File%3AEgyptian_Pharaoh_in_a_War-Chariot%2C_Warrior%2C_and_Horses._(1884)_-_TIMEA.jpg">via Wikimedia Commons</a>';
@@ -196,7 +201,7 @@ class Wargame extends CI_Controller
                     }
                 }
             }
-            $this->parser->parse("wargame/wargameUnattached", compact("backgroundImage", "backgroundAttr","bigMapUrl", "mapUrl", "theScenario", "plainGenre", "theGame", "games", "nest","siteUrl"));
+            $this->parser->parse("wargame/wargameUnattached", compact("editor", "backgroundImage", "backgroundAttr","bigMapUrl", "mapUrl", "theScenario", "plainGenre", "theGame", "games", "nest","siteUrl"));
         } else {
             foreach ($gamesAvail as $gameAvail) {
                 if($gameAvail->game) {
@@ -222,7 +227,7 @@ class Wargame extends CI_Controller
                 $games[] = $gameAvail;
 
             }
-            $this->parser->parse("wargame/wargameUnattached", compact("backgroundAttr", "backgroundImage","theScenario", "plainGenre", "theGame", "games", "nest","siteUrl"));
+            $this->parser->parse("wargame/wargameUnattached", compact("editor", "backgroundAttr", "backgroundImage","theScenario", "plainGenre", "theGame", "games", "nest","siteUrl"));
         }
 //        echo "<pre>"; var_dump(compact("mapUrl","theScenario", "plainGenre", "theGame", "games", "nest","siteUrl"));die('did');
 

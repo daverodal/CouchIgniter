@@ -37,8 +37,10 @@ class Users extends CI_Controller
         if (!$user && $data) {
             if ($this->users_model->isValidLogin($data['name'], md5($data['password']))) {
                 $user = $this->users_model->getUserByEmail($data['name']);
-                $user = $user->username;
-                $this->session->set_userdata(array("user" => $user));
+                $username = $user->username;
+                $editor = $user->editor;
+                $this->session->set_userdata(array("user" => $username));
+                $this->session->set_userdata(array("editor" => $editor));
                 $this->users_model->userLoggedIn($user);
 //            $this->session->set_userdata(array("wargame" => "MainWargame"));
 //            $this->load->model('wargame/wargame_model');
@@ -98,7 +100,7 @@ class Users extends CI_Controller
             $this->load->view('users/addUser', array("save_errors" => ""));
         } else {
             $this->load->model('users/users_model');
-            $err = $this->users_model->addUser($this->input->post('email'), $this->input->post('password'), $this->input->post('username'));
+            $err = $this->users_model->addUser($this->input->post('email'), $this->input->post('password'), $this->input->post('username'), $this->input->post('editor'));
             if ($err) {
                 $this->load->view('users/addUser', array("save_errors" => $err));
 
