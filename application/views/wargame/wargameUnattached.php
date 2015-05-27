@@ -31,6 +31,7 @@
     <script src="<?= base_url("js/jquery-ui-1.11.0.min.js"); ?>"></script>
     <script src="<?= base_url("js/sync.js"); ?>"></script>
     <script src="<?= base_url("js/angular.js"); ?>"></script>
+    <script src="<?= base_url("js/angular-modal-service.js"); ?>"></script>
     <meta charset="UTF-8">
     <link href="<?= base_url("js/unattached.css"); ?>" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="<?= base_url("js/font-awesome-4.2.0/css/font-awesome.min.css"); ?>">
@@ -78,6 +79,37 @@
         @-moz-keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
         @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
 
+        .back-screen{
+           background:black;
+            width:100%;
+            height:100%;
+            position:fixed;
+            left:0px;top:0px;
+            opacity:.6;
+        }
+
+        .close{
+            float:right;
+        }
+
+        .modal-box{
+            font-size:40px;
+            padding:40px;
+            text-align:center;
+            background:white;
+            width:50%;
+            height:50%;
+            position:fixed;
+            left:25%;
+            top:25%;
+            opacity:.9;
+            border: 10px solid black;
+            border-radius:20px;
+        }
+        .modal-box input{
+            font-size: 30px;
+        }
+
         /*ol {*/
             /*counter-reset: item;*/
             /*padding-left: 10px;*/
@@ -122,7 +154,7 @@
             <p class='softVoice'> Click on a scenario below</p>
             <div ng-repeat="(sName, scenario) in scenarios" ng-click="clickityclick(scenario)" class="clearWrapper">
                 <span  class="scenarioWrapper {{scenario.selected}}">{{scenario.description}}</span>
-                <a class='scenarioWrapper play' ng-href='<?= site_url("wargame/createWargame/") ?>/{{game}}/{{scenario.sName}}?{{setOptions}}'>Play &raquo;</a>
+                <a class='scenarioWrapper play' ng-click="showCustom('<?= site_url("wargame/createWargame/") ?>/'+game+'/'+scenario.sName+'?'+setOptions)">Play &raquo;</a>
                 <div class="clear"></div>
             </div>
             <p class="scenarioDescription long-description selected">&ldquo;{{scenario.longDescription}}&rdquo;</p>
@@ -200,8 +232,19 @@
 </script>
 <script type="text/javascript">
     var jString = '<?php echo addslashes(json_encode($theGame->value->scenarios));?>';
-    var scenarioApp = angular.module('scenarioApp', []);
-    scenarioApp.controller('ScenarioController', ['$scope', function ($scope) {
+    var scenarioApp = angular.module('scenarioApp', ['angularModalService']);
+    scenarioApp.controller('CustomController', ['$scope', 'close', function($scope, close) {
+
+        $scope.display = true;
+        $scope.theUrl = $scope.$root.theUrl;
+
+        $scope.close = function() {
+            $scope.display = false;
+            close();
+        };
+
+    }]);
+    scenarioApp.controller('ScenarioController', ['$scope', 'ModalService', function ($scope, ModalService) {
         $scope.predicate = '';
         $scope.scenarios = $.parseJSON(jString);
         for (var i in $scope.scenarios) {
@@ -241,6 +284,22 @@
             }
         }
         $scope.updateOptions();
+
+
+        $scope.showCustom = function(arg) {
+
+            $scope.$root.theUrl = arg;
+            ModalService.showModal({
+                templateUrl: "<?= base_url("js/custom.html");?>",
+                controller: "CustomController"
+            }).then(function(modal) {
+                modal.close.then(function(result) {
+                    $scope.customResult = "All good!";
+                });
+            });
+
+        };
+
     }]).
     directive('imageonload', function() {
         return {
@@ -257,7 +316,6 @@
     scenarioApp.controller('RecursiveController', ['$scope', function($scope) {
 
         $scope.typeOf = function(val){
-            debugger;
             return (typeof val) === 'object';
         };
         $scope.data = [
@@ -288,7 +346,6 @@
             },
             template: '',
             link: function (scope, element, attrs) {
-                debugger;
                 if (angular.isArray(scope.data)) {
                     element.append("Dude! <recursive-rules data='data'></recursive-rules>");
                 }else{
