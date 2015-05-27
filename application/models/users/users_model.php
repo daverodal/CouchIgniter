@@ -270,7 +270,7 @@ gamesAvailReduce;
         }
 
     }
-    public function addUser($email, $password, $username){
+    public function addUser($email, $password, $username, $editor){
         $this->_setDB();
         $strikes = 0;
         while($strikes < 3){
@@ -291,6 +291,9 @@ gamesAvailReduce;
                 $user->id = $usersDoc->userId++;
                 $user->username = $username;
                 $user->password = $password;
+                if($editor){
+                    $user->editor = true;
+                }
                 $usersDoc->userByEmail->$email = $user;
                 if(isset($usersDoc->userById)){
                     unset($usersDoc->userById);

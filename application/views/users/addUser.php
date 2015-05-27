@@ -38,6 +38,7 @@
 
 <h5>Password Confirm</h5>
 <input type="password" name="passconf" value="" size="50" />
+<h5>is editor</h5><input type="checkbox" name="editor" value="editor">
 
 
 <div><input type="submit" value="Submit" /></div>
