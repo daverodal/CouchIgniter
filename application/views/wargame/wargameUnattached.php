@@ -80,16 +80,15 @@
         @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
 
         .back-screen{
-           background:black;
+           background:white;
             width:100%;
             height:100%;
             position:fixed;
             left:0px;top:0px;
-            opacity:.6;
+            opacity:.9;
         }
 
         .close{
-            float:right;
         }
 
         .modal-box{
@@ -98,13 +97,14 @@
             text-align:center;
             background:white;
             width:50%;
-            height:50%;
+            height:auto;
             position:fixed;
             left:25%;
-            top:25%;
+            top:15%;
             opacity:.9;
             border: 10px solid black;
             border-radius:20px;
+            box-shadow: 10px 10px 10px #666;
         }
         .modal-box input{
             font-size: 30px;
