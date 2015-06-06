@@ -22,7 +22,7 @@
     <link href="<?= base_url("js/lobby.css"); ?>" rel="stylesheet" type="text/css">
     <style type="text/css">
         body{
-            background-image: url(<?= base_url("js/French_nuclear-powered_aircraft_carrier_Charles_de_Gaulle.jpeg");?>);
+            background-image: url(<?= base_url("js/French_nuclear-powered_aircraft_carrier_Charles_de_Gaulle.jpg");?>);
             background-repeat: no-repeat;
             background-position: center top;
             background-size:100%;
