@@ -877,6 +877,13 @@ Public License instead of this License.  But first, please read
             </pre>
         </div>
     </my-pane>
+    <my-pane title="Profile">
+        <div class="coolBox">
+            <h2>Welcome {myName}</h2>
+            <a href="<?=site_url("users/changePassword/");?>">Change Password</a>
+        </div>
+
+    </my-pane>
 </my-tabs>
 </body>
 <script type="text/ng-template"  id="/tabs.html">

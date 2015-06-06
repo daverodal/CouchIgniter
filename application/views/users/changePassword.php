@@ -19,8 +19,28 @@
 ?><html>
 <head>
     <title>My Form</title>
+    <link href="<?= base_url("js/lobby.css"); ?>" rel="stylesheet" type="text/css">
+    <style type="text/css">
+        body{
+            background-image: url(<?= base_url("js/French_nuclear-powered_aircraft_carrier_Charles_de_Gaulle.jpeg");?>);
+            background-repeat: no-repeat;
+            background-position: center top;
+            background-size:100%;
+        }
+        label {
+            display:inline-block;
+            min-width: 200px;
+        }
+        .attribution{
+            position: absolute;
+            bottom:0px;
+            background:#eee;
+            box-shadow: 10px 10px 10px #666;
+        }
+    </style>
 </head>
 <body>
+<div class="coolBox">
 <a href="<?=site_url("wargame/play");?>">back</a>
 <?php echo validation_errors(); ?>
 <?php if($save_errors){echo $save_errors;}?>
@@ -28,19 +48,23 @@
 
 
 
-<h5>Old Password</h5>
+<label>Old Password</label>
 <input type="password" name="currPassword" value="" size="50" />
-
-<h5>Password</h5>
+<br>
+<label>Password</label>
 <input type="password" name="password" value="" size="50" />
-
-<h5>Password Confirm</h5>
+<br>
+<label>Password Confirm</label>
 <input type="password" name="passconf" value="" size="50" />
 
 
 <div><input type="submit" value="Submit" /></div>
 
 </form>
+    </div>
 
+<div class="attribution">
+    By David Townsend, U.S. Navy [Public domain], <a target="blank" href="http://commons.wikimedia.org/wiki/File%3AFrench_nuclear-powered_aircraft_carrier_Charles_de_Gaulle.JPEG">via Wikimedia Commons</a>
+</div>
 </body>
 </html>

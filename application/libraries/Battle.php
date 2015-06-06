@@ -167,6 +167,17 @@ class Battle
 
     }
 
+    public static function transformChanges($doc, $last_seq, $user){
+        try{
+            $game = self::loadGame($doc->gameName,$doc->wargame->arg);
+            $className = $game->className;
+            return $className::transformChanges($doc, $last_seq, $user);
+
+        }catch(Exception $e){echo $e->getMessage()." ".$e->getFile()." ".$e->getLine();}
+
+    }
+
+
     public static function loadGame($name, $arg = false){
         if(self::$isLoaded){
             return self::$game;
