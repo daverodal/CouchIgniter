@@ -108,7 +108,7 @@ class Wargame extends CI_Controller
             }
             try {
                 $terrain = $this->couchsag->get($terrainName);
-            }catch(Exception $e){}
+            }catch(Exception $e){echo $terrainName." ".$e->getMessage();               }
             if(!$terrain){
                 $terrain = $this->couchsag->get("terrain-".$game);
             }
