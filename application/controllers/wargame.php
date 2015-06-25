@@ -842,6 +842,7 @@ class Wargame extends CI_Controller
 
     public function terrainInit($game = "MartianCivilWar", $arg = false, $terrainDocId = false)
     {
+        ini_set('memory_limit','1014M');
         $user = $this->session->userdata("user");
 
         $this->load->library("battle");
