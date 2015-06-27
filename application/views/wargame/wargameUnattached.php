@@ -173,7 +173,7 @@
         <div class='spinner-div' ng-if="imageUpdating" ><i class="fa fa-spinner fa-spin"></i></div>
         <img id="mapImage" imageonload ng-src="{{scenario.mapUrl}}">
         <?php
-        echo "<h3>Player Notes</h3><div class='coolBox wordpress-wrapper'>";
+        echo "<h3>Designer Notes</h3><div class='coolBox wordpress-wrapper'>";
         echo $theGame->value->playerEditLink;
         echo $theGame->value->playerNotes;
         echo "</div></li>";
