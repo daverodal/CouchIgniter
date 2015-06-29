@@ -38,6 +38,7 @@ if($players[2]){
     $playerTwo = $players[2];
 }?>
 <div class="wrapper">
+    <h1 ng-if="macsPlayers > 2">multi??? {{macsPlayers}}</h1>
     <form name="myForm" >
         Game is {{publicGame}} <input type="checkbox" ng-model="publicGame"
                                   ng-true-value="'public'" ng-false-value="'private'"> <br/>
@@ -73,6 +74,7 @@ if($players[2]){
         .controller('SimpleRadio', ['$scope', function($scope){
             $scope.publicGame = '{visibility}';
             $scope.player = {};
+            $scope.macsPlayers = <?= $maxPlayers?>;
             $scope.playerTwo = {
                 "myName": "<?=$playerTwo;?>",
                 "theirName":"<?=$playerOne;?>",

@@ -470,6 +470,11 @@ class Wargame extends CI_Controller
         }
 
         $scenario = $doc->wargame->scenario;
+        if(isset($scenario->maxPlayers)){
+            $maxPlayers = $scenario->maxPlayers;
+        }else{
+            $maxPlayers = 2;
+        }
         if ($playerOne == "") {
             $this->load->model('users/users_model');
             $users = $this->users_model->getUsersByUsername();
@@ -497,7 +502,7 @@ class Wargame extends CI_Controller
 
             $players = ["neutral", $scenario->playerOne,$scenario->playerTwo];
             $arg = $doc->wargame->arg;
-            $this->parser->parse("wargame/wargameMulti", compact("players","visibility", "game", "users", "wargame", "me", "path", "others", "arg"));
+            $this->parser->parse("wargame/wargameMulti", compact("maxPlayers","players","visibility", "game", "users", "wargame", "me", "path", "others", "arg"));
             return;
         }
 
