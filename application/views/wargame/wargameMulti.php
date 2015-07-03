@@ -104,33 +104,6 @@ if ($players[2]) {
         </div>        <div class="rightVs">&laquo;&laquo;vs&raquo;&raquo;</div>
         <div class="rightCol">Markarian</div>
     </div>
-    <div ng-if="numPlayers == 4" class="threeVsGid">
-        <div class="left"><span ng-class="player.color" class="big">You are {{player.myName}}</span><br>
-
-            <form>
-                <input type="radio" ng-model="player" ng-value="playerOne">  <?= $playerOne; ?>
-                <input type="radio" ng-model="player" ng-value="playerTwo"> <?= $playerTwo; ?> <br/>
-            </form>
-        </div>
-        <div ng-class="player.otherColor" class="right big">{{player.theirName}}</div>
-        <div class="center">&laquo;&laquo;vs&raquo;&raquo;</div>
-        <div class="clear"></div>        <div class="center">&laquo;&laquo;vs&raquo;&raquo;</div>
-
-
-        <div class="right">
-            <ul ng-if="player.myName == playerOne.myName">
-                {users}
-                <li><a ng-class="player.otherColor" href="{path}/{wargame}/{me}/{key}/{{publicGame}}">{key}</a></li>
-                {/users}
-            </ul>
-            <ul ng-if="player.myName == playerTwo.myName">
-                {others}
-                <li><a ng-class="player.otherColor" href="{path}/{wargame}/{key}/{me}/{{publicGame}}">{key}</a></li>
-                {/others}
-            </ul>
-        </div>
-        <div class="clear"></div>
-    </div>
     <div>
         <a href="<?= site_url("wargame/play"); ?>">Back to lobby</a>
     </div>
