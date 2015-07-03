@@ -27,8 +27,6 @@
             bottom: 0px;
         }
     </style>
-    <link href="<?= base_url("js/enterMulti.css"); ?>" rel="stylesheet" type="text/css">
-
 </head>
 <body ng-controller="SimpleRadio">
 <?php Battle::playMulti($game, $wargame, $arg);
@@ -43,25 +41,12 @@ if ($players[2]) {
 }
 ?>
 <div class="wrapper">
-    <div ng-show="macsPlayers > 2">
-        <h1>Choose Number of Players</h1>
-
-        <form>
-            <input type="radio" ng-model="numPlayers" ng-value="2"> 2
-            <input type="radio" ng-model="numPlayers" ng-value="3"> 3 <br/>
-        </form>
-
-        <h1>{{numPlayers}} Player Game</h1>
-
-    </div>
 
     <form name="myForm">
         Game is {{publicGame}} <input type="checkbox" ng-model="publicGame"
                                       ng-true-value="'public'" ng-false-value="'private'"> <br/>
     </form>
-    <div ng-if="numPlayers == 2">
         <div class="left"><span ng-class="player.color" class="big">You are {{player.myName}}</span><br>
-
             <form>
                 <input type="radio" ng-model="player" ng-value="playerOne">  <?= $playerOne; ?>
                 <input type="radio" ng-model="player" ng-value="playerTwo"> <?= $playerTwo; ?> <br/>
@@ -83,54 +68,6 @@ if ($players[2]) {
             </ul>
         </div>
         <div class="clear"></div>
-    </div>
-    <div ng-if="numPlayers == 3" class="threeVsGrid">
-        <div class="leftCol"><span ng-class="player.color" class="big">You are {{player.myName}}</span><br>
-
-            <form>
-                <input type="radio" ng-model="player" ng-value="playerOne">  <?= $playerOne; ?>
-                <input type="radio" ng-model="player" ng-value="playerTwo"> <?= $playerTwo; ?> <br/>
-            </form>
-        </div>        <div class="leftVs">&laquo;&laquo;vs&raquo;&raquo;</div>
-        <div class="centerCol">
-            <div ng-class="player.otherColor" class="big">{{player.theirName}}</div>
-
-            <ul ng-if="player.myName == playerOne.myName">
-                <li ng-repeat="user in users"><a ng-class="player.otherColor" ng-href="{wargame}/{me}/{{user}}/{{publicGame}}/Markarian/Markarian">{{user}}</a></li>
-            </ul>
-            <ul ng-if="player.myName == playerTwo.myName">
-                <li ng-repeat="user in users"><a ng-class="player.otherColor" ng-href="{wargame}/{{user}}/{me}/{{publicGame}}/Markarian/Markarian"">{{user}}</a></li>
-            </ul>
-        </div>        <div class="rightVs">&laquo;&laquo;vs&raquo;&raquo;</div>
-        <div class="rightCol">Markarian</div>
-    </div>
-    <div ng-if="numPlayers == 4" class="threeVsGid">
-        <div class="left"><span ng-class="player.color" class="big">You are {{player.myName}}</span><br>
-
-            <form>
-                <input type="radio" ng-model="player" ng-value="playerOne">  <?= $playerOne; ?>
-                <input type="radio" ng-model="player" ng-value="playerTwo"> <?= $playerTwo; ?> <br/>
-            </form>
-        </div>
-        <div ng-class="player.otherColor" class="right big">{{player.theirName}}</div>
-        <div class="center">&laquo;&laquo;vs&raquo;&raquo;</div>
-        <div class="clear"></div>        <div class="center">&laquo;&laquo;vs&raquo;&raquo;</div>
-
-
-        <div class="right">
-            <ul ng-if="player.myName == playerOne.myName">
-                {users}
-                <li><a ng-class="player.otherColor" href="{path}/{wargame}/{me}/{key}/{{publicGame}}">{key}</a></li>
-                {/users}
-            </ul>
-            <ul ng-if="player.myName == playerTwo.myName">
-                {others}
-                <li><a ng-class="player.otherColor" href="{path}/{wargame}/{key}/{me}/{{publicGame}}">{key}</a></li>
-                {/others}
-            </ul>
-        </div>
-        <div class="clear"></div>
-    </div>
     <div>
         <a href="<?= site_url("wargame/play"); ?>">Back to lobby</a>
     </div>
@@ -139,16 +76,7 @@ if ($players[2]) {
     angular.module('playMulti', [])
         .controller('SimpleRadio', ['$scope', function ($scope) {
             $scope.publicGame = '{visibility}';
-            $scope.users = [];
-            $scope.wargame = '{wargame}';
-            $scope.iAm = '{me}';
-            <?php  foreach($users as $user){
-                 ?>$scope.users.push('<?=$user['key']?>');<?
-            }?>
-            debugger;
             $scope.player = {};
-            $scope.numPlayers = 2;
-            $scope.macsPlayers = <?= $maxPlayers?>;
             $scope.playerTwo = {
                 "myName": "<?=$playerTwo;?>",
                 "theirName": "<?=$playerOne;?>",
