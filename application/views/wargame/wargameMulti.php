@@ -72,14 +72,10 @@ if ($players[2]) {
         <div class="clear"></div>
         <div class="right">
             <ul ng-if="player.myName == playerOne.myName">
-                {users}
-                <li><a ng-class="player.otherColor" href="{path}/{wargame}/{me}/{key}/{{publicGame}}">{key}</a></li>
-                {/users}
+                <li ng-repeat="user in users"><a ng-class="player.otherColor" ng-href="{wargame}/{me}/{{user}}/{{publicGame}}/Markarian/Markarian">{{user}}</a></li>
             </ul>
             <ul ng-if="player.myName == playerTwo.myName">
-                {others}
-                <li><a ng-class="player.otherColor" href="{path}/{wargame}/{key}/{me}/{{publicGame}}">{key}</a></li>
-                {/others}
+                <li ng-repeat="user in users"><a ng-class="player.otherColor" ng-href="{wargame}/{{user}}/{me}/{{publicGame}}/Markarian/Markarian"">{{user}}</a></li>
             </ul>
         </div>
         <div class="clear"></div>
@@ -101,7 +97,8 @@ if ($players[2]) {
             <ul ng-if="player.myName == playerTwo.myName">
                 <li ng-repeat="user in users"><a ng-class="player.otherColor" ng-href="{wargame}/{{user}}/{me}/{{publicGame}}/Markarian/Markarian"">{{user}}</a></li>
             </ul>
-        </div>        <div class="rightVs">&laquo;&laquo;vs&raquo;&raquo;</div>
+        </div>
+        <div class="rightVs">&laquo;&laquo;vs&raquo;&raquo;</div>
         <div class="rightCol">Markarian</div>
     </div>
     <div>
