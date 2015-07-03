@@ -1,0 +1,12 @@
+@import "bourbon/bourbon";
+@import "neat/neat";
+$max-width: 100em;
+.threeVsGrid{
+  font-size:30px;
+  @include outer-container;
+  .leftCol{@include span-columns(3);}
+  .leftVs{@include span-columns(1.5);}
+  .centerCol{@include span-columns(3);}
+  .rightVs{@include span-columns(1.5);}
+  .rightCol{@include span-columns(3);}
+}

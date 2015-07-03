@@ -450,7 +450,7 @@ class Wargame extends CI_Controller
         echo json_encode(["success"=>true, "emsg"=>false]);
     }
 
-    public function enterMulti($wargame = false, $playerOne = "", $playerTwo = "", $visibility="")
+    public function enterMulti($wargame = false, $playerOne = "", $playerTwo = "", $visibility="", $playerThree = "", $playerFour = "")
     {
         $user = $this->session->userdata("user");
         if (!$wargame) {
@@ -511,7 +511,7 @@ class Wargame extends CI_Controller
         if ($playerTwo == "") {
             $playerTwo = $user;
         }
-        $this->wargame_model->enterMulti($wargame, $playerOne, $playerTwo, $visibility);
+        $this->wargame_model->enterMulti($wargame, $playerOne, $playerTwo, $visibility, $playerThree, $playerFour);
         redirect("wargame/changeWargame/$wargame");
     }
 

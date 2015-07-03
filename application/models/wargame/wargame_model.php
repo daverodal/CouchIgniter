@@ -75,7 +75,7 @@ class Wargame_model extends CI_Model
         $this->couchsag->update($doc->_id, $doc);
         return true;
     }
-    public function enterMulti($wargame, $playerOne, $playerTwo, $visibility)
+    public function enterMulti($wargame, $playerOne, $playerTwo, $visibility, $playerThree, $playerFour)
     {
         $user = $this->session->userdata("user");
         try {
@@ -89,6 +89,12 @@ class Wargame_model extends CI_Model
         $doc->playerStatus = "multi";
         $doc->visibility = $visibility;
         $doc->wargame->players = array("", $playerOne, $playerTwo);
+        if($playerThree){
+            $doc->wargame->players[] = $playerThree;
+            if($playerFour){
+                $doc->wargame->players[] = $playerFour;
+            }
+        }
         $doc->wargame->gameRules->turnChange = true;
         $this->couchsag->update($doc->_id, $doc);
         return true;
