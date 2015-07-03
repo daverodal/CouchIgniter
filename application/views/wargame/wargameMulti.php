@@ -56,15 +56,12 @@ if ($players[2]) {
         <div class="center">&laquo;&laquo;vs&raquo;&raquo;</div>
         <div class="clear"></div>
         <div class="right">
+            <div ng-repeat="user in users">{{user.key}} {{user.id}}</div>
             <ul ng-if="player.myName == playerOne.myName">
-                {users}
-                <li><a ng-class="player.otherColor" href="{path}/{wargame}/{me}/{key}/{{publicGame}}">{key}</a></li>
-                {/users}
+                <li ng-repeat="user in users"><a ng-class="player.otherColor" href="{path}/{wargame}/{me}/{{user.key}}/{{publicGame}}">{{user.key}}</a></li>
             </ul>
             <ul ng-if="player.myName == playerTwo.myName">
-                {others}
-                <li><a ng-class="player.otherColor" href="{path}/{wargame}/{key}/{me}/{{publicGame}}">{key}</a></li>
-                {/others}
+                <li ng-repeat="user in users"><a ng-class="player.otherColor" href="{path}/{wargame}/{{user.key}}/{me}/{{publicGame}}">{{user.key}}</a></li>
             </ul>
         </div>
         <div class="clear"></div>
@@ -77,6 +74,8 @@ if ($players[2]) {
         .controller('SimpleRadio', ['$scope', function ($scope) {
             $scope.publicGame = '{visibility}';
             $scope.player = {};
+            $scope.users = JSON.parse('<?php echo json_encode($users);?>');
+            debugger;
             $scope.playerTwo = {
                 "myName": "<?=$playerTwo;?>",
                 "theirName": "<?=$playerOne;?>",
