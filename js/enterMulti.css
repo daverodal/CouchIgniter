@@ -1,0 +1,52 @@
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box; }
+
+.threeVsGrid {
+  max-width: 100em;
+  margin-left: auto;
+  margin-right: auto; }
+  .threeVsGrid .leftVs, .threeVsGrid .rightVs {
+    font-size: 30px; }
+  .threeVsGrid:after {
+    content: "";
+    display: table;
+    clear: both; }
+  .threeVsGrid .leftCol {
+    float: left;
+    display: block;
+    margin-right: 2.35765%;
+    width: 23.23176%; }
+    .threeVsGrid .leftCol:last-child {
+      margin-right: 0; }
+  .threeVsGrid .leftVs {
+    float: left;
+    display: block;
+    margin-right: 2.35765%;
+    width: 10.43705%; }
+    .threeVsGrid .leftVs:last-child {
+      margin-right: 0; }
+  .threeVsGrid .centerCol {
+    float: left;
+    display: block;
+    margin-right: 2.35765%;
+    width: 23.23176%; }
+    .threeVsGrid .centerCol:last-child {
+      margin-right: 0; }
+  .threeVsGrid .rightVs {
+    float: left;
+    display: block;
+    margin-right: 2.35765%;
+    width: 10.43705%; }
+    .threeVsGrid .rightVs:last-child {
+      margin-right: 0; }
+  .threeVsGrid .rightCol {
+    float: left;
+    display: block;
+    margin-right: 2.35765%;
+    width: 23.23176%; }
+    .threeVsGrid .rightCol:last-child {
+      margin-right: 0; }
+
+/*# sourceMappingURL=enterMulti.css.map */
