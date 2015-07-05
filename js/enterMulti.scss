@@ -2,7 +2,9 @@
 @import "neat/neat";
 $max-width: 100em;
 .threeVsGrid{
-  font-size:30px;
+  .leftVs, .rightVs{
+    font-size:30px;
+  }
   @include outer-container;
   .leftCol{@include span-columns(3);}
   .leftVs{@include span-columns(1.5);}

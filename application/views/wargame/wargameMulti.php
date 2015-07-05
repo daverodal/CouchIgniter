@@ -41,6 +41,10 @@ $playerTwo = $force_name[2];
 if ($players[2]) {
     $playerTwo = $players[2];
 }
+$playerThree = $force_name[3];
+if ($players[3]) {
+    $playerThree = $players[3];
+}
 ?>
 <div class="wrapper">
     <div ng-show="macsPlayers > 2">
@@ -85,21 +89,42 @@ if ($players[2]) {
 
             <form>
                 <input type="radio" ng-model="player" ng-value="playerOne">  <?= $playerOne; ?>
-                <input type="radio" ng-model="player" ng-value="playerTwo"> <?= $playerTwo; ?> <br/>
+                <input type="radio" ng-model="player" ng-value="playerTwo"> <?= $playerTwo; ?>
+                <input type="radio" ng-model="player" ng-value="playerThree"> <?= $playerThree; ?> <br/>
             </form>
-        </div>        <div class="leftVs">&laquo;&laquo;vs&raquo;&raquo;</div>
+        </div>
+        <div class="leftVs">&laquo;&laquo;vs&raquo;&raquo;</div>
         <div class="centerCol">
             <div ng-class="player.otherColor" class="big">{{player.theirName}}</div>
+            <ul ng-if="player.myName">
+                <form>
+                    <li ng-repeat="user in users">  <input type="radio" ng-model="thirdPlayer.name" ng-value="user.key">  {{user.key}}</li>
+                </form>
+            </ul>
 
-            <ul ng-if="player.myName == playerOne.myName">
-                <li ng-repeat="user in users"><a ng-class="player.otherColor" ng-href="{wargame}/{me}/{{user.key}}/{{publicGame}}/Markarian/Markarian">{{user.key}}</a></li>
-            </ul>
-            <ul ng-if="player.myName == playerTwo.myName">
-                <li ng-repeat="user in users"><a ng-class="player.otherColor" ng-href="{wargame}/{{user.key}}/{me}/{{publicGame}}/Markarian/Markarian"">{{user.key}}</a></li>
-            </ul>
         </div>
         <div class="rightVs">&laquo;&laquo;vs&raquo;&raquo;</div>
-        <div class="rightCol">Markarian</div>
+        <div class="rightCol">
+            <div ng-class="player.otherColor" class="big">{{player.theirOtherName}}</div>
+
+            <div ng-show="thirdPlayer.name">
+                <ul ng-if="player.myName == playerOne.myName">
+                    <li ng-repeat="user in users"><a ng-class="player.otherColor" ng-href="{wargame}/{me}/{{thirdPlayer.name}}{{}}/{{publicGame}}/{{user.key}}">{{user.key}}</a></li>
+                </ul>
+                <ul ng-if="player.myName == playerTwo.myName">
+                    <li ng-repeat="user in users"><a ng-class="player.otherColor" ng-href="{wargame}/{{thirdPlayer.name}}/{me}/{{publicGame}}/{{user.key}}">{{user.key}}</a></li>
+                </ul>
+                <ul ng-if="player.myName == playerThree.myName">
+                    <li ng-repeat="user in users"><a ng-class="player.otherColor" ng-href="{wargame}/{{thirdPlayer.name}}/{{user.key}}/{{publicGame}}/{me}">{{user.key}}</a></li>
+                </ul>
+            </div>
+
+
+
+
+
+
+        </div>
     </div>
     <div>
         <a href="<?= site_url("wargame/play"); ?>">Back to lobby</a>
@@ -115,20 +140,29 @@ if ($players[2]) {
             $scope.player = {};
             $scope.users = JSON.parse('<?php echo json_encode($users);?>');
             $scope.numPlayers = 2;
+            $scope.thirdPlayer = {};
             $scope.macsPlayers = <?= $maxPlayers?>;
             $scope.playerTwo = {
                 "myName": "<?=$playerTwo;?>",
                 "theirName": "<?=$playerOne;?>",
+                "theirOtherName": "<?=$playerThree;?>",
                 "color": "<?=$playerTwo;?>",
                 "otherColor": "<?=$playerOne;?>"
             };
             $scope.playerOne = {
                 "myName": "<?=$playerOne;?>",
                 "theirName": "<?=$playerTwo;?>",
+                "theirOtherName": "<?=$playerThree;?>",
                 "color": "<?=$playerOne;?>",
                 "otherColor": "<?=$playerTwo;?>"
             };
-
+            $scope.playerThree = {
+                "myName": "<?=$playerThree;?>",
+                "theirName": "<?=$playerOne;?>",
+                "theirOtherName": "<?=$playerTwo;?>",
+                "color": "<?=$playerThree;?>",
+                "otherColor": "<?=$playerTwo;?>"
+            };
         }]);
 </script>
 </body>
