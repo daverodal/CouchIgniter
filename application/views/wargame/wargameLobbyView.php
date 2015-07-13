@@ -61,7 +61,7 @@
             <h2><?=$item->content?></h2>
         </div>
     </my-pane>
-    <my-pane title="Lobby"  is-selected="true" >
+    <my-pane title="My Games"  is-selected="true" >
         <div id="content" ng-controller="LobbyController">
             <a class="logout logoutUpper" href="<?= site_url("users/logout"); ?>">Logout</a>
 
