@@ -76,7 +76,7 @@ if ($players[3]) {
         <div class="clear"></div>
         <div class="right">
             <ul ng-if="player.myName == playerOne.myName">
-                <li ng-repeat="user in users"><a ng-class="player.otherColor" href="{path}/{wargame}/{me}/{{user.key}}/{{publicGame}}">{{user.key}}</a></li>
+                <li ng-repeat="user in users | orderBy: 'key'"><a ng-class="player.otherColor" href="{path}/{wargame}/{me}/{{user.key}}/{{publicGame}}">{{user.key}}</a></li>
             </ul>
             <ul ng-if="player.myName == playerTwo.myName">
                 <li ng-repeat="user in users"><a ng-class="player.otherColor" href="{path}/{wargame}/{{user.key}}/{me}/{{publicGame}}">{{user.key}}</a></li>
