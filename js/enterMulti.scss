@@ -8,7 +8,12 @@ $max-width: 100em;
   @include outer-container;
   .leftCol{@include span-columns(3);}
   .leftVs{@include span-columns(1.5);}
-  .centerCol{@include span-columns(3);}
+  .centerCol{
+    @include span-columns(3);
+    .choose-player{
+      text-align: left;
+    }
+  }
   .rightVs{@include span-columns(1.5);}
   .rightCol{@include span-columns(3);}
 }

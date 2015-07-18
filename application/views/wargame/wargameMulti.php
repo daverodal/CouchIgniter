@@ -96,7 +96,7 @@ if ($players[3]) {
         <div class="leftVs">&laquo;&laquo;vs&raquo;&raquo;</div>
         <div class="centerCol">
             <div ng-class="player.otherColor" class="big">{{player.theirName}}</div>
-            <ul ng-if="player.myName">
+            <ul class="choose-player" ng-if="player.myName">
                 <form>
                     <li ng-repeat="user in users | orderBy: 'key'">  <input type="radio" ng-model="thirdPlayer.name" ng-value="user.key">  {{user.key}}</li>
                 </form>
