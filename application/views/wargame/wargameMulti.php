@@ -79,7 +79,7 @@ if ($players[3]) {
                 <li ng-repeat="user in users | orderBy: 'key'"><a ng-class="player.otherColor" href="{path}/{wargame}/{me}/{{user.key}}/{{publicGame}}">{{user.key}}</a></li>
             </ul>
             <ul ng-if="player.myName == playerTwo.myName">
-                <li ng-repeat="user in users"><a ng-class="player.otherColor" href="{path}/{wargame}/{{user.key}}/{me}/{{publicGame}}">{{user.key}}</a></li>
+                <li ng-repeat="user in users | orderBy: 'key'"><a ng-class="player.otherColor" href="{path}/{wargame}/{{user.key}}/{me}/{{publicGame}}">{{user.key}}</a></li>
             </ul>
         </div>
         <div class="clear"></div>
@@ -98,7 +98,7 @@ if ($players[3]) {
             <div ng-class="player.otherColor" class="big">{{player.theirName}}</div>
             <ul ng-if="player.myName">
                 <form>
-                    <li ng-repeat="user in users">  <input type="radio" ng-model="thirdPlayer.name" ng-value="user.key">  {{user.key}}</li>
+                    <li ng-repeat="user in users | orderBy: 'key'">  <input type="radio" ng-model="thirdPlayer.name" ng-value="user.key">  {{user.key}}</li>
                 </form>
             </ul>
 
@@ -109,13 +109,13 @@ if ($players[3]) {
 
             <div ng-show="thirdPlayer.name">
                 <ul ng-if="player.myName == playerOne.myName">
-                    <li ng-repeat="user in users"><a ng-class="player.otherColor" ng-href="{wargame}/{me}/{{thirdPlayer.name}}{{}}/{{publicGame}}/{{user.key}}">{{user.key}}</a></li>
+                    <li ng-repeat="user in users | orderBy: 'key'"><a ng-class="player.otherColor" ng-href="{wargame}/{me}/{{thirdPlayer.name}}{{}}/{{publicGame}}/{{user.key}}">{{user.key}}</a></li>
                 </ul>
                 <ul ng-if="player.myName == playerTwo.myName">
-                    <li ng-repeat="user in users"><a ng-class="player.otherColor" ng-href="{wargame}/{{thirdPlayer.name}}/{me}/{{publicGame}}/{{user.key}}">{{user.key}}</a></li>
+                    <li ng-repeat="user in users | orderBy: 'key'"><a ng-class="player.otherColor" ng-href="{wargame}/{{thirdPlayer.name}}/{me}/{{publicGame}}/{{user.key}}">{{user.key}}</a></li>
                 </ul>
                 <ul ng-if="player.myName == playerThree.myName">
-                    <li ng-repeat="user in users"><a ng-class="player.otherColor" ng-href="{wargame}/{{thirdPlayer.name}}/{{user.key}}/{{publicGame}}/{me}">{{user.key}}</a></li>
+                    <li ng-repeat="user in users | orderBy: 'key'"><a ng-class="player.otherColor" ng-href="{wargame}/{{thirdPlayer.name}}/{{user.key}}/{{publicGame}}/{me}">{{user.key}}</a></li>
                 </ul>
             </div>
 
@@ -138,7 +138,12 @@ if ($players[3]) {
             $scope.wargame = '{wargame}';
             $scope.iAm = '{me}';
             $scope.player = {};
-            $scope.users = JSON.parse('<?php echo json_encode($users);?>');
+            var users = JSON.parse('<?php echo json_encode($users);?>');
+            var usersArray = [];
+            for(var i in users){
+                usersArray.push(users[i]);
+            }
+            $scope.users = usersArray;
             $scope.numPlayers = 2;
             $scope.thirdPlayer = {};
             $scope.macsPlayers = <?= $maxPlayers?>;
