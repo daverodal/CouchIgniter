@@ -163,7 +163,7 @@
                 </li>
                 <li class="lobbySpacer">&nbsp;</li>
 
-                <li ng-class-odd="'odd'" ng-repeat="myPublicGame in myPublicGames" class="lobbyRow">
+                <li ng-class-odd="'odd'" ng-repeat="myPublicGame in myPublicGames | orderBy : [ 'players','date']" class="lobbyRow">
                     <a ng-href="<?=site_url('wargame/changeWargame');?>/{{myPublicGame.id}}/">
                         <span class="colOne">{{myPublicGame.name}}</span>
                         <span class="colTwo">{{myPublicGame.gameName}}</span>
