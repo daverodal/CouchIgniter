@@ -51,4 +51,7 @@
     .threeVsGrid .rightCol:last-child {
       margin-right: 0; }
 
+.wrapper {
+  padding-bottom: 80px !important; }
+
 /*# sourceMappingURL=enterMulti.css.map */

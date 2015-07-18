@@ -17,3 +17,6 @@ $max-width: 100em;
   .rightVs{@include span-columns(1.5);}
   .rightCol{@include span-columns(3);}
 }
+.wrapper{
+  padding-bottom:80px !important;
+}
