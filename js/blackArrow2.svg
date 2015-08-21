@@ -3,4 +3,6 @@
 <svg height="500px" width="500px" viewBox="0 0 500 500" version="1.1" xmlns="http://www.w3.org/2000/svg">
 <rect x="80" y="150" width="340" height="440" fill="#333"></rect>
 <path d="M 80 150 L 250 10 L 420 150 Z"></path>
+<circle fill="white" r="130" cx="250" cy="190"></circle>
+<text x="185" y="290" font-size="280px" fill="black">2</text>
 </svg>
