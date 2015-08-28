@@ -112,9 +112,18 @@ class Battle
             }
             if($options){
                 foreach($options as $name){
-                    $scenarios->$name = true;
-                }
+                    foreach($game->options as $gameOption){
+                        if($gameOption->keyName === $name){
+                            if($gameOption->extra){
+                                foreach($gameOption->extra as $k=>$v){
+                                    $scenarios->$k = $v;
+                                }
+                            }
+                            $scenarios->$name = true;
+                        }
+                    }
 
+                }
             }
             $thisBattle = new $className($doc, $arg, $scenarios, $game);
         }else{

@@ -4,5 +4,5 @@
 <rect x="80" y="150" width="340" height="440" fill="#333"></rect>
 <path d="M 80 150 L 250 10 L 420 150 Z"></path>
 <circle fill="white" r="130" cx="250" cy="190"></circle>
-<text x="185" y="290" font-size="280px" fill="black">6</text>
+<text x="185" y="290" font-size="280px" fill="black">5</text>
 </svg>
