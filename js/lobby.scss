@@ -122,14 +122,29 @@ a {
   text-decoration: none;
 }
 
-#create {
-  color: white;
-  text-shadow: 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0;
-  text-decoration: none;
-  border-bottom: 3px solid #afa;
-  font-family: sans-serif;
-  font-style: italic;
+.create-button {
+  padding:15px;
+  animation: pulsate 2s linear infinite;
+  animation-direction: alternate;
+  border-radius:10px;
+  #create {
+    font-size:30px;
+    color: white;
+    text-shadow: 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0;
+    text-decoration: none;
+    border-bottom: 3px solid #afa;
+    font-family: sans-serif;
+    font-style: italic;
+  }
 }
+
+@keyframes pulsate {
+  0% {box-shadow:0 0 0 #333}
+
+  100% {
+  box-shadow:10px 10px 10px #333}
+}
+
 
 ul {
   padding: 5px 10px 15px;

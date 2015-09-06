@@ -70,7 +70,7 @@
             <?php } ?>
             <h2>Welcome {myName}</h2>
 
-            <h3>You can <a id="create" href="<?= site_url("wargame/unattachedGame"); ?>">Browse or Start a new Wargame</a></h3>
+            <h3>You can <button class="create-button"><a id="create" href="<?= site_url("wargame/unattachedGame"); ?>">Start New Game</a></button></h3>
             Or play an existing game:<br>
 
             <h1>Multi Player Games</h1>
