@@ -31,6 +31,7 @@
     <script src="<?= base_url("js/jquery-ui-1.11.0.min.js"); ?>"></script>
     <script src="<?= base_url("js/sync.js"); ?>"></script>
     <script src="<?= base_url("js/angular.js"); ?>"></script>
+    <script src="<?= base_url("js/angular-sanitize.js"); ?>"></script>
     <script src="<?= base_url("js/angular-modal-service.js"); ?>"></script>
     <meta charset="UTF-8">
     <link href="<?= base_url("js/unattached.css"); ?>" rel="stylesheet" type="text/css">
@@ -232,7 +233,7 @@
 </script>
 <script type="text/javascript">
     var jString = '<?php echo addslashes(json_encode($theGame->value->scenarios));?>';
-    var scenarioApp = angular.module('scenarioApp', ['angularModalService']);
+    var scenarioApp = angular.module('scenarioApp', ['angularModalService','ngSanitize']);
     scenarioApp.controller('CustomController', ['$scope', 'close', function($scope, close) {
 
         $scope.display = true;
