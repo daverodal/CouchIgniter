@@ -871,8 +871,10 @@ class Wargame extends CI_Controller
         if($mapWidth && $mapWidth !== "auto"){
             $mapWidth = preg_replace("/[^\d]*(\d*)[^\d]*/","$1", $mapWidth);
             $battle->terrain->mapUrl = $this->resizeImage($mapUrl, $mapWidth, "images");
+            $this->rotateImage($battle->terrain->mapUrl, "images");
         }
         $battle->terrain->smallMapUrl = $this->resizeImage($mapUrl);
+        $this->rotateImage($mapUrl);
         $wargameDoc = $battle->save();
 
         $this->load->model("wargame/wargame_model");
@@ -887,6 +889,40 @@ class Wargame extends CI_Controller
         $ret->ok = true;
         header("Content-Type: application/json");
         echo json_encode($ret);
+    }
+    public function rotateImage($filename, $dir = false)
+    {
+
+// Get new dimensions
+        list($width, $height, $type) = getimagesize($filename);
+
+// Resample
+        switch($type){
+            case IMAGETYPE_PNG:
+                $image = imagecreatefrompng($filename);
+                break;
+            case IMAGETYPE_JPEG:
+                $image = imagecreatefromjpeg($filename);
+                break;
+        }
+        $rotate = imagerotate($image, 90, 0);
+
+// Output
+        $f = basename($filename,'.png'). "Left.png";
+        if($dir){
+            $f = "$dir/$f";
+        }
+        imagepng($rotate, "js/$f");
+        imagedestroy($rotate);
+
+        $f = basename($filename,'.png'). "Right.png";
+        if($dir){
+            $f = "$dir/$f";
+        }
+        $rotate = imagerotate($image, -90, 0);
+        imagepng($rotate, "js/$f");
+        imagedestroy($image);
+        imagedestroy($rotate);
     }
 
     public function resizeImage($filename, $new_width = 500, $dir = 'smallImages')
@@ -911,6 +947,9 @@ class Wargame extends CI_Controller
 // Output
         $f = "$dir/".basename($filename,'.png'). ".png";
         imagepng($image_p, "js/$f");
+        imagedestroy($image_p);
+        imagedestroy($image);
+
         return dirname($filename)."/".$f;
 
     }

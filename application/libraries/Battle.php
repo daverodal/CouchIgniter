@@ -170,7 +170,7 @@ class Battle
         try{
             $game = self::loadGame($name,$arg);
             $className = $game->className;
-            $className::playMulti($name,$wargame);
+            $className::playMulti($name,$wargame, $arg);
 
         }catch(Exception $e){echo $e->getMessage()." ".$e->getFile()." ".$e->getLine();}
 
