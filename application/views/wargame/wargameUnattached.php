@@ -158,7 +158,7 @@
                 <a class='scenarioWrapper play' ng-click="showCustom('<?= site_url("wargame/createWargame/") ?>/'+game+'/'+scenario.sName+'?'+setOptions)">Play &raquo;</a>
                 <div class="clear"></div>
             </div>
-            <p class="scenarioDescription long-description selected">&ldquo;{{scenario.longDescription}}&rdquo;</p>
+            <p ng-bind-html="scenario.longDescription" class="scenarioDescription long-description selected"></p>
         <div class="clear"></div>
         </div>
 
