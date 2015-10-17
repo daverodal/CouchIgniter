@@ -4,7 +4,8 @@
     Name your game, then hit return.
 
     <form method="post" action='{{theUrl}}'>
-        <input id="wargame" name="wargame" pay-attention-to-me>
+        <input ng-model='aGameName' id="wargame" name="wargame" pay-attention-to-me>
+        <input ng-show="aGameName.length > 0" class="go-button" type="submit" value="start">
         </form>
     or
     <a class="close" href ng-click="close()">Cancel</a>
