@@ -81,9 +81,14 @@ class Wargame extends CI_Controller
         $backgroundImage = "Egyptian_Pharaoh_in_a_War-Chariot,_Warrior,_and_Horses._(1884)_-_TIMEA.jpg";
         $backgroundAttr = 'By Unknown author [<a href="http://creativecommons.org/licenses/by-sa/2.5">CC BY-SA 2.5</a>], <a href="http://commons.wikimedia.org/wiki/File%3AEgyptian_Pharaoh_in_a_War-Chariot%2C_Warrior%2C_and_Horses._(1884)_-_TIMEA.jpg">via Wikimedia Commons</a>';
         if($genre){
-            if(preg_match("/18%27th/", $genre)){
-                $backgroundImage = "18th_century_gun.jpg";
-                $backgroundAttr = 'By MKFI (Own work) [Public domain], <a href="http://commons.wikimedia.org/wiki/File%3ASwedish_18th_century_6_pound_cannon_front.JPG">via Wikimedia Commons</a>';
+            if(preg_match("/Americas/", $genre)){
+                $backgroundImage = "Yorktown80.jpg";
+                $backgroundAttr = 'John Trumbull [Public domain], <a target="_blank" href="https://commons.wikimedia.org/wiki/File%3AYorktown80.JPG">via Wikimedia Commons</a>';
+            }
+
+            if(preg_match("/Napoleonic/", $genre)){
+                $backgroundImage = "Napoleon.jpg";
+                $backgroundAttr = 'Jacques-Louis David [Public domain], <a href="https://commons.wikimedia.org/wiki/File%3AJacques-Louis_David_-_Napoleon_at_the_St._Bernard_Pass_-_WGA06083.jpg">via Wikimedia Commons</a>';
             }
 
             if(preg_match("/19%27th/", $genre)) {
@@ -98,6 +103,11 @@ class Wargame extends CI_Controller
             if(preg_match("/20%27th/", $genre)){
                 $backgroundImage = "M110_howitzer.jpg";
                 $backgroundAttr = 'By Greg Goebel [Public domain], <a target="blank" href="http://commons.wikimedia.org/wiki/File%3AM110_8_inch_self_propelled_howitzer_tank_military.jpg">via Wikimedia Commons</a>';
+            }
+
+            if(preg_match("/early/", $genre)){
+                $backgroundImage = "French-Marne-Machinegun.jpg";
+                $backgroundAttr = 'By Unknown or not provided (U.S. National Archives and Records Administration) [Public domain], <a target="_blank" href="https://commons.wikimedia.org/wiki/File%3AFrench_troopers_under_General_Gouraud%2C_with_their_machine_guns_amongst_the_ruins_of_a_cathedral_near_the_Marne..._-_NARA_-_533679.tif">via Wikimedia Commons</a>';
             }
         }
 
