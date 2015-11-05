@@ -1,16 +1,17 @@
-* {
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
+html {
   box-sizing: border-box; }
+
+*, *::after, *::before {
+  box-sizing: inherit; }
 
 #myOtherGames, #publicGames {
   max-width: 100em;
   margin-left: auto;
   margin-right: auto; }
-  #myOtherGames:after, #publicGames:after {
+  #myOtherGames::after, #publicGames::after {
+    clear: both;
     content: "";
-    display: table;
-    clear: both; }
+    display: table; }
   #myOtherGames .lobbyRow .colOne, #myOtherGames .lobbyHeader .colOne, #publicGames .lobbyRow .colOne, #publicGames .lobbyHeader .colOne {
     float: left;
     display: block;
@@ -53,10 +54,10 @@
   max-width: 100em;
   margin-left: auto;
   margin-right: auto; }
-  #myGames:after {
+  #myGames::after {
+    clear: both;
     content: "";
-    display: table;
-    clear: both; }
+    display: table; }
   #myGames .lobbyRow .colOne, #myGames .lobbyHeader .colOne {
     float: left;
     display: block;
@@ -99,10 +100,10 @@
   max-width: 100em;
   margin-left: auto;
   margin-right: auto; }
-  #myMultiGames:after {
+  #myMultiGames::after {
+    clear: both;
     content: "";
-    display: table;
-    clear: both; }
+    display: table; }
   #myMultiGames .lobbyRow .colOne, #myMultiGames .lobbyHeader .colOne {
     float: left;
     display: block;
@@ -214,19 +215,19 @@ a {
   text-shadow: 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00, 0 0 3px #c00;
   text-decoration: none; }
 
-.create-button {
+#create .create-button {
+  cursor: pointer;
+  background: silver;
   padding: 15px;
   animation: pulsate 2s linear infinite;
   animation-direction: alternate;
-  border-radius: 10px; }
-  .create-button #create {
-    font-size: 30px;
-    color: white;
-    text-shadow: 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0;
-    text-decoration: none;
-    border-bottom: 3px solid #afa;
-    font-family: sans-serif;
-    font-style: italic; }
+  border-radius: 10px;
+  font-size: 30px;
+  color: white;
+  text-shadow: 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0;
+  text-decoration: underline;
+  font-family: sans-serif;
+  font-style: italic; }
 
 @keyframes pulsate {
   0% {
