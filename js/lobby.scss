@@ -122,20 +122,20 @@ a {
   text-decoration: none;
 }
 
-.create-button {
+#create .create-button {
+  cursor:pointer;
+  background: rgb(192, 192, 192);
   padding:15px;
   animation: pulsate 2s linear infinite;
   animation-direction: alternate;
   border-radius:10px;
-  #create {
     font-size:30px;
     color: white;
     text-shadow: 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0, 0 0 3px #0c0;
-    text-decoration: none;
-    border-bottom: 3px solid #afa;
+    text-decoration: underline;
+    //border-bottom: 3px solid #afa;
     font-family: sans-serif;
     font-style: italic;
-  }
 }
 
 @keyframes pulsate {
