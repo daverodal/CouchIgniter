@@ -49,7 +49,6 @@ function Sync(baseUrl) {
             this.timeFork = false;
             this.timeTravel = false;
         }
-        console.log("outgoing\n");
         this.current = $.ajax(
             {url:this.baseUrl + "/" + last_seq+travel,
                 type:"POST",
@@ -60,7 +59,6 @@ function Sync(baseUrl) {
 //                    jqXHR.abort();
                 },
                 success:function (data, textstatus, jqXHR) {
-                    console.log("Back! \n");
                     var now = ((new Date()).getTime()) / 1000;
                     that.fetchTimes.push(now);
                     if (that.fetchTimes.length > 10) {
@@ -85,7 +83,6 @@ function Sync(baseUrl) {
                         return;
                     }
                     for (var i in that.callbacks) {
-                        console.log("Callback "+i);
                         if (data[i]) {
                             if ($.isArray(data[i])) {
                                 var lastlength = that.lengths[i];
@@ -96,7 +93,6 @@ function Sync(baseUrl) {
                                 fetchArgs[i + "Index"] = data[i + "Index"];
                             }
                         }
-                        console.log("done "+i);
                     }
                     last_seq = data.last_seq;
                     var msg = '<span title="' + last_seq + '">Working</span>';
