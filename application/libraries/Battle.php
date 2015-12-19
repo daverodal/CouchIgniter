@@ -1,4 +1,7 @@
 <?php
+$dir = dirname(dirname(__DIR__));
+require_once("$dir/vendor/autoload.php");
+
 /**
  *
  * Copyright 2011-2015 David Rodal
@@ -215,8 +218,15 @@ class Battle
                 }
 
 
-                require_once(WARGAMES . $path."/".$game->fileName);
-                $game->className = preg_replace("%[^/]*/%","",$className);
+                if(preg_match("/([^\\\\]*)\\\\[^\\\\]*$/",$className, $matches)){
+                    set_include_path(WARGAMES . "$path/".$matches[1] . PATH_SEPARATOR . get_include_path());
+
+                    $game->className = $className;
+                }else{
+                    require_once(WARGAMES . $path."/".$game->fileName);
+                    $game->className = preg_replace("%[^/]*/%","",$className);
+                }
+
                 return $game;
             }
             switch($name){

@@ -1,0 +1,13 @@
+{
+    "require": {
+    },
+    "autoload": {
+        "psr-4": {
+            "": "/Users/david/Sites/MartianCivilWar/",
+            "TMCW\\": "/Users/david/Sites/MartianCivilWar/TMCW/"
+
+
+        }
+    }
+
+}
