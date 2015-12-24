@@ -340,9 +340,14 @@ class Wargame extends CI_Controller
 
 
             $xml = $this->_getFeed("http://davidrodal.com/pubs/category/welcome/feed");
-            $item = $xml->channel->item[0];
-            $content = $item->children('http://purl.org/rss/1.0/modules/content/');
-            $item->content = $content->encoded;
+            if($xml === null){
+                $item = new \stdClass();
+                $item->content = "No Content.";
+            }else {
+                $item = $xml->channel->item[0];
+                $content = $item->children('http://purl.org/rss/1.0/modules/content/');
+                $item->content = $content->encoded;
+            }
             $this->parser->parse("wargame/wargameLobbyView", compact("item", "lobbies", "otherGames", "myName"));
             return;
 
