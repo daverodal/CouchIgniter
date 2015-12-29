@@ -894,7 +894,7 @@ class Wargame extends CI_Controller
             $this->rotateImage($battle->terrain->mapUrl, "images");
         }
         $battle->terrain->smallMapUrl = $this->resizeImage($mapUrl);
-        $this->rotateImage($mapUrl);
+//        $this->rotateImage($mapUrl);
         $wargameDoc = $battle->save();
 
         $this->load->model("wargame/wargame_model");
