@@ -26,20 +26,21 @@ require_once("$dir/vendor/autoload.php");
  * Time: 5:03 PM
  * Link: http://davidrodal.com
  * */
-if(strpos(__FILE__,"/var/www") === false){
-    if(strpos(__FILE__, "/Library/WebServer/Documents") !== false) {
-        define ("WARGAMES", "/Library/WebServer/Documents/MartianCivilWar/");
-    }else if(strpos(__FILE__, "/Users/david/Sites/") !== false){
-        define ("WARGAMES","/Users/david/Sites/MartianCivilWar/");
-    }else  if(strpos(__FILE__,"/Users/david_rodal") !== false){
-        define ("WARGAMES","/Users/david_rodal/MampRoot/Game/");
-    }else{
-        define ("WARGAMES","/xampp/htdocs/MartianCivilWar/");
-    }
-}else{
-    define ("WARGAMES","/var/www/MartianCivilWar/");
-}
-set_include_path(WARGAMES . "/stdIncludes" . PATH_SEPARATOR . WARGAMES . PATH_SEPARATOR .  get_include_path());
+//if(strpos(__FILE__,"/var/www") === false){
+//    if(strpos(__FILE__, "/Library/WebServer/Documents") !== false) {
+//        define ("WARGAMES", "/Library/WebServer/Documents/MartianCivilWar/");
+//    }else if(strpos(__FILE__, "/Users/david/Sites/") !== false){
+//        define ("WARGAMES","/Users/david/Sites/MartianCivilWar/");
+//    }else  if(strpos(__FILE__,"/Users/david_rodal") !== false){
+//        define ("WARGAMES","/Users/david_rodal/MampRoot/Game/");
+//    }else{
+//        define ("WARGAMES","/xampp/htdocs/MartianCivilWar/");
+//    }
+//}else{
+//    define ("WARGAMES","/var/www/MartianCivilWar/");
+//}
+define("WARGAMES","$dir/vendor/daverodal/webwargaming/");
+set_include_path(WARGAMES . "stdIncludes" . PATH_SEPARATOR . WARGAMES . PATH_SEPARATOR .  get_include_path());
 
 class Battle
 {

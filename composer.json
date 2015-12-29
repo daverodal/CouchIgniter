@@ -1,16 +1,12 @@
 {
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/daverodal/webwargaming"
+        }
+    ],
     "require": {
-    },
-    "autoload": {
-        "psr-4": {
-            "": "/Users/david/Sites/MartianCivilWar/",
-            "TMCW\\": "/Users/david/Sites/MartianCivilWar/TMCW/"
-
-
-        },
-        "files":[
-            "/Users/david/Sites/MartianCivilWar/constants.php"
-        ]
+        "daverodal/webwargaming": "dev-master"
     }
 
 }
