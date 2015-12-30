@@ -2,11 +2,10 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "/Users/david/Sites/MartianCivilWar"
+            "url": "https://github.com/daverodal/webwargaming"
         }
     ],
     "require": {
         "daverodal/webwargaming": "dev-master"
     }
-
 }
