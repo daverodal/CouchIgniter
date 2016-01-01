@@ -30,20 +30,17 @@ class Users_model extends CI_Model
 
 
         private function _setDB(){
-            $this->load->library('couchsag');
 
-            $this->prevDB = $this->couchsag->currentDatabase;
+            $this->prevDB = $this->couchsag->currentDatabase();
         $dbName = $this->config->item('user_db');
         $this->couchsag->setDatabase($dbName);
 
     }
     private function _restoreDB(){
-        $this->load->library('couchsag');
 
         $this->couchsag->setDatabase($this->prevDB);
     }
     public function getUserByUserName($name){
-        $this->load->library('couchsag');
 
         $this->_setDB();
         $startKey = "";
@@ -61,7 +58,6 @@ class Users_model extends CI_Model
         return false;
     }
     public function getUsersByUsername($name = false){
-        $this->load->library('couchsag');
 
         $this->_setDB();
         $seq = $this->couchsag->get("/_design/newFilter/_view/userByUsername");
@@ -70,7 +66,6 @@ class Users_model extends CI_Model
     }
 
     public function getUsersByEmail(){
-        $this->load->library('couchsag');
 
         $this->_setDB();
         $usersDoc = $this->couchsag->get("users");
@@ -83,7 +78,6 @@ class Users_model extends CI_Model
     }
 
     public function getUserByEmail($email){
-        $this->load->library('couchsag');
 
         $this->_setDB();
         $usersDoc = $this->couchsag->get("users");
@@ -97,7 +91,6 @@ class Users_model extends CI_Model
     }
 
     public function initDoc(){
-        $this->load->library('couchsag');
 
 
         $dbName = $this->config->item('user_db');
@@ -286,7 +279,6 @@ gamesAvailReduce;
 
     }
     public function addUser($email, $password, $username, $editor){
-        $this->load->library('couchsag');
 
         $this->_setDB();
         $strikes = 0;
@@ -325,7 +317,6 @@ gamesAvailReduce;
     }
 
     public function changePassword($password, $newPassword){
-        $this->load->library('couchsag');
 
         $username = $this->session->userdata("user");
         $this->_setDB();
@@ -365,8 +356,6 @@ gamesAvailReduce;
     }
 
     public function isValidLogin($email, $password){
-        $this->load->library('couchsag');
-
         $this->_setDB();
         $usersDoc = $this->couchsag->get("users");
         if($usersDoc->docType == "users"){
@@ -382,7 +371,6 @@ gamesAvailReduce;
         return false;
     }
     public function addGame($games){
-        $this->load->library('couchsag');
 
         $this->_setDB();
         $doc = $this->couchsag->get("gnuGamesAvail");
@@ -398,7 +386,6 @@ gamesAvailReduce;
         $this->_restoreDB();
     }
     public function deleteGame($killGame){
-        $this->load->library('couchsag');
 
         if(!$killGame){
             return false;
@@ -413,7 +400,6 @@ gamesAvailReduce;
         $this->_restoreDB();
     }
 	public function userLoggedIn($user){
-        $this->load->library('couchsag');
 
         $this->_setDB();
 		$doc = $this->couchsag->get("userLogins");
@@ -425,7 +411,6 @@ gamesAvailReduce;
 		$this->_restoreDB();
 	}
     public function getAvailGames($dir = false, $genre = false, $game = false){
-        $this->load->library('couchsag');
 
         $reduceArgs = "group=true&group_level=2";
         if($dir !== false){
@@ -464,7 +449,6 @@ gamesAvailReduce;
         return $games;
     }
     public function getCustomScenarios($dir = false, $genre = false, $game = false){
-        $this->load->library('couchsag');
 
         $reduceArgs = "group=true&group_level=2";
         if($dir !== false){
@@ -516,7 +500,6 @@ gamesAvailReduce;
     }
 
     public function getLogins(){
-        $this->load->library('couchsag');
 
         $this->_setDB();
         $logins = $this->couchsag->get("userLogins");

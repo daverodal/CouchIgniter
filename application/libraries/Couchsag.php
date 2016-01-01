@@ -1,13 +1,4 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
-$dir = dirname(dirname(__DIR__));
-require_once("$dir/vendor/autoload.php");
-use GuzzleHttp\Client;
-//$client = new Client([
-//    // Base URI is used with relative requests
-//    'base_uri' => 'http://httpbin.org',
-//    // You can set any number of default request options.
-//    'timeout'  => 2.0,
-//]);
 /**
  *
  * Copyright 2011-2015 David Rodal
@@ -33,8 +24,8 @@ use GuzzleHttp\Client;
  * To change this template use File | Settings | File Templates.
  */
 
-//require_once('Sag.php');
-//require_once('SagFileCache.php');
+require_once('Sag.php');
+require_once('SagFileCache.php');
 
 /**
  * Couchsag codeigniter library to access Sag driver for couch db.
@@ -43,13 +34,7 @@ use GuzzleHttp\Client;
 class Couchsag
 {
 
-//    public $sag;
-    public $guzzle;
-    public $currentDatabase;
-
-    public function setDatabase($db){
-        $this->currentDatabase = $db;
-    }
+    public $sag;
 
     /**
      * @param $params Params to be passed to sag driver. Values can be
@@ -88,30 +73,29 @@ class Couchsag
                         break;
                 }
             }
-            $this->guzzle = new Client([
-                // Base URI is used with relative requests
-                'base_uri' => "http://$user:$password@$host:$port/",
-                // You can set any number of default request options.
-                'timeout'  => 1800.0,
-            ]);
-            if($database){
-                $this->currentDatabase = $database;
+            $this->sag = new Sag($host, $port);
+		$this->sag->setHttpAdapter('HTTP_NATIVE_SOCKETS');
+            if ($password || $user || $auth_type) {
+                $this->sag->login($user, $password, $auth_type);
             }
-//            $this->sag = new Sag($host, $port);
-//		$this->sag->setHttpAdapter('HTTP_CURL');
-//            if ($password || $user || $auth_type) {
-//                $this->sag->login($user, $password, $auth_type);
-//            }
-//            if ($database) {
-//                $this->sag->setDatabase($database);
-//            }
-//            try {
-////        $cache = new SagFileCache("/tmp");
-//            } catch (Exception $e) {
-//                throw $e;
-//            }
-////        $this->sag->setCache($cache);
+            if ($database) {
+                $this->sag->setDatabase($database);
+            }
+            try {
+//        $cache = new SagFileCache("/tmp");
+            } catch (Exception $e) {
+                throw $e;
+            }
+//        $this->sag->setCache($cache);
         }
+    }
+
+    public function currentDatabase(){
+        return $this->sag->currentDatabase();
+    }
+
+    public function setDatabase($DB){
+        $this->sag->setDatabase($DB);
     }
 
     /**
@@ -121,16 +105,8 @@ class Couchsag
 
     function get($id)
     {
-        $curDb = $this->currentDatabase;
-
-
         try {
-//            $body = $this->sag->get($id)->body;
-            if($id[0] !== '/'){
-                $curDb .= '/';
-            }
-            $response = $this->guzzle->request('GET',"/".$curDb.$id);
-            $body = json_decode((string)$response->getBody());
+            $body = $this->sag->get($id)->body;
         } catch (Exception $e) {
 
             if($e->getCode() == 404){
@@ -161,16 +137,8 @@ class Couchsag
     function update($id, $data)
     {
         try {
-            $curDb = $this->currentDatabase;
-            /* if $id has no leading slash add one to the mix */
-            if($id[0] !== '/'){
-                $curDb .= '/';
-            }
-            $dest = "/".$curDb.$id;
-            $ret = $this->guzzle->request('PUT',$dest, ['json'=>$data]);
-            $st = $ret->getStatusCode();
-            return $st === 201;
-//            return $this->sag->put($id, $data)->body;
+
+            return $this->sag->put($id, $data)->body;
         } catch (Exception $e) {
             var_dump($e->getMessage());
             die("CouchException Update");
@@ -185,21 +153,7 @@ class Couchsag
     function create($id, $data = null)
     {
         try {
-            $curDb = $this->currentDatabase;
-            /* if $id has no leading slash add one to the mix */
-
-            if($data !== null && $id[0] !== '/'){
-                $curDb .= '/';
-                $dest = "/".$curDb.$id;
-            }else{
-                $dest = "/".$curDb;
-                $data = $id;
-            }
-            $ret = $this->guzzle->request('POST',$dest, ['json'=>$data]);
-            $body = (string)$ret->getBody();
-            $ret->body = json_decode($body);
-            return $ret;
-//            return $this->sag->post($id, $data);
+            return $this->sag->post($id, $data);
         } catch (Exception $e) {
 
           throw $e;
@@ -215,15 +169,7 @@ class Couchsag
     function delete($id, $rev)
     {
         try {
-            $curDb = $this->currentDatabase;
-            $rev = urlencode($rev);
-            $dest = "/$curDb/$id?rev=$rev";
-
-            $response = $this->guzzle->request('DELETE',$dest);
-            $st = $response->getStatusCode();
-            return $st === 200;
-
-//            return $this->sag->delete($id, $rev);
+            return $this->sag->delete($id, $rev);
         } catch (Exception $e) {
 
             var_dump($e->getMessage());
