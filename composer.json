@@ -6,6 +6,7 @@
         }
     ],
     "require": {
+        "guzzlehttp/guzzle": "~6.0",
         "daverodal/webwargaming": "dev-master"
     }
 }

@@ -21,16 +21,16 @@ class Rest_model extends CI_Model
 {
     private function _setDB()
     {
-        $this->prevDB = $this->couchsag->sag->currentDatabase();
+        $this->prevDB = $this->couchsag->currentDatabase;
         $dbName = $this->config->item('rest_db');
 
-        $this->couchsag->sag->setDatabase($dbName);
+        $this->couchsag->setDatabase($dbName);
 
     }
 
     private function _restoreDB()
     {
-        $this->couchsag->sag->setDatabase($this->prevDB);
+        $this->couchsag->setDatabase($this->prevDB);
     }
 
     public function getMaps()

@@ -182,9 +182,12 @@ class Wargame extends CI_Controller
                 $theScenarios[] = $thisScenario;
             }
 
-            $theGame->value->scenarios = $theScenarios;
+//            $theGame->value->scenarios = $theScenarios;
+
             $gameFeed = strtolower($game);
             $feed = file_get_contents("http://davidrodal.com/pubs/category/$gameFeed/feed");
+            $theGameMeta = (array)$theGame->value;
+            unset($theGameMeta->scenarios);
             if ($feed !== false) {
                 $xml = new SimpleXmlElement($feed);
 
@@ -198,8 +201,11 @@ class Wargame extends CI_Controller
                         // http://stackoverflow.com/questions/8781911/remove-non-ascii-characters-from-string-in-php
                         $str = preg_replace('/[[:^print:]]/', '', $str); // should be aA
                         $str = preg_replace("/></","> <", $str);
-                        $theGame->value->longDesc = $str;
-                        $theGame->value->histEditLink = $editLink;
+
+//                        $theGame->value->longDesc = $str;
+//                        $theGame->value->histEditLink = $editLink;
+                        $theGameMeta['longDesc'] = $str;
+                        $theGameMeta['histEditLink'] = $editLink;
                     }
                     if (preg_match("/Player/", $entry->title)) {
                         $content = $entry->children('http://purl.org/rss/1.0/modules/content/');
@@ -210,13 +216,18 @@ class Wargame extends CI_Controller
                         $matches = [];
                         if(preg_match("/p=(\d+)$/",$entry->guid,$matches)){
                             $editLink = "http://davidrodal.com/pubs/wp-admin/post.php?post=".$matches[1]."&action=edit";
-                            $theGame->value->playerEditLink = "<a target='blank' href='$editLink'>edit</a>";
+//                            $theGame->value->playerEditLink = "<a target='blank' href='$editLink'>edit</a>";
+                            $theGameMeta['playerEditLink'] = "<a target='blank' href='$editLink'>edit</a>";
                         }
+                        $theGameMeta['playerNotes'] = $str;
                         $theGame->value->playerNotes = $str;
+
                     }
                 }
             }
-            $this->parser->parse("wargame/wargameUnattached", compact("editor", "backgroundImage", "backgroundAttr","bigMapUrl", "mapUrl", "theScenario", "plainGenre", "theGame", "games", "nest","siteUrl"));
+            unset($theGame->value);
+            $theGame = (array)$theGame;
+            $this->parser->parse("wargame/wargameUnattached", compact("theScenarios", "editor", "backgroundImage", "backgroundAttr","bigMapUrl", "mapUrl", "theScenario", "plainGenre", "theGame", "games", "nest","siteUrl","theGameMeta"));
         } else {
             foreach ($gamesAvail as $gameAvail) {
                 if($gameAvail->game) {
@@ -239,6 +250,11 @@ class Wargame extends CI_Controller
                 }
 
                 $gameAvail->urlGenre = rawurlencode($gameAvail->genre);
+                if(!is_numeric($gameAvail->value)){
+                    $nScenarios = count((array)$gameAvail->value->scenarios);
+                    unset($gameAvail->value);
+                    $gameAvail->value = $nScenarios;
+                }
                 $games[] = $gameAvail;
 
             }

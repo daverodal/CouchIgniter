@@ -28,14 +28,14 @@ class Rest extends CI_Controller
     private $prevDB;
     private function _setDB()
     {
-        $this->prevDB = $this->couchsag->sag->currentDatabase();
-        $this->couchsag->sag->setDatabase('rest');
+        $this->prevDB = $this->couchsag->currentDatabase;
+        $this->couchsag->setDatabase('rest');
 
     }
 
     private function _restoreDB()
     {
-        $this->couchsag->sag->setDatabase($this->prevDB);
+        $this->couchsag->setDatabase($this->prevDB);
     }
 
 

@@ -136,7 +136,7 @@
         echo "<li class='leftGrid'>";
         $href = site_url("wargame/unattachedGame/");
         echo "<a class='breadcrumb' href='$href'>top</a> ";
-        $up = $theGame->dir . "/" . rawurlencode($theGame->genre);
+        $up = $theGame['dir'] . "/" . rawurlencode($theGame['genre']);
         $href = site_url("wargame/unattachedGame/$up");
         echo "<a class='breadcrumb' href='$href'>back</a><br> ";
         echo "";
@@ -167,7 +167,7 @@
         <div class="coolBox wordpress-wrapper">
         <a ng-if="editor" target='_blank' ng-href="{{histEditLink}}">Edit</a>
         <?php //echo $theGame->value->histEditLink;
-        echo $theGame->value->longDesc; ?>
+        echo $theGameMeta['longDesc']; ?>
         </div>
         </li>
         <li class='rightGrid'>
@@ -175,8 +175,8 @@
         <img id="mapImage" imageonload ng-src="{{scenario.mapUrl}}">
         <?php
         echo "<h3>Designer Notes</h3><div class='coolBox wordpress-wrapper'>";
-        echo $theGame->value->playerEditLink;
-        echo $theGame->value->playerNotes;
+        echo $theGameMeta['playerEditLink'];
+        echo $theGameMeta['playerNotes'];
         echo "</div></li>";
         echo "</ul>";
     } else {
@@ -198,6 +198,7 @@
                 <div class="rightGrid"><p><a href="{siteUrl}/{dir}/{urlGenre}/{game}">{name}</a></p><p>{description}</p></div>
                 <a href="{siteUrl}/{dir}/{urlGenre}/{game}"><img src="{mapUrl}"></a>
                 <div class="clear"></div>
+                {value} Scenarios Available.
             </li>
             {/games}
         <?php
@@ -232,7 +233,7 @@
 <script>
 </script>
 <script type="text/javascript">
-    var jString = '<?php echo addslashes(json_encode($theGame->value->scenarios));?>';
+    var jString = '<?php echo addslashes(json_encode($theScenarios));?>';
     var scenarioApp = angular.module('scenarioApp', ['angularModalService','ngSanitize']);
     scenarioApp.controller('CustomController', ['$scope', 'close', function($scope, close) {
 
@@ -262,18 +263,18 @@
             $scope.scenario = $scope.scenarios[i];
             break;
         }
-        $scope.game = '<?=$theGame->game;?>';
+        $scope.game = '<?=$theGame['game'];?>';
         $scope.editor = '<?=$editor;?>';
-        $scope.name = '<?=addslashes($theGame->value->name);?>';
-        $scope.description = '<?=$theGame->value->description;?>';
-        $scope.histEditLink = '<?=$theGame->value->histEditLink;?>';
+        $scope.name = '<?=addslashes($theGameMeta['name']);?>';
+        $scope.description = '<?=$theGameMeta['description'];?>';
+        $scope.histEditLink = '<?=$theGameMeta['histEditLink'];?>';
 
         $scope.lastScenario = $scope.scenario;
         $scope.scenario.selected = 'selected';
         $scope.imageUpdating = true;
         $scope.setOptions = "";
 
-        var oString = '<?php echo addslashes(json_encode($theGame->value->options));?>';
+        var oString = '<?php echo addslashes(json_encode($theGameMeta['options']));?>';
         $scope.options = $.parseJSON(oString);
 
         $scope.clickityclick = function (a) {
