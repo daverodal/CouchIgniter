@@ -47,6 +47,7 @@ class Rest extends CI_Controller
             redirect("/users/login/");
         }
         $this->load->model('rest/rest_model');
+        $this->load->library('couchsag');
     }
 
     function purge($stuf)

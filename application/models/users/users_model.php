@@ -28,7 +28,12 @@ class Users_model extends CI_Model
 
     private $prevDB;
 
-    private function _setDB(){
+    public function __construct()
+    {
+        parent::__construct();
+        $this->load->library('couchsag');
+    }
+        private function _setDB(){
         $this->prevDB = $this->couchsag->currentDatabase;
         $dbName = $this->config->item('user_db');
         $this->couchsag->setDatabase($dbName);

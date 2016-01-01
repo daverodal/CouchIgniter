@@ -31,6 +31,7 @@ class Admin extends CI_Controller
         if (!$user || $user != "Markarian") {
             redirect("/users/login/");
         }
+        $this->load->library('couchsag');
     }
     public function index(){
         $this->load->view("admin/adminHome");

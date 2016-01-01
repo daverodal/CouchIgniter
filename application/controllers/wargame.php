@@ -49,6 +49,7 @@ class Wargame extends CI_Controller
 
             redirect("/users/login/");
         }
+        $this->load->library('couchsag');
     }
 
     function index()
