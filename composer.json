@@ -6,7 +6,6 @@
         }
     ],
     "require": {
-        "sag/sag": "v0.9.0",
         "daverodal/webwargaming": "dev-master"
     }
 }
