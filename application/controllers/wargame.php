@@ -284,6 +284,11 @@ class Wargame extends CI_Controller
         echo json_encode(["success"=>true, "emsg"=>false]);
     }
 
+    function mmmail(){
+        $this->load->library('battle');
+        $this->battle->sendReminder('dave.rodal@gmail.com');
+        echo "Fun";
+    }
     function play($poll = false)
     {
         $this->load->helper('date');
